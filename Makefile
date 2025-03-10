@@ -11,10 +11,11 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 INC_DIRS := Includes $(LIBFT_DIR)
 SRC_DIRS := src src/parser src/executor
+GC_DIRS  := gc
 HEADERS = -I $(LIBFT_DIR)/include -I
 
 vpath %.h $(INC_DIRS)
-vpath %.c $(SRC_DIRS)
+vpath %.c $(SRC_DIRS) $(GC_DIRS)
 
 ################################################################################
 ###############                  SOURCE FILES                     ##############
@@ -26,8 +27,16 @@ PARSING := $(addprefix parser/, $(PARSING_FILES))
 EXECUTOR_FILES := executor.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
+GC_FILES := ft_malloc.c \
+			gc_utils.c \
+			gc_functions.c \
+			test_main.c
+
+GC := $(addprefix gc/, $(GC_FILES))
+
 SRC_FILES := main.c
-SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(EXECUTOR))
+SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(EXECUTOR)) $(GC)
+
 
 ################################################################################
 ###############               OBJECT FILES & RULES                ##############
