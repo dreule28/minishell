@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
 	from_executor();
 	from_parser();
