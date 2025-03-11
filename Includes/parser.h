@@ -6,22 +6,22 @@
 //Includes -- END
 
 //Structs -- BEGIN
-typedef enum type
-{
-	WORD,
-	BUILTIN,
-	S_QUOTES,
-	D_QUOTES,
-	INFILE,
-	OUTFILE,
-	HEREDOC,
-	APPEND,
-	PIPE
-}			t_type;
+// typedef enum type
+// {
+// 	WORD,
+// 	BUILTIN,
+// 	S_QUOTES,
+// 	D_QUOTES,
+// 	INFILE,
+// 	OUTFILE,
+// 	HEREDOC,
+// 	APPEND,
+// 	PIPE
+// }			t_type;
 
 typedef struct s_token
 {
-	t_type			token;
+	// t_type			token;
 	struct s_token	*next;
 	struct s_token	*prev;
 }					t_token;

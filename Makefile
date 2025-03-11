@@ -44,7 +44,7 @@ OBJS := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 # Compilation flags and linking options
 CFLAGS := -Wall -Wextra -Werror -g -IIncludes -Ilibft -MMD -MP $(addprefix -I, $(INC_DIRS))
-LDFLAGS := -Llibft -lft
+LDFLAGS := -Llibft -lft  -lreadline -lncurses
 CFLAGS_SAN := $(CFLAGS) -fsanitize=address -g
 LDFLAGS_SAN := $(LDFLAGS) -fsanitize=address
 
