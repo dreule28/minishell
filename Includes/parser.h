@@ -1,4 +1,3 @@
-
 #ifndef PARSER_H
 # define PARSER_H
 
@@ -7,7 +6,7 @@
 //Includes -- END
 
 //Functions -- BEGIN
-void	from_parser();
+void	from_parser(void);
 //Functions -- END
 
 #endif

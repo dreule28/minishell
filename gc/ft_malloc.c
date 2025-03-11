@@ -1,80 +1,107 @@
-#include "garbage_collector.h"
 #include "../libft/libft.h"
-
+#include "garbage_collector.h"
 
 void	*ft_malloc(size_t count, size_t size)
 {
 	void	*ptr;
-	//count is the number of elements to allocate
-	//size is the size of each element (int or char or struct)
+
 	ptr = ft_calloc(count, size);
 	if (!ptr)
 		return (NULL);
 	gc_add(ptr);
 	return (ptr);
 }
-
-void gc_add(void *ptr)
+/*
+count is the number of elements to allocate
+size is the size of each element (int or char or struct)
+*/
+/*
+int	main(void)
 {
-	t_gc_node	*new_node; // new_node is a pointer to a t_gc_node
-	t_gc_list	*gc; // gc is a pointer to a t_gc_list
-	
-	if(!ptr)
-		return ;
-	gc = create_gc(); // create_gc is a function that returns a static t_gc_list
-	if (!gc)
-		return ;
-	new_node = ft_calloc(1, sizeof(t_gc_node)); // ft_calloc is a function that allocates memory and sets it to 0
-	if (!new_node)
-		return ;
-	new_node->data = ptr;
-	if (gc->head == NULL) //	if the head is NULL, then the tail is also NULL
-	{
-		new_node->next = NULL;
-		gc->head = new_node;
-		gc->tail = new_node;
-	}
-	else // adds a new node to the head of the list
-	{
-		new_node->next = (gc->head);
-		gc->head = new_node;
-	}
-	gc->size++; // increment the size of the list
-}
+	t_gc_list *gc;
+	create a static t_gc_list gc = create_gc();
+	char *str_single_pointer;
+	char *str_single_pointer2;
+	char *str_single_pointer3;
+	char *str_single_pointer4;
+	char *str_single_pointer5;
+	char *str_single_pointer6;
+	char *str_single_pointer7;
+	int **int_double_ptr;
+	int *int_single_ptr;
+	char **char_double_ptr;
+	initialize the garbage collector gc_init();
+	print the size of the list printf("gc size: %ld\n", gc->size);
+	for an array the size will be the number of elements in
+	the array +1 because the first element is the size of the array
+	so for and array of 5 elements the size will be 6
+	this counts for both intergers and characters ararys
+	// example of a single pointer
+	// of char type
+	str_single_pointer = ft_malloc(6, sizeof(char));
+	str_single_pointer2 = ft_malloc(6, sizeof(char));
+	str_single_pointer3 = ft_malloc(6, sizeof(char));
+	str_single_pointer4 = ft_malloc(6, sizeof(char));
+	str_single_pointer5 = ft_malloc(6, sizeof(char));
+	str_single_pointer6 = ft_malloc(6, sizeof(char));
+	str_single_pointer7 = ft_malloc(6, sizeof(char));
+	ft_strlcpy(str_single_pointer, "hallo", 6);
+	ft_strlcpy(str_single_pointer2, "hallo", 6);
+	ft_strlcpy(str_single_pointer3, "hallo", 6);
+	ft_strlcpy(str_single_pointer4, "hallo", 6);
+	ft_strlcpy(str_single_pointer5, "hallo", 6);
+	ft_strlcpy(str_single_pointer6, "hallo", 6);
+	ft_strlcpy(str_single_pointer7, "hallo", 6);
+	printf("str_single_pointer: %s\n", str_single_pointer);
+	printf("str_single_pointer2: %s\n", str_single_pointer2);
+	printf("str_single_pointer3: %s\n", str_single_pointer3);
+	printf("str_single_pointer4: %s\n", str_single_pointer4);
+	printf("str_single_pointer5: %s\n", str_single_pointer5);
+	printf("str_single_pointer6: %s\n", str_single_pointer6);
+	printf("str_single_pointer7: %s\n", str_single_pointer7);
+	// print the size of the list
+	printf("gc size: %ld\n", gc->size);
+	//example of a double pointer
+	//of char type
+	char_double_ptr = ft_malloc(2, sizeof(char *));
+	char_double_ptr[0] = ft_malloc(6, sizeof(char));
+	char_double_ptr[1] = ft_malloc(6, sizeof(char));
+	ft_strlcpy(char_double_ptr[0], "hallo", 6);
+	ft_strlcpy(char_double_ptr[1], "hallo", 6);
+	printf("char_double_ptr: %s\n", char_double_ptr[0]);
+	printf("char_double_ptr: %s\n", char_double_ptr[1]);
 
-void gc_init(void)
-{
-	t_gc_list	*gc;
+	//print the size of the list
+	printf("gc size: %ld\n", gc->size);
 
-	gc = create_gc();
-	if (!gc)
-		return ;
-	gc->head = NULL;
-	gc->tail = NULL;
-	gc->size = 0;
-}
 
-void free_gc(void)
-{
-	int len;
-	int count;
-	t_gc_list	*gc;
-	t_gc_node	*tmp;
-	t_gc_node	*current;
+	//example of a single pointer
+	//of int type
+	int_single_ptr = ft_malloc(1, sizeof(int));
+	*int_single_ptr = 42;
+	printf("int_single_ptr: %d\n", *int_single_ptr);
 
-	gc = create_gc();
-	if (!gc)
-		return ;
-	current = gc->head;
-	len = gc->size;
-	count = 0;
-	while (current && count < len)
-	{
-		tmp = current->next;
-		free(current->data);
-		free(current);
-		current = tmp;
-		count++;
-	}
-	gc = NULL;
-}
+
+	//print the size of the list
+	printf("gc size: %ld\n", gc->size);
+
+
+	//example of a double pointer
+	//of int type
+	int_double_ptr = ft_malloc(2, sizeof(int *));
+	int_double_ptr[0] = ft_malloc(1, sizeof(int));
+	int_double_ptr[1] = ft_malloc(1, sizeof(int));
+	*int_double_ptr[0] = 42;
+	*int_double_ptr[1] = 21;
+	printf("int_double_ptr: %d\n", *int_double_ptr[0]);
+	printf("int_double_ptr: %d\n", *int_double_ptr[1]);
+
+	//print the size of the list
+	//printf("gc size: %ld\n", gc->size);
+
+		free all the allocated memory
+	gc_free();
+
+	return (0);
+ }
+*/

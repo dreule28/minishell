@@ -28,9 +28,7 @@ EXECUTOR_FILES := executor.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
 GC_FILES := ft_malloc.c \
-			gc_utils.c \
-			gc_functions.c \
-			test_main.c
+			gc_utils.c 
 
 GC := $(addprefix gc/, $(GC_FILES))
 
