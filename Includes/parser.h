@@ -1,4 +1,3 @@
-
 #ifndef PARSER_H
 # define PARSER_H
 
@@ -37,7 +36,7 @@ typedef struct s_token_list
 //Structs -- END
 
 //Functions -- BEGIN
-void	from_parser();
+void	from_parser(void);
 //Functions -- END
 
 #endif

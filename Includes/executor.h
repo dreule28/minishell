@@ -1,4 +1,3 @@
-
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
@@ -7,7 +6,7 @@
 //Includes -- END
 
 //Functions -- BEGIN
-void	from_executor();
+void	from_executor(void);
 //Functions -- END
 
 #endif
