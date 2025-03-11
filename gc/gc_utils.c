@@ -1,7 +1,13 @@
 #include "../libft/libft.h"
 #include "garbage_collector.h"
 
-t_gc_list	*create_gc(void)
+void	clean_up(void)
+{
+	gc_free();
+	ft_bzero(get_gc(), sizeof(t_gc_list)); // Alternativ auch mit memset	
+}
+
+t_gc_list	*get_gc(void)
 {
 	static t_gc_list	gc = {0};
 
@@ -16,7 +22,7 @@ void	gc_free(void)
 	t_gc_node	*tmp;
 	t_gc_node	*current;
 
-	gc = create_gc();
+	gc = get_gc();
 	if (!gc)
 		return ;
 	current = gc->head;
@@ -40,7 +46,7 @@ void	gc_add(void *ptr)
 
 	if (!ptr)
 		return ;
-	gc = create_gc();
+	gc = get_gc();
 	if (!gc)
 		return ;
 	new_node = ft_calloc(1, sizeof(t_gc_node));
@@ -55,7 +61,7 @@ void	gc_add(void *ptr)
 	}
 	else
 	{
-		new_node->next = (gc->head);
+		new_node->next = gc->head;
 		gc->head = new_node;
 	}
 	gc->size++;
@@ -65,7 +71,7 @@ void	gc_init(void)
 {
 	t_gc_list	*gc;
 
-	gc = create_gc();
+	gc = get_gc();
 	if (!gc)
 		return ;
 	gc->head = NULL;
@@ -81,7 +87,7 @@ void	free_gc(void)
 	t_gc_node	*tmp;
 	t_gc_node	*current;
 
-	gc = create_gc();
+	gc = get_gc();
 	if (!gc)
 		return ;
 	current = gc->head;
@@ -105,16 +111,16 @@ void	free_gc(void)
 
 // 	if (!ptr)
 // 		return ;
-// 	gc = create_gc();
-		/* create_gc is a function that returns a static t_gc_list */
+// 	gc = get_gc();	/* get_gc is a function that returns a static t_gc_list */
 // 	if (!gc)
 // 		return ;
+/* ft_calloc sets the allocs the new node and sets its value to 0 */
 // 	new_node = ft_calloc(1, sizeof(t_gc_node));
-		/* ft_calloc is a function that allocates memory and sets it to 0 */
 // 	if (!new_node)
 // 		return ;
 // 	new_node->data = ptr;
-// 	if (gc->head == NULL) //	if the head is NULL, then the tail is also NULL
+// if the head is NULL then assign the new node to the head and tail
+// 	if (gc->head == NULL)
 // 	{
 // 		new_node->next = NULL;
 // 		gc->head = new_node;
