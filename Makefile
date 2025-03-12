@@ -12,10 +12,11 @@ LIBFT = $(LIBFT_DIR)/libft.a
 INC_DIRS := Includes $(LIBFT_DIR)
 SRC_DIRS := src src/parser src/executor
 GC_DIRS  := gc
+SHELL_DIRS := shell
 HEADERS = -I $(LIBFT_DIR)/include -I
 
 vpath %.h $(INC_DIRS)
-vpath %.c $(SRC_DIRS) $(GC_DIRS)
+vpath %.c $(SRC_DIRS) $(GC_DIRS) $(SHELL_DIRS)
 
 ################################################################################
 ###############                  SOURCE FILES                     ##############
@@ -24,16 +25,18 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS)
 PARSING_FILES := parser.c
 PARSING := $(addprefix parser/, $(PARSING_FILES))
 
-EXECUTOR_FILES := executor.c
+EXECUTOR_FILES := execute.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
 GC_FILES := ft_malloc.c \
 			gc_utils.c 
-
 GC := $(addprefix gc/, $(GC_FILES))
 
+SHELL_FILES := shell.c
+SHELL_ := $(addprefix shell/, $(SHELL_FILES))
+
 SRC_FILES := main.c
-SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(EXECUTOR)) $(GC)
+SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(EXECUTOR) $(SHELL_)) $(GC)
 
 
 ################################################################################

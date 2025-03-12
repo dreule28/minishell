@@ -2,24 +2,24 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*test_str;
-
+	char	*prompt;
+	// int		exit_code;
 	(void)argc;
 	(void)argv;
 	(void)env;
+	// (void)exit_code;
 	gc_init();
 	while (1)
 	{
-		test_str = readline("2, 3 Years dagestan forget > ");
-		if (test_str)
+		prompt = readline("2, 3 Years dagestan forget > ");
+		if (prompt)
 		{
-			if (ft_strncmp(test_str, "exit", 4) == 0)
-			{
-				free(test_str);
+			gc_add(prompt); 								// adds the prompt string to the garbage collector
+			// fromp_parser(prompt);
+			execute(prompt);
+			// history_add("");
+			if (ft_strncmp(prompt, "exit", 4) == 0)
 				break ;
-			}
-			printf("prompt : %s\n", test_str);
-			free(test_str);
 		}
 	}
 	clean_up();

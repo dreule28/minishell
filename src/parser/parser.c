@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	from_parser(void)
+void	from_parser(char *str)
 {
-	printf("This is a test from parser\n");
+	printf("from_parser: %s\n", str);
 }

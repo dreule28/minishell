@@ -36,7 +36,7 @@ typedef struct s_token_list
 //Structs -- END
 
 //Functions -- BEGIN
-void	from_parser(void);
+void	from_parser(char *str);
 //Functions -- END
 
 #endif
