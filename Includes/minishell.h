@@ -39,9 +39,10 @@ typedef struct s_cmd_node			// struct that holds every information for the execu
 typedef struct s_cmd_list			
 {
 	t_cmd_node	*head;				
-	t_cmd_node	*tail;
-	ssize_t		size;
-}	t_cmd_list;
+	t_cmd_node	*tail;				
+	ssize_t		size;				
+}	t_cmd_list;						
+
 
 typedef enum CMD_TYPE				// got the cmd types (BULITIN  etc)
 {
@@ -61,6 +62,12 @@ typedef enum REDIR_TYPE				// got the redirecting types for the files
 
 //Functions -- BEGIN
 void	history_add(char *str);
+void fill_structs(t_cmd_list *cmd_list);
+void	print_structs(t_cmd_list *cmd_list);
+void init_structs(t_cmd_list **cmd_list);
+
+
+
 
 //Functions -- END
 

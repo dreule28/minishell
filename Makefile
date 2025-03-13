@@ -25,7 +25,8 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS) $(SHELL_DIRS)
 PARSING_FILES := parser.c
 PARSING := $(addprefix parser/, $(PARSING_FILES))
 
-EXECUTOR_FILES := execute.c
+EXECUTOR_FILES := 	execute.c \
+					testing.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
 GC_FILES := ft_malloc.c \
@@ -47,7 +48,7 @@ OBJS := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 # Compilation flags and linking options
 CFLAGS := -Wall -Wextra -Werror -g -IIncludes -Ilibft -MMD -MP $(addprefix -I, $(INC_DIRS))
-LDFLAGS := -Llibft -lft  -lreadline -lncurses
+LDFLAGS := -Llibft -lft  -lreadline -lncurses 
 CFLAGS_SAN := $(CFLAGS) -fsanitize=address -g
 LDFLAGS_SAN := $(LDFLAGS) -fsanitize=address
 
