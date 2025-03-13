@@ -21,19 +21,20 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS)
 ###############                  SOURCE FILES                     ##############
 ################################################################################
 
-PARSING_FILES := parser.c
-PARSING := $(addprefix parser/, $(PARSING_FILES))
+PARSING_FILES :=
+PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
+
+LEXER_FILES := lexer.c
+LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
 EXECUTOR_FILES := executor.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
-GC_FILES := ft_malloc.c \
-			gc_utils.c 
-
+GC_FILES := ft_malloc.c gc_utils.c
 GC := $(addprefix gc/, $(GC_FILES))
 
 SRC_FILES := main.c
-SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(EXECUTOR)) $(GC)
+SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(EXECUTOR) $(LEXER)) $(GC)
 
 
 ################################################################################
@@ -44,7 +45,7 @@ OBJS := $(addprefix $(OBJ_DIR)/, $(SRC:%.c=%.o))
 
 # Compilation flags and linking options
 CFLAGS := -Wall -Wextra -Werror -g -IIncludes -Ilibft -MMD -MP $(addprefix -I, $(INC_DIRS))
-LDFLAGS := -Llibft -lft
+LDFLAGS := -Llibft -lft -lreadline -lncurses
 CFLAGS_SAN := $(CFLAGS) -fsanitize=address -g
 LDFLAGS_SAN := $(LDFLAGS) -fsanitize=address
 
