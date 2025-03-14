@@ -16,12 +16,12 @@ int	main(int argc, char **argv, char **env)
 		{
 			gc_add(prompt); 								// adds the prompt string to the garbage collector
 			// fromp_parser(prompt);
-			execute();
+			// execute();
 			// history_add("");
 			if (ft_strncmp(prompt, "exit", 4) == 0)
 				break ;
 		}
 	}
-	clean_up();
+	clean_up(); 
 	return (0);
 }
