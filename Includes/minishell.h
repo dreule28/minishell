@@ -3,6 +3,10 @@
 
 //Includes -- BEGIN
 # include <stdio.h>
+# include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "libft.h"
 # include "parser.h"
 # include "executor.h"
 # include "garbage_collector.h"
@@ -55,7 +59,6 @@ typedef enum REDIR_TYPE
 }	REDIR_TYPE;
 //Structs -- END
 //Functions -- BEGIN
-
 //Functions -- END
 
 #endif
