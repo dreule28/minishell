@@ -6,7 +6,8 @@
 //Includes -- END
 
 //Functions -- BEGIN
-void	from_executor(void);
+void	execute(void);
+void	access_infile_check(char *str);
 //Functions -- END
 
 #endif

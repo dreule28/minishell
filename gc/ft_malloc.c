@@ -34,7 +34,7 @@ size is the size of each element (int or char or struct)
 // 	printf("First element: %d\n", arr[0]);
 // 	// gc_free();
 // 	// ft_bzero(get_gc(), sizeof(t_gc_list)); // Alternativ auch mit memset
-// 	clean_up();
+	// clean_up();
 // 	return (0);
 // }
 

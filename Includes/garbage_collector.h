@@ -27,7 +27,7 @@ void					*ft_malloc(size_t count, size_t size);
 void					gc_add(void *ptr);
 void					gc_free(void);
 void					gc_init(void);
-t_gc_list				*get_gc(void);
 void					clean_up(void);
+t_gc_list				*get_gc(void);
 
 #endif
