@@ -1,80 +1,74 @@
 #include "minishell.h"
 
-t_cmd_list	*init_token_list()
+void	check_quotes(t_token_list *list, char *input, int i)
 {
-	t_cmd_list	*list;
+	int		start;
+	char	quote;
 
-	list = ft_malloc(sizeof(t_cmd_list), 1);
-	if (!list)
-		return (NULL);
-	list->head = NULL;
-	list->tail = NULL;
-	list->size = 0;
-	return (list);
-}
-
-t_cmd_node	*add_cmd_node(int cmd_type)
-{
-	t_cmd_node	*new_node;
-	t_file_list	*list;
-
-	new_node = ft_malloc(sizeof(t_cmd_node), 1);
-	if (!new_node)
-		return ((t_cmd_node *)NULL);
-	list = ft_malloc(sizeof(t_file_list), 1);
-	if (!list)
-		return (NULL);
-	new_node->cmd = NULL;
-	new_node->cmd_type = cmd_type;
-	new_node->files = list;
-	new_node->next = NULL;
-	return (new_node);
-}
-
-void	add_end(t_cmd_list *list, t_cmd_node *new_node)
-{
-	if (!list->head)
+	quote = input[i++];
+	start = i;
+	while (input[i] && input[i] != quote)
+		i++;
+	if (!input[i])
 	{
-		list->head = new_node;
-		list->tail = new_node;
-		new_node->next = NULL;
+		printf("Syntax error: Open quotes!\n");
 		return ;
 	}
-	new_node->next = NULL;
-	list->tail->next = new_node;
-	list->tail = new_node;
-
+	add_token(list, ft_substr(input, start, i - start), D_QUOTES);
+	i++;
 }
 
-t_cmd_list	*tokenizer(char *input)
+void	check_redirs(t_token_list *list, char *input, int i)
 {
-	t_cmd_list	*list;
-	int			i;
-	char		*quote;
+	int	redir_type;
+	int	start;
+
+	redir_type = get_redir_type(input, i);
+	while (is_space(input[i]))
+		i++;
+	start = i;
+	while (input[i] && !is_space(input[i]) && !is_special_char(input[i]))
+		i++;
+	if (start == i)
+	{
+		printf("Syntax error: Missing filename!");
+		return ;
+	}
+	add_token(list, ft_substr(input, start, i - start), redir_type);
+}
+
+void	handle_word_or_arg(t_token_list *list, char *input, int i)
+{
+	int	start;
+
+	start = i;
+	while (input[i] && !is_space(input[i]) && !is_special_char(input[i]))
+		i++;
+	add_token(list, ft_substr(input, start, i - start), TK_WORD);
+}
+
+t_token_list	*lexer(char *input)
+{
+	t_token_list	*list;
+	int				i;
 
 	i = 0;
+	list = init_token_list();
 	while (input[i])
 	{
-		if (is_space(input[i]))
+		while (is_space(input[i]))
 			i++;
 		if (input[i] == '"' || input[i] == '\'')
+			check_quotes(list, input, i);
+		else if (is_redir(&input[i]))
+			check_redirs(list, input, i);
+		else if (input[i] == '|')
 		{
-			quote = &input[i];
-			i++;
-			while (input[i] && input[i] != *quote)
-				i++;
-			if (!input[i])
-			{
-				printf("Error: close the quote!\n");
-				return (NULL);
-			}
+			add_token(list, "|", TK_PIPE);
 			i++;
 		}
-		if (input[i] == '|')
-		{
-			
-		}
-		i++;
+		else
+			handle_word_or_arg(list, input, i);
 	}
 	return (list);
 }
