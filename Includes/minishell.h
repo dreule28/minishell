@@ -3,9 +3,9 @@
 
 //Includes -- BEGIN
 # include <stdio.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-
+# include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft.h"
 # include "parser.h"
 # include "executor.h"
@@ -61,14 +61,6 @@ typedef enum REDIR_TYPE				// got the redirecting types for the files
 //Structs -- END
 
 //Functions -- BEGIN
-void	history_add(char *str);
-void fill_structs(t_cmd_list *cmd_list);
-void	print_structs(t_cmd_list *cmd_list);
-void init_structs(t_cmd_list **cmd_list);
-
-
-
-
 //Functions -- END
 
 #endif
