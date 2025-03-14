@@ -24,7 +24,7 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS)
 PARSING_FILES :=
 PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 
-LEXER_FILES := lexer.c
+LEXER_FILES := lexer.c lexer_utils.c lists_and_nodes.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
 EXECUTOR_FILES := executor.c
