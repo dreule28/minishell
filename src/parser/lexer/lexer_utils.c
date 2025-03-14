@@ -5,9 +5,11 @@ bool	is_redir(char *str)
 {
 	if (!str || !*str)
 		return (false);
-	if (str[0] == '<' || (str[0] == '<' && str[1] == '<'))
+	if (str[0] == '<' && str[1] && str[1] == '<')
 		return (true);
-	else if (str[0] == '>' || (str[0] == '>' && str[1] == '>'))
+	if (str[0] == '>' && str[1] && str[1] == '>')
+		return (true);
+	if (str[0] == '<' || str[0] == '>')
 		return (true);
 	return (false);
 }
