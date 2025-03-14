@@ -15,13 +15,13 @@ bool	is_redir(char *str)
 int	get_redir_type(char *input, int i)
 {
 	if (input[i] == '<' && input[i + 1] == '<')
-		return (HEREDOC);
+		return (TK_HEREDOC);
 	if (input[i] == '>' && input[i + 1] == '>')
-		return (APPEND);
+		return (TK_APPEND);
 	if (input[i] == '<')
-		return (OUTFILE);
+		return (TK_OUTFILE);
 	if (input[i] == '>')
-		return (INFILE);
+		return (TK_INFILE);
 	return (0);
 }
 
