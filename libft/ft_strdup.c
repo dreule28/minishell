@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 16:21:35 by dreule            #+#    #+#             */
-/*   Updated: 2024/10/10 16:52:27 by dreule           ###   ########.fr       */
+/*   Updated: 2025/03/17 15:33:51 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*ft_strdup(const char *s1)
 {
 	char		*store;
 	size_t		i;
-	int			len;
+	size_t		len;
 	const char	*temp;
 
 	i = 0;

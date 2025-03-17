@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:46 by dreule            #+#    #+#             */
-/*   Updated: 2025/03/17 13:53:47 by dreule           ###   ########.fr       */
+/*   Updated: 2025/03/17 17:56:51 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ int		ft_isascii(int c);
 
 /* Checks if the given character is printable, including space. */
 int		ft_isprint(int c);
-
-/* Checks if the given character is a space, tab or a newline.*/
-bool	is_space(char c);
 
 /* Returns the length of a null-terminated string. */
 size_t	ft_strlen(const char *str);
