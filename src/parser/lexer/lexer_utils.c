@@ -16,20 +16,20 @@ bool	is_redir(char *str)
 
 int	get_redir_type(char *input, int i)
 {
+	if (!input || !input[i])
+		return (0);
 	if (input[i] == '<' && input[i + 1] == '<')
 		return (TK_HEREDOC);
 	if (input[i] == '>' && input[i + 1] == '>')
 		return (TK_APPEND);
 	if (input[i] == '<')
-		return (TK_OUTFILE);
-	if (input[i] == '>')
 		return (TK_INFILE);
+	if (input[i] == '>')
+		return (TK_OUTFILE);
 	return (0);
 }
 
-bool	is_special_char(char c)
+bool	is_special_char(const char *c)
 {
-	if (c == '|' || c == '>' || c == '<')
-		return (true);
-	return (false);
+	return (*c == '|' || *c == '>' || *c == '<' || *c == '&' || *c == '|');
 }
