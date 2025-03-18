@@ -56,19 +56,23 @@ t_token_list	*lexer(char *input)
 	list = init_token_list();
 	while (input[i])
 	{
-		while (is_space(input[i]))
+		while (input[i] == ' ' || input[i] == '\t')
 			i++;
+		if (!input[i])
+			break;
 		if (input[i] == '"' || input[i] == '\'')
-			check_quotes(list, input, i);
+			check_quotes(list, input, &i);
 		else if (is_redir(&input[i]))
-			check_redirs(list, input, i);
+			check_redirs(list, input, &i);
+		else if (input[i] == '&' || (input[i] == '|' && input[i + 1] == '|'))
+			check_operators(list, input, &i);
 		else if (input[i] == '|')
 		{
 			add_token(list, "|", TK_PIPE);
 			i++;
 		}
 		else
-			handle_word_or_arg(list, input, i);
+			handle_word_or_arg(list, input, &i);
 	}
 	return (list);
 }
