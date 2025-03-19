@@ -96,7 +96,7 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 	else
 	{
 		while (input[*i] && !(input[*i] == ' ' || input[*i] == '\t')
-				&& !is_special_char(&input[*i]))
+			&& !is_special_char(&input[*i]))
 			(*i)++;
 		if (start == *i)
 		{

@@ -1,7 +1,6 @@
-
 #include "minishell.h"
 
-t_token_list	*init_token_list()
+t_token_list	*init_token_list(void)
 {
 	t_token_list	*list;
 
@@ -20,7 +19,7 @@ void	add_token(t_token_list *list, char *token, int type)
 	t_token	*new_token;
 
 	if (!token || !*token)
-		return;
+		return ;
 	new_token = ft_malloc(sizeof(t_token), 1);
 	if (!new_token)
 		return ;

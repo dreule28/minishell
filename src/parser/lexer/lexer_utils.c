@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 bool	is_redir(char *str)
@@ -31,5 +30,6 @@ int	get_redir_type(char *input, int i)
 
 bool	is_special_char(const char *c)
 {
-	return (*c == '|' || *c == '>' || *c == '<' || *c == '&' || *c == '|');
+	return (*c == '|' || *c == '>' || *c == '<' || *c == '&' || *c == '|'
+		|| *c == ';');
 }
