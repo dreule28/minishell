@@ -33,7 +33,7 @@ typedef struct s_cmd_node			// struct that holds every information for the execu
 	struct s_cmd_node	*next;		// pointer to the next node
 	int					cmd_type;	// Token (BUILDIN, CMD, PIPE,  etc)
 	char				**cmd;		// array of the cmd (ls, -al) or (wc, -l)
-	t_file_list			*files;		// linked list of files ?? 
+	t_file_list			*files;		// linked list of files and their redirect types
 }	t_cmd_node;
 
 typedef struct s_cmd_list			
@@ -61,6 +61,10 @@ typedef enum REDIR_TYPE				// got the redirecting types for the files
 //Structs -- END
 
 //Functions -- BEGIN
+void init_structs(t_cmd_list **cmd_list);
+void fill_structs(t_cmd_list *cmd_list);
+void	print_structs(t_cmd_list *cmd_list);
+
 //Functions -- END
 
 #endif

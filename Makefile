@@ -29,6 +29,7 @@ LEXER_FILES := lexer.c lexer_utils.c lists_and_nodes.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
 EXECUTOR_FILES := 	execute.c \
+					file_check.c \
 					testing.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
