@@ -106,3 +106,9 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 		add_token(list, ft_substr(input, start, *i - start), TK_WORD);
 	}
 }
+
+void	handle_pipe(t_token_list *list, int *i)
+{
+	add_token(list, "|", TK_PIPE);
+	(*i)++;
+}

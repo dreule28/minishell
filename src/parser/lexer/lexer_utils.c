@@ -33,3 +33,43 @@ bool	is_special_char(const char *c)
 	return (*c == '|' || *c == '>' || *c == '<' || *c == '&' || *c == '|'
 		|| *c == ';');
 }
+
+bool	is_builtin(const char *str)
+{
+	if (!str)
+		return (false);
+	if (!ft_strncmp(str, "echo", 5))
+		return (true);
+	if (!ft_strncmp(str, "cd", 3))
+		return (true);
+	if (!ft_strncmp(str, "pwd", 4))
+		return (true);
+	if (!ft_strncmp(str, "export", 7))
+		return (true);
+	if (!ft_strncmp(str, "unset", 6))
+		return (true);
+	if (!ft_strncmp(str, "env", 4))
+		return (true);
+	if (!ft_strncmp(str, "exit", 5))
+		return (true);
+	return (false);
+}
+
+int	get_bultin_type(const char *str)
+{
+	if (!ft_strncmp(str, "echo", 5))
+		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "cd", 3))
+		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "pwd", 4))
+		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "export", 7))
+		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "unset", 6))
+		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "env", 4))
+		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "exit", 5))
+		return (TK_BUILTIN);
+	return (TK_WORD);
+}
