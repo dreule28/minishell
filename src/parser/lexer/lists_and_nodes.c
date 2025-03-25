@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_token_list	*init_token_list(void)
+t_token_list	*init_token_list(char *input)
 {
 	t_token_list	*list;
 
@@ -10,7 +10,12 @@ t_token_list	*init_token_list(void)
 	list->head = NULL;
 	list->tail = NULL;
 	list->size = 0;
-	list->input = NULL;
+	list->input = ft_strdup(input);
+	if (!list->input)
+	{
+		free(list);
+		return (NULL);
+	}
 	return (list);
 }
 
