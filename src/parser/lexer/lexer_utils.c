@@ -38,38 +38,38 @@ bool	is_builtin(const char *str)
 {
 	if (!str)
 		return (false);
-	if (!ft_strncmp(str, "echo", 5))
+	if (!ft_strncmp(str, "echo", 4))
 		return (true);
-	if (!ft_strncmp(str, "cd", 3))
+	if (!ft_strncmp(str, "cd", 2))
 		return (true);
-	if (!ft_strncmp(str, "pwd", 4))
+	if (!ft_strncmp(str, "pwd", 3))
 		return (true);
-	if (!ft_strncmp(str, "export", 7))
+	if (!ft_strncmp(str, "export", 6))
 		return (true);
-	if (!ft_strncmp(str, "unset", 6))
+	if (!ft_strncmp(str, "unset", 5))
 		return (true);
-	if (!ft_strncmp(str, "env", 4))
+	if (!ft_strncmp(str, "env", 3))
 		return (true);
-	if (!ft_strncmp(str, "exit", 5))
+	if (!ft_strncmp(str, "exit", 4))
 		return (true);
 	return (false);
 }
 
 int	get_bultin_type(const char *str)
 {
-	if (!ft_strncmp(str, "echo", 5))
+	if (!ft_strncmp(str, "echo", 4))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "cd", 3))
+	if (!ft_strncmp(str, "cd", 2))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "pwd", 4))
+	if (!ft_strncmp(str, "pwd", 3))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "export", 7))
+	if (!ft_strncmp(str, "export", 6))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "unset", 6))
+	if (!ft_strncmp(str, "unset", 5))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "env", 4))
+	if (!ft_strncmp(str, "env", 3))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "exit", 5))
+	if (!ft_strncmp(str, "exit", 4))
 		return (TK_BUILTIN);
 	return (TK_WORD);
 }
