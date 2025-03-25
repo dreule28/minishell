@@ -48,7 +48,7 @@ typedef enum CMD_TYPE				// got the cmd types (BULITIN  etc)
 {
 	BUILTIN,
 	CMD,
-	PIPE
+	// PIPE
 }	CMD_TYPE;
 
 typedef enum REDIR_TYPE				// got the redirecting types for the files

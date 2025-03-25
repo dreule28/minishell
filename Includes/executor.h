@@ -6,6 +6,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
 # include "minishell.h"
 //Includes -- END
@@ -14,11 +15,14 @@ typedef struct s_cmd_list t_cmd_list;
 
 
 //Functions -- BEGIN
-void	execute(void);
+void	execute(char **env);
 
-void	access_infile(t_cmd_list *cmd_list);
-void	create_outfile(t_cmd_list *cmd_list);
-void	append_file(t_cmd_list *cmd_list);
+
+// file_check.c 
+int	redir_infile(t_cmd_list *cmd_list, int *pipe_fd, int file_redirecting);
+int	redir_here_doc(t_cmd_list *cmd_list, int *pipe_fd, int file_redirecting);
+int	redir_outfile(t_cmd_list *cmd_list, int *pipe_fd, int file_redirecting);
+int	redir_append(t_cmd_list *cmd_list, int *pipe_fd, int file_redirecting);
 
 
 
