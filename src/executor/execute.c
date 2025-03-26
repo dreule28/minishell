@@ -37,8 +37,7 @@ void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
 	printf("hallo child \n");
 
 	if(child_redirecting(cmd_list, pipe_fd) == -1)
-		return ;
-	
+		return ; 
 }
 
 void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
