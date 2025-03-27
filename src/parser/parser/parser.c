@@ -4,6 +4,8 @@ void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 {
 	t_file_node	*file_node;
 
+	if (!cmd_list || !cmd_list->tail || cmd_list->tail->files || !token)
+		return ;
 	file_node = create_file_node(token->value, token->token);
 	if (!file_node)
 		return ;
