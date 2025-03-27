@@ -96,6 +96,7 @@ void			add_file_node(t_file_list *files, t_file_node *node);
 //parser_utils.c -- BEGIN
 bool			is_redirection(int token_type);
 bool			check_command(int token_type);
+void			free_str_array(char **array);
 //parser_utils.c -- END
 
 //parser.c -- BEGIN
