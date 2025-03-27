@@ -25,6 +25,10 @@ int	redir_outfile(t_cmd_list *cmd_list, int *pipe_fd, int file_redirecting);
 int	redir_append(t_cmd_list *cmd_list, int *pipe_fd, int file_redirecting);
 
 
+// testing.c
+void 	free_structs(t_cmd_list *cmd_list);
+void	init_structs(t_cmd_list **cmd_list);
+void	fill_structs(t_cmd_list *cmd_list);	
 
 
 //Functions -- END
