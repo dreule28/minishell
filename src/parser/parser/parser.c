@@ -45,7 +45,7 @@ void	append_arg(t_cmd_list *cmd_list, t_token *token)
 	old_cmd = cmd_list->tail->cmd;
 	i = 0;
 	transfer_cmd(new_cmd, old_cmd, &i);
-	new_cmd[i] = ft_strdup(token->value);
+	new_cmd[i] = gc_strdup(token->value);
 	new_cmd[i + 1] = NULL;
 	free_str_array(old_cmd);
 	cmd_list->tail->cmd = new_cmd;
@@ -66,7 +66,7 @@ void	handle_command(t_cmd_list *cmd_list, t_token *token)
 		cmd = ft_malloc(sizeof(char *) * 2, 1);
 		if (!cmd)
 			return ((void) NULL);
-		cmd[0] = ft_strdup(token->value);
+		cmd[0] = gc_strdup(token->value);
 		if (!cmd[0])
 		{
 			free(cmd[0]);
