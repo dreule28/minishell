@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:46 by dreule            #+#    #+#             */
-/*   Updated: 2025/03/11 16:22:36 by dreule           ###   ########.fr       */
+/*   Updated: 2025/03/17 17:56:51 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <stdarg.h>
 # include <limits.h>
+# include <stdbool.h>
 
 /* The s_list structure represents a node in ft_ singly linked list. */
 // typedef struct s_list
@@ -41,9 +42,6 @@ int		ft_isascii(int c);
 
 /* Checks if the given character is printable, including space. */
 int		ft_isprint(int c);
-
-/* Checks if the given character is a space, tab or a newline.*/
-int		is_space(char c);
 
 /* Returns the length of a null-terminated string. */
 size_t	ft_strlen(const char *str);
