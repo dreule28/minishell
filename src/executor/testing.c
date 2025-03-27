@@ -41,8 +41,7 @@ void fill_structs(t_cmd_list *cmd_list)
 	
 	char *input = "ls -l";
 	
-	cmd_arr = ft_split(input, ' ');
-	
+	cmd_arr = gc_split(input, ' ');
 	cmd_list->head->cmd = cmd_arr; 
 	
 	// FILENAME
@@ -50,20 +49,19 @@ void fill_structs(t_cmd_list *cmd_list)
 	cmd_list->head->files->head = ft_malloc(1, sizeof(t_file_node));
 	if (!cmd_list->head->files->head)
     	return;
-	cmd_list->head->files->head->filename = ft_strdup("outfile");
-	gc_add(cmd_list->head->files->head->filename);
+	cmd_list->head->files->head->filename = gc_strdup("outfile");
 
 	// FILE REDIR
 
-	cmd_list->head->files->head->redir_type = OUTFILE;
+	cmd_list->head->files->head->redir_type = OUTFILE_APPEND;
 }
 
 void	print_structs(t_cmd_list *cmd_list)
 {
 	printf("\n");
-	printf("prompt :			'ls -al >outfile'\n");
+	printf("prompt :			 'ls -al <<END \n");
 	printf("int	cmd_type:		 %d\n", cmd_list->head->cmd_type);
-	printf("char **cmd :			{ %s, %s, NULL}\n", cmd_list->head->cmd[0], cmd_list->head->cmd[1]);
+	printf("char **cmd :			 {%s, %s, NULL}\n", cmd_list->head->cmd[0], cmd_list->head->cmd[1]);
 	printf("char *filename:			 %s\n", cmd_list->head->files->head->filename);
 	printf("int	redir_type:		 %d\n", cmd_list->head->files->head->redir_type);
 	printf("\n");

@@ -27,10 +27,10 @@ typedef struct s_file_list
 
 typedef struct s_cmd_node
 {
-	struct s_cmd_node	*next;
-	int					cmd_type;
-	char				**cmd;
-	t_file_list			*files;
+	struct s_cmd_node	*next;		// pointer to the next node
+	int					cmd_type;	// Token (BUILDIN, CMD, PIPE,  etc)
+	char				**cmd;		// array of the cmd (ls, -al) or (wc, -l)
+	t_file_list			*files;		// linked list of files ??
 }	t_cmd_node;
 
 typedef struct s_cmd_list
@@ -72,7 +72,6 @@ typedef enum REDIR_TYPE				// got the redirecting types for the files
 //Structs -- END
 
 //Functions -- BEGIN
-
 //Functions -- END
 
 #endif

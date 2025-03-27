@@ -28,10 +28,12 @@ PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
-EXECUTOR_FILES := 	execute.c testing.c
+EXECUTOR_FILES := 	execute.c \
+					testing.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
-GC_FILES := ft_malloc.c gc_utils.c
+GC_FILES := ft_malloc.c \
+			gc_utils.c
 GC := $(addprefix gc/, $(GC_FILES))
 
 SHELL_FILES := shell.c
