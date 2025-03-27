@@ -13,3 +13,18 @@ bool	check_command(int token_type)
 		|| token_type == TK_AMPERSAND || token_type == TK_AND
 		|| token_type == TK_OR);
 }
+
+void	free_str_array(char **array)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
