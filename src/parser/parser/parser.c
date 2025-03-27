@@ -1,5 +1,21 @@
 #include "minishell.h"
 
+void	transfer_cmd(char **new_cmd, char **old_cmd, int *i)
+{
+	while (old_cmd[(*i)])
+	{
+		new_cmd[(*i)] = ft_strdup(old_cmd[(*i)]);
+		if (!new_cmd[(*i)])
+		{
+			while (--(*i) >= 0)
+				free(new_cmd[(*i)]);
+			free(new_cmd);
+			return ;
+		}
+		(*i)++;
+	}
+}
+
 void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 {
 	t_file_node	*file_node;
@@ -15,22 +31,23 @@ void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 void	append_arg(t_cmd_list *cmd_list, t_token *token)
 {
 	char	**new_cmd;
+	char	**old_cmd;
 	int		i;
 
+	if (!cmd_list || !cmd_list->tail || !cmd_list->tail->cmd || !token)
+		return ;
 	i = 0;
 	while (cmd_list->tail->cmd[i])
 		i++;
-	new_cmd = ft_malloc(sizeof(char *) * (i + 2), 1);
+	new_cmd = ft_malloc(sizeof(char *), (i + 2));
 	if (!new_cmd)
 		return ((void) NULL);
+	old_cmd = cmd_list->tail->cmd;
 	i = 0;
-	while (cmd_list->tail->cmd[i])
-	{
-		new_cmd[i] = cmd_list->tail->cmd[i];
-		i++;
-	}
+	transfer_cmd(new_cmd, old_cmd, &i);
 	new_cmd[i] = ft_strdup(token->value);
 	new_cmd[i + 1] = NULL;
+	free_str_array(old_cmd);
 	cmd_list->tail->cmd = new_cmd;
 }
 
