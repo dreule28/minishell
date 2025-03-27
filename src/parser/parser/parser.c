@@ -50,6 +50,11 @@ void	handle_command(t_cmd_list *cmd_list, t_token *token)
 		if (!cmd)
 			return ((void) NULL);
 		cmd[0] = ft_strdup(token->value);
+		if (!cmd[0])
+		{
+			free(cmd[0]);
+			return ;
+		}
 		cmd[1] = NULL;
 		add_cmd_node(cmd_list, cmd, cmd_type);
 	}
