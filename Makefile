@@ -29,11 +29,13 @@ LEXER_FILES := lexer.c lexer_utils.c lists_and_nodes.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
 EXECUTOR_FILES := 	execute.c \
+					file_check.c \
 					testing.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
 GC_FILES := ft_malloc.c \
-			gc_utils.c 
+			gc_utils.c \
+			gc_libft_functions.c
 GC := $(addprefix gc/, $(GC_FILES))
 
 SHELL_FILES := shell.c

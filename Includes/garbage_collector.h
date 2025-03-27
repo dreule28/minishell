@@ -30,4 +30,13 @@ void					gc_init(void);
 void					clean_up(void);
 t_gc_list				*get_gc(void);
 
+// Functions in gc_libft_functions.c
+char	*gc_substr(char const *s, unsigned int start, size_t len);
+char	*gc_strdup(const char *s1);
+char	**gc_split(char const *s, char c);
+int	gc_count_words(char const *s, char c);
+int	gc_fill_words(char **str, const char *s, char c);
+char	*gc_split_substr(char const *start, char const *end);
+void	gc_free_words(char **str, int i);
+
 #endif
