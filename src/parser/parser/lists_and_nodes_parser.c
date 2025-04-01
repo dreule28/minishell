@@ -9,7 +9,7 @@ t_cmd_list	*init_cmd_list(void)
 		return (NULL);
 	cmd_list->head = NULL;
 	cmd_list->tail = NULL;
-	cmd_list->tail = 0;
+	cmd_list->size = 0;
 	return (cmd_list);
 }
 
