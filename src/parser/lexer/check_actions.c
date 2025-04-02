@@ -22,7 +22,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 		token_type = D_QUOTES;
 	else
 		token_type = S_QUOTES;
-	token_value = ft_substr(input, start, *i - start);
+	token_value = gc_substr(input, start, *i - start);
 	add_token(list, token_value, token_type);
 }
 
@@ -49,7 +49,7 @@ void	check_operators(t_token_list *list, char *input, int *i)
 		(*i)++;
 	}
 	if (token_type != 0)
-		add_token(list, ft_substr(input, start, *i - start), token_type);
+		add_token(list, gc_substr(input, start, *i - start), token_type);
 }
 
 void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
@@ -77,7 +77,7 @@ void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
 		redir_typ = TK_OUTFILE;
 		(*i)++;
 	}
-	add_token(list, ft_substr(input, start, *i - start), redir_typ);
+	add_token(list, gc_substr(input, start, *i - start), redir_typ);
 }
 
 void	check_redirs(t_token_list *list, char *input, int *i)
@@ -103,7 +103,7 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 			printf("Syntax error: Missing filename!\n");
 			return ;
 		}
-		add_token(list, ft_substr(input, start, *i - start), TK_WORD);
+		add_token(list, gc_substr(input, start, *i - start), TK_WORD);
 	}
 }
 

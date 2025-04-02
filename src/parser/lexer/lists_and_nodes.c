@@ -10,7 +10,7 @@ t_token_list	*init_token_list(char *input)
 	list->head = NULL;
 	list->tail = NULL;
 	list->size = 0;
-	list->input = ft_strdup(input);
+	list->input = gc_strdup(input);
 	if (!list->input)
 	{
 		free(list);
@@ -30,7 +30,7 @@ void	add_token(t_token_list *list, char *token, int type)
 		return ;
 	new_token->next = NULL;
 	new_token->token = type;
-	new_token->value = ft_strdup(token);
+	new_token->value = gc_strdup(token);
 	if (!new_token->value)
 	{
 		free(new_token);

@@ -12,7 +12,7 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 		(*i)++;
 	if (start != *i)
 	{
-		token_value = ft_substr(input, start, *i - start);
+		token_value = gc_substr(input, start, *i - start);
 		add_token(list, token_value, TK_WORD);
 	}
 }
@@ -30,7 +30,7 @@ void	handle_builtins(t_token_list *list, char *input, int *i)
 		(*i)++;
 	if (start != *i)
 	{
-		token_value = ft_substr(input, start, *i - start);
+		token_value = gc_substr(input, start, *i - start);
 		builtint_type = get_bultin_type(token_value);
 		add_token(list, token_value, builtint_type);
 	}
