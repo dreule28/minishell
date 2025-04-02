@@ -22,6 +22,7 @@ typedef struct s_gc_list
 
 // Funcitons in ft_malloc.c
 void					*ft_malloc(size_t count, size_t size);
+char					*gc_strjoin(char const *s1, char const *s2);
 
 // Functions in gc_untils.c
 void					gc_add(void *ptr);

@@ -15,41 +15,47 @@ void	fd_error_handle(int *fd)
 	}
 }
 
+int	redir_loop(t_cmd_list *cmd_list,int *pipe_fd)
+{
+	t_file_node *file_node;
+	int error_check;
+
+	error_check = 0;
+	file_node = cmd_list->head->files->head;
+	while (file_node != NULL)  
+	{
+		if (file_node->redir_type == INFILE)
+			error_check = redir_infile(file_node, pipe_fd);
+		if (file_node->redir_type == HEREDOC)
+			error_check = redir_here_doc(file_node, pipe_fd);
+		if (file_node->redir_type == OUTFILE)
+			error_check = redir_outfile(file_node, pipe_fd);
+		if (file_node->redir_type == OUTFILE_APPEND)
+			error_check = redir_append(file_node, pipe_fd);
+		file_node = file_node->next;
+	}
+	cmd_list->head = cmd_list->head->next;
+	return (error_check);
+}
+
 int file_redirecting_child(t_cmd_list *cmd_list, int *pipe_fd)
 {
-	int fd;
-
-	fd = 0;
-	fd = redir_infile(cmd_list, pipe_fd);
-	fd = redir_here_doc(cmd_list, pipe_fd);
-	// if(fd <= 0)
-	// 	fd = pipe_fd[0];
-	// fd = redir_outfile(cmd_list, pipe_fd);
-	// fd = redir_append(cmd_list, pipe_fd);
-
-	if(fd != pipe_fd[0])
-		close(fd);
+	if(redir_loop(cmd_list, pipe_fd) == -1)
+		return (-1);
 	return(0);
 }
 
 int file_redirecting_parent(t_cmd_list *cmd_list, int *pipe_fd)
 {
-	int fd;
-
-	fd = redir_infile(cmd_list, pipe_fd);
-	fd = redir_here_doc(cmd_list, pipe_fd);
-	fd = redir_outfile(cmd_list, pipe_fd);
-	fd = redir_append(cmd_list,pipe_fd);
-
-	if(fd != pipe_fd[1])
-		close(fd);
+	if(redir_loop(cmd_list, pipe_fd) == -1)
+		return (-1);
 	return(0);
 }
 
 void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
 {
 	(void)env;
-
+	
 	if(file_redirecting_child(cmd_list, pipe_fd) == -1)
 		return ; 
 	write(1, "hello, child\n\0", 15);
@@ -126,7 +132,7 @@ void execute(char **env)
     t_cmd_list *cmd_list;   // declare a pointer to a struct of type t_cmd_list
     init_structs(&cmd_list); // initialize the struct
     fill_structs(cmd_list);	// fill the struct with data
-	print_structs(cmd_list); // print the struct
+	// print_structs(cmd_list); // print the struct
 	////main functions
 	create_proccesses(cmd_list, env);
 

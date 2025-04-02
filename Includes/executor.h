@@ -19,10 +19,10 @@ void	execute(char **env);
 
 
 // file_check.c 
-int	redir_infile(t_cmd_list *cmd_list, int *pipe_fd);
-int	redir_here_doc(t_cmd_list *cmd_list, int *pipe_fd);
-int	redir_outfile(t_cmd_list *cmd_list, int *pipe_fd);
-int	redir_append(t_cmd_list *cmd_list, int *pipe_fd);
+int	redir_infile(t_file_node *file_node, int *pipe_fd);
+int	redir_here_doc(t_file_node *file_node, int *pipe_fd);
+int	redir_outfile(t_file_node *file_node, int *pipe_fd);
+int	redir_append(t_file_node *file_node, int *pipe_fd);
 
 
 // testing.c

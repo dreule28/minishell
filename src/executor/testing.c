@@ -39,16 +39,16 @@ void fill_structs(t_cmd_list *cmd_list)
 	// Allocate a new command node.
 	add_cmd_node(cmd_list, NULL, CMD);
 
-	first_file_node = create_file_node("END1", HEREDOC);
+	first_file_node = create_file_node("END12", HEREDOC);
 	add_file_node(cmd_list->head->files, first_file_node);
 
-	second_file_node = create_file_node("END2", HEREDOC);
+	second_file_node = create_file_node("END2", OUTFILE);
 	add_file_node(cmd_list->head->files, second_file_node);
 	
-	third_file_node = create_file_node("END3", HEREDOC);
+	third_file_node = create_file_node("END3", OUTFILE);
 	add_file_node(cmd_list->head->files, third_file_node);
 	
-	fourth_file_node = create_file_node("END4", HEREDOC);
+	fourth_file_node = create_file_node("END4", OUTFILE);
 	add_file_node(cmd_list->head->files, fourth_file_node);
     // ----- Second Node -----
 	// t_file_node *second_file_node;
