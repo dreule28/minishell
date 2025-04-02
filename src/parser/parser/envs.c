@@ -34,10 +34,10 @@ char	*find_equal_sign(char **env, int i, char **value)
 
 	equal_pos = ft_strchr(env[i], '=');
 	if (!equal_pos)
-		return (ft_strdup(env[i]));
+		return (gc_strdup(env[i]));
 	len = equal_pos - env[i];
-	type = ft_substr(env[i], 0, len);
-	*value = ft_strdup(equal_pos + 1);
+	type = gc_substr(env[i], 0, len);
+	*value = gc_strdup(equal_pos + 1);
 	return (type);
 }
 
