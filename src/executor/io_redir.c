@@ -17,6 +17,31 @@ int	redir_infile(t_file_node *file_node, int *pipe_fd)
 	return (0);
 }
 
+
+int	redir_here_doc(t_file_node *file_node, int *pipe_fd)
+{
+	int file_redirecting;
+	int saved_stdin;
+	int saved_stdout;
+	
+	file_redirecting = 0;
+	saved_stdout = dup(STDOUT_FILENO);
+	saved_stdin = dup(STDIN_FILENO);
+	file_redirecting = create_here_doc(file_node);
+	if(file_redirecting == -1)
+	return (-1);
+	if(dup2(file_redirecting, STDIN_FILENO) == -1)
+	return (ft_putstr_fd("Error using dup2(here_doc)", 2), -1);
+	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+	return (ft_putstr_fd("Error using dup2(here_doc)", 2), -1);
+	close(file_redirecting);
+	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
+	close(saved_stdin);
+	close(saved_stdout);
+	return (0);
+}
+
 int	create_here_doc(t_file_node *file_node)
 {
 	int fd;
@@ -25,8 +50,9 @@ int	create_here_doc(t_file_node *file_node)
 
 	str = gc_strjoin("tmp/.", file_node->filename);
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
 	if (fd == -1)
-		ft_putstr_fd("Operation not permitted\n", 2);
+		return(ft_putstr_fd("Operation not permitted\n", 2), -1);
 	while (1)
 	{
 		line = readline("> ");
@@ -42,26 +68,6 @@ int	create_here_doc(t_file_node *file_node)
 		free(line);
 	}
 	return(fd);
-}
-
-int	redir_here_doc(t_file_node *file_node, int *pipe_fd)
-{
-	int file_redirecting;
-	int saved_stdin;
-	
-	file_redirecting = 0;
-	saved_stdin = dup(STDIN_FILENO);
-	file_redirecting = create_here_doc(file_node);
-	if(file_redirecting == -1)
-		return (-1);
-	if(dup2(file_redirecting, STDIN_FILENO) == -1)
-		return (ft_putstr_fd("Error using dup2(here_doc)", 2), -1);
-	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-		return (ft_putstr_fd("Error using dup2(here_doc)", 2), -1);
-	close(file_redirecting);
-	dup2(saved_stdin, STDIN_FILENO);
-	close(saved_stdin);
-	return (0);
 }
 
 int redir_outfile(t_file_node *file_node, int *pipe_fd)

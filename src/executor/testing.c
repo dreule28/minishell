@@ -42,13 +42,13 @@ void fill_structs(t_cmd_list *cmd_list)
 	first_file_node = create_file_node("END12", HEREDOC);
 	add_file_node(cmd_list->head->files, first_file_node);
 
-	second_file_node = create_file_node("END2", OUTFILE);
+	second_file_node = create_file_node("END2", HEREDOC);
 	add_file_node(cmd_list->head->files, second_file_node);
 	
-	third_file_node = create_file_node("END3", OUTFILE);
+	third_file_node = create_file_node("END3", HEREDOC);
 	add_file_node(cmd_list->head->files, third_file_node);
 	
-	fourth_file_node = create_file_node("END4", OUTFILE);
+	fourth_file_node = create_file_node("END4", HEREDOC);
 	add_file_node(cmd_list->head->files, fourth_file_node);
     // ----- Second Node -----
 	// t_file_node *second_file_node;
@@ -83,4 +83,9 @@ void print_structs(t_cmd_list *cmd_list)
         node = node->next;
     }
 }
+
+// void setup_env_list()
+// {
+
+// }
 
