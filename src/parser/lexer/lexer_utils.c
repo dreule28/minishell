@@ -30,29 +30,7 @@ int	get_redir_type(char *input, int i)
 
 bool	is_special_char(const char *c)
 {
-	return (*c == '|' || *c == '>' || *c == '<' || *c == '&' || *c == '|'
-		|| *c == ';');
-}
-
-bool	is_builtin(const char *str)
-{
-	if (!str)
-		return (false);
-	if (!ft_strncmp(str, "echo", 4))
-		return (true);
-	if (!ft_strncmp(str, "cd", 2))
-		return (true);
-	if (!ft_strncmp(str, "pwd", 3))
-		return (true);
-	if (!ft_strncmp(str, "export", 6))
-		return (true);
-	if (!ft_strncmp(str, "unset", 5))
-		return (true);
-	if (!ft_strncmp(str, "env", 3))
-		return (true);
-	if (!ft_strncmp(str, "exit", 4))
-		return (true);
-	return (false);
+	return (*c == '|' || *c == '>' || *c == '<' || *c == '&' || *c == ';');
 }
 
 int	get_bultin_type(const char *str)
