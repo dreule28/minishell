@@ -28,6 +28,8 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 			quote = input[(*i)++];
 			while (input[*i] && input[*i] != quote)
 				(*i)++;
+			if (!input[*i])
+				error_message("Syntax error: Open quotes!\n");
 			if (input[*i])
 				(*i)++;
 		}

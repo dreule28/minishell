@@ -13,10 +13,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	if (!input[*i])
-	{
-		printf("Syntax error: Open quotes!\n");
-		return ;
-	}
+		error_message("Syntax error: Open quotes!\n");
 	(*i)++;
 	if (quote == '"')
 		token_type = D_QUOTES;
