@@ -31,7 +31,8 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 			if (input[*i])
 				(*i)++;
 		}
-		else if (input[*i] == ' ' || input[*i] == '\t' || is_special_char(&input[*i]))
+		else if (input[*i] == ' ' || input[*i] == '\t'
+		|| is_special_char(&input[*i]))
 			in_word = 0;
 		else
 			(*i)++;
