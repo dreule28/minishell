@@ -67,12 +67,12 @@ void	append_arg(t_cmd_list *cmd_list, t_token *token)
 	i = 0;
 	while (cmd_list->tail->cmd[i])
 		i++;
-		DEBUG_TRACE("Current command has %d arguments, allocating for %d", i, i + 2);
+	DEBUG_TRACE("Current command has %d arguments, allocating for %d", i, i + 2);
 	new_cmd = ft_malloc(sizeof(char *), (i + 2));
 	if (!new_cmd)
 	{
 		DEBUG_ERROR("Memory allocation failed for new command array");
-		return ((void) NULL);
+		return ;
 	}
 	old_cmd = cmd_list->tail->cmd;
 	i = 0;
@@ -81,12 +81,10 @@ void	append_arg(t_cmd_list *cmd_list, t_token *token)
 	if (!new_cmd[i])
 	{
 		DEBUG_ERROR("Failed to duplicate token value");
-		free_str_array(new_cmd);
 		cmd_list->tail->cmd = old_cmd;
 		return;
 	}
 	new_cmd[i + 1] = NULL;
-	free_str_array(old_cmd);
 	cmd_list->tail->cmd = new_cmd;
 	DEBUG_INFO("Argument successfully appended");
 }
@@ -116,13 +114,13 @@ void	handle_command(t_cmd_list *cmd_list, t_token *token)
 		if (!cmd)
 		{
 			DEBUG_ERROR("Memory allocation failed for command array");
-			return ((void) NULL);
+			return ;
 		}
 		cmd[0] = gc_strdup(token->value);
 		if (!cmd[0])
 		{
 			DEBUG_ERROR("Failed to duplicate command value");
-			free(cmd[0]);
+			free(cmd);
 			return ;
 		}
 		cmd[1] = NULL;

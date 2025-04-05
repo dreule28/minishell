@@ -14,25 +14,10 @@ bool	check_command(int token_type)
 		|| token_type == TK_OR);
 }
 
-void	free_str_array(char **array)
-{
-	int	i;
-
-	if (!array)
-		return ;
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
 void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 {
 	char	**cmd;
-	
+
 	if (!cmd_list->tail)
 	{
 		DEBUG_INFO("No tail exists, creating new command node for: %s", token->value);
