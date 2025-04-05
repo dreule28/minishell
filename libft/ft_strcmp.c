@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 14:13:09 by dreule            #+#    #+#             */
-/*   Updated: 2025/04/05 01:08:02 by dreule           ###   ########.fr       */
+/*   Created: 2025/04/05 04:01:30 by dreule            #+#    #+#             */
+/*   Updated: 2025/04/05 04:01:38 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_calloc(size_t count, size_t size)
+int	ft_strcmp(char *s1, char *s2)
 {
-	unsigned char	*arr;
-	size_t			store;
-	size_t			i;
+	int i = 0;
+	int j = 0;
 
-	store = count * size;
-	arr = malloc(store);
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (i < store)
-	{
-		((unsigned char *)arr)[i] = 0;
+	while ((s1[i] && s2[j]) && s1[i] == s2[i])
 		i++;
-	}
-	return (arr);
+	return (s1[i] - s2[i]);
 }
