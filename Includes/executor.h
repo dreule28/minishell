@@ -21,7 +21,7 @@ void	execute(char **env);
 void	execute_builtin(t_cmd_list *cmd_list);
 void	child_parent_proccess(t_cmd_list *cmd_list, char **env);
 void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env);
-void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env);
+void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd);
 
 
 // io_redir.c 

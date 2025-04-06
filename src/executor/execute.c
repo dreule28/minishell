@@ -10,9 +10,9 @@ void execute(char **env)
 	////main functions
 
 	if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
-		execute_builtin(cmd_list);
+		execute_builtin(cmd_list); // single builtin
 	else
-		child_parent_proccess(cmd_list, env);
+		child_parent_proccess(cmd_list, env); // singel command
 }
 
 void	execute_builtin(t_cmd_list *cmd_list)
@@ -47,38 +47,57 @@ void child_parent_proccess(t_cmd_list *cmd_list, char **env)
 		else
 		{
 			waitpid(pid, NULL, 0);
-			parent_proccess(cmd_list, pipe_fd, env);
+			parent_proccess(cmd_list, pipe_fd);
 		}
 		node = node->next;
 	}
 	reset_redirection(saved_stdin, saved_stdout);
 }
 
-void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
+char *env_search_path(void)
 {
-	// t_env_list *env_pointer;
-	// char **path;
-	(void)env;
-	if(file_redirecting_child(cmd_list, pipe_fd) == -1)
-		return ; 
-	// env_pointer = env_search_path(env);
-	// if(env_pointer == NULL)
-	// {
-	// 	ft_putstr_fd("Error: env not found\n", 2);
-	// 	return ;
-	// }
-	// path = gc_split(env_pointer->head->value, ':');
-	// if(!path)
-	// {
-	// 	ft_putstr_fd("Error: path not found\n", 2);
-	// 	return ;
-	// }
-	
+	t_env_list *env_path;
+
+	while(env_path->head->next != NULL)
+	{
+		if(ft_strncmp(env_path->head->type, "PATH", 4) == 0)
+			return(env_path->head->value);
+		env_path->head = env_path->head->next;
+	}
+	ft_putstr_fd("PATH variable not found", 2);
+	return(NULL);
 }
 
-void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
+void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
 {
-	(void)env;
+	char *env_path_value;
+	char **path;
+
+	get_envs(env);
+	if(file_redirecting_child(cmd_list, pipe_fd) == -1)
+		return ; 
+	env_path_value = env_search_path();
+	if(env_path_value == NULL)
+	{
+		ft_putstr_fd("Error: env not found\n", 2);
+		return ;
+	}
+	path = gc_split(env_path_value, ':');
+	if(!path)
+	{
+		ft_putstr_fd("Error: path not found\n", 2);
+		return ;
+	}
+	int count;
+	while(path[count] != NULL)
+	{
+		printf("%s\n", path[count]);
+		count++;
+	}
+}
+
+void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd)
+{
 	(void)cmd_list;
 	(void)pipe_fd;
 	// if(file_redirecting_parent(cmd_list, pipe_fd) == -1)
