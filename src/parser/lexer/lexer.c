@@ -1,39 +1,45 @@
 #include "minishell.h"
 
-void	handle_word_or_arg(t_token_list *list, char *input, int *i)
+void	token_found(t_token_list *list, char *input, int *i, int start)
 {
-	int		start;
 	char	*token_value;
+	int		builtin_type;
 
-	start = *i;
-	while (input[*i] && !(input[*i] == ' ' || input[*i] == '\t')
-		&& !is_special_char(&input[*i])
-		&& input[*i] != '"' && input[*i] != '\'')
-		(*i)++;
 	if (start != *i)
 	{
-		token_value = ft_substr(input, start, *i - start);
-		add_token(list, token_value, TK_WORD);
+		token_value = gc_substr(input, start, *i - start);
+		builtin_type = get_bultin_type(token_value);
+		add_token(list, token_value, builtin_type);
 	}
 }
 
-void	handle_builtins(t_token_list *list, char *input, int *i)
+void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 {
 	int		start;
-	char	*token_value;
-	int		builtint_type;
+	int		in_word;
+	char	quote;
 
 	start = *i;
-	while (input[*i] && !(input[*i] == ' ' || input[*i] == '\t')
-		&& !is_special_char(&input[*i])
-		&& input[*i] != '"' && input[*i] != '\'')
-		(*i)++;
-	if (start != *i)
+	in_word = 1;
+	while (input[*i] && in_word)
 	{
-		token_value = ft_substr(input, start, *i - start);
-		builtint_type = get_bultin_type(token_value);
-		add_token(list, token_value, builtint_type);
+		if (input[*i] == '"' || input[*i] == '\'')
+		{
+			quote = input[(*i)++];
+			while (input[*i] && input[*i] != quote)
+				(*i)++;
+			if (!input[*i])
+				error_message("Syntax error: Open quotes!\n");
+			if (input[*i])
+				(*i)++;
+		}
+		else if (input[*i] == ' ' || input[*i] == '\t'
+		|| is_special_char(&input[*i]))
+			in_word = 0;
+		else
+			(*i)++;
 	}
+	token_found(list, input, i, start);
 }
 
 t_token_list	*lexer(char *input)
@@ -55,8 +61,6 @@ t_token_list	*lexer(char *input)
 			check_operators(list, input, &i);
 		else if (input[i] == '|')
 			handle_pipe(list, &i);
-		else if (is_builtin(&input[i]))
-			handle_builtins(list, input, &i);
 		else
 			handle_word_or_arg(list, input, &i);
 	}

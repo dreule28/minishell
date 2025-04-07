@@ -41,13 +41,13 @@ char	*find_equal_sign(char **env, int i, char **value)
 	return (type);
 }
 
-void	get_envs(char **env)
+t_env_list	*get_envs(char **env)
 {
 	t_env_list	*env_list;
 	t_env_node	*new_node;
 	int			i;
-	char	*type;
-	char	*value;
+	char		*type;
+	char		*value;
 
 	i = 0;
 	env_list = init_env_list();
@@ -66,4 +66,5 @@ void	get_envs(char **env)
 		}
 		i++;
 	}
+	return (env_list);
 }

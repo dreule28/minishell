@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:46 by dreule            #+#    #+#             */
-/*   Updated: 2025/03/17 17:56:51 by dreule           ###   ########.fr       */
+/*   Updated: 2025/04/05 04:03:05 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ char	*ft_strrchr(const char *str, int c);
 
 /* Compares at most n characters of two null-terminated strings. */
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+/* Compares two null-terminated strings. */
+int		ft_strcmp(char *s1, char *s2);
 
 /* Writes n zero bytes to the memory area s. */
 void	ft_bzero(void *s, size_t n);

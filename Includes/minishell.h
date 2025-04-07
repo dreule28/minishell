@@ -9,6 +9,7 @@
 # include "libft.h"
 # include "parser.h"
 # include "executor.h"
+# include "debug.h"
 # include "garbage_collector.h"
 //Includes -- END
 typedef struct s_file_node

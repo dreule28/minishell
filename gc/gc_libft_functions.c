@@ -137,9 +137,26 @@ char	*gc_split_substr(char const *start, char const *end)
 	ft_memcpy(word, start, len);
 	return (word[len] = '\0', word);
 }
+
 void	gc_free_words(char **str, int i)
 {
 	while (i--)
 		free(str[i]);
 	free(str);
+}
+
+char	*gc_strjoin(char const *s1, char const *s2)
+{
+	char	*new_str;
+	size_t	len1;
+	size_t	len2;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	new_str = ft_malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
+	if (!new_str)
+		return (NULL);
+	ft_strlcpy(new_str, s1, len1 + 1);
+	ft_strlcpy(new_str + len1, s2, len2 +1);
+	return (new_str);
 }
