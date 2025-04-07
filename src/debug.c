@@ -164,7 +164,7 @@ void print_tokens(t_token_list *list)
         return;
     }
 
-    DEBUG_INFO("Printing tokens. List size: %d", list->size);
+    DEBUG_INFO("Printing tokens. List size: %zd", list->size);
     if (list->input)
         DEBUG_INFO("Input in list: [%s]", list->input);
 
