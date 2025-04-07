@@ -38,5 +38,7 @@ int	gc_count_words(char const *s, char c);
 int	gc_fill_words(char **str, const char *s, char c);
 char	*gc_split_substr(char const *start, char const *end);
 void	gc_free_words(char **str, int i);
+char	*gc_itoa(int n);
+char	*gc_strjoin(char const *s1, char const *s2);
 
 #endif
