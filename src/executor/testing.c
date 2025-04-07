@@ -84,8 +84,4 @@ void print_structs(t_cmd_list *cmd_list)
     }
 }
 
-// void setup_env_list()
-// {
-
-// }
 

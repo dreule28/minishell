@@ -81,7 +81,7 @@ int redir_outfile(t_file_node *file_node, int *pipe_fd)
 		return (ft_putstr_fd("Error using dup2(outfile)stdin\n", 2), -1);
 	if (dup2(file_redirecting, STDOUT_FILENO) == -1)
 		return (ft_putstr_fd("Error using dup2(outfile)stdout\n", 2), -1);
-	return (0);
+	return (OUTFILE_USED);
 }
 
 int redir_append(t_file_node *file_node, int *pipe_fd)
@@ -95,5 +95,5 @@ int redir_append(t_file_node *file_node, int *pipe_fd)
 		return (ft_putstr_fd("Error using dup2(append)", 2), -1);
 	if (dup2(file_redirecting, STDOUT_FILENO) == -1)
 		return (ft_putstr_fd("Error using dup2(append)", 2), -1);
-	return (0);
+	return (OUTFILE_USED);
 }

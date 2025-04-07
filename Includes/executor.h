@@ -18,8 +18,8 @@ typedef struct s_cmd_list t_cmd_list;
 
 // execute.c
 void	execute(char **env);
-void	execute_builtin(t_cmd_list *cmd_list);
-void	child_parent_proccess(t_cmd_list *cmd_list, char **env);
+void	single_builtin_execution(t_cmd_list *cmd_list);
+void	single_cmd_execution(t_cmd_list *cmd_list, char **env);
 void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env);
 void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd);
 
@@ -51,5 +51,14 @@ void	print_structs(t_cmd_list *cmd_list);
 
 //Functions -- END
 
+typedef enum OUTFILE_CHECK				// got the redirecting types for the files
+{
+	OUTFILE_NOT_USED,
+	OUTFILE_USED
+}	OUTFILE_CHECK;
 
+typedef enum ERRORS				// got the redirecting types for the files
+{
+	ERROR = -1
+}	ERRORS;
 #endif
