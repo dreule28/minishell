@@ -66,14 +66,14 @@ void single_cmd_execution(t_cmd_list *cmd_list, char **env)
 
 char *env_search_path(void)
 {
-	t_env_list *env_path;
+	// t_env_list *env_path;
 
-	while(env_path->head->next != NULL)
-	{
-		if(ft_strncmp(env_path->head->type, "PATH", 4) == 0)
-			return(env_path->head->value);
-		env_path->head = env_path->head->next;
-	}
+	// while(env_path->head->next != NULL)
+	// {
+	// 	if(ft_strncmp(env_path->head->type, "PATH", 4) == 0)
+	// 		return(env_path->head->value);
+	// 	env_path->head = env_path->head->next;
+	// }
 	ft_putstr_fd("PATH variable not found", 2);
 	return(NULL);
 }
@@ -149,23 +149,20 @@ void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env)
 	}
 
 	// testing
-	int count;
-	while(env_path_list[count] != NULL)
-	{
-		printf("%s\n", env_path_list[count]);
-		count++;
-	}
+	// int count;
+	// while(env_path_list[count] != NULL)
+	// {
+	// 	printf("%s\n", env_path_list[count]);
+	// 	count++;
+	// }
 	//
-	execute_command(cmd_list, env_path_list, env);
+	// execute_command(cmd_list, env_path_list, env);
 }
 
 void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd)
 {
-	(void)cmd_list;
-	(void)pipe_fd;
-	// if(file_redirecting_parent(cmd_list, pipe_fd) == -1)
-	// 	return ; 
-	// write(1, "hello, parent\n\0", 16);
+	if(file_redirecting_parent(cmd_list, pipe_fd) == -1)
+		return ; 
 
 }
 

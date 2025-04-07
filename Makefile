@@ -28,7 +28,7 @@ PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
-EXECUTOR_FILES := 	execute.c io_redir_utils.c io_redir.c process_utils.c testing.c
+EXECUTOR_FILES := 	 execute.c redirecting/io_redir_utils.c redirecting/io_redir.c process_utils.c processes.c testing.c 
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
 GC_FILES := ft_malloc.c \
