@@ -14,7 +14,6 @@ t_cmd_list	*init_cmd_list(void)
 	cmd_list->head = NULL;
 	cmd_list->tail = NULL;
 	cmd_list->size = 0;
-	DEBUG_INFO("Command list initialized successfully");
 	return (cmd_list);
 }
 

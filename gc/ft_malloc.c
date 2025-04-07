@@ -11,6 +11,22 @@ void	*ft_malloc(size_t count, size_t size)
 	gc_add(ptr);
 	return (ptr);
 }
+
+char	*gc_strjoin(char const *s1, char const *s2)
+{
+	char	*new_str;
+	size_t	len1;
+	size_t	len2;
+
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	new_str = ft_malloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (!new_str)
+		return (NULL);
+	ft_strlcpy(new_str, s1, len1 + 1);
+	ft_strlcpy(new_str + len1, s2, len2 +1);
+	return (new_str);
+}
 /*
 count is the number of elements to allocate
 size is the size of each element (int or char or struct)
