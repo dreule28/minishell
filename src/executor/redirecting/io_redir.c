@@ -48,7 +48,7 @@ int	create_here_doc(t_file_node *file_node)
 	char *line;
 	char *str;
 
-	str = gc_strjoin("tmp/.", file_node->filename);
+	str = gc_strjoin("tmp/executor/.", file_node->filename);
 	fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 
 	if (fd == -1)
