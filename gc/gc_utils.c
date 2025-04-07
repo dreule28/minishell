@@ -4,7 +4,7 @@
 void	clean_up(void)
 {
 	gc_free();
-	ft_bzero(get_gc(), sizeof(t_gc_list)); // Alternativ auch mit memset	
+	ft_bzero(get_gc(), sizeof(t_gc_list)); // Alternativ auch mit memset
 }
 
 t_gc_list	*get_gc(void)
@@ -36,7 +36,10 @@ void	gc_free(void)
 		current = tmp;
 		count++;
 	}
-	gc = NULL;
+	// gc->head = NULL;
+	// gc->tail = NULL;
+	// gc->size = 0;
+	// gc = NULL;
 }
 
 void	gc_add(void *ptr)
@@ -79,30 +82,33 @@ void	gc_init(void)
 	gc->size = 0;
 }
 
-void	free_gc(void)
-{
-	int			len;
-	int			count;
-	t_gc_list	*gc;
-	t_gc_node	*tmp;
-	t_gc_node	*current;
+// void	free_gc(void)
+// {
+// 	int			len;
+// 	int			count;
+// 	t_gc_list	*gc;
+// 	t_gc_node	*tmp;
+// 	t_gc_node	*current;
 
-	gc = get_gc();
-	if (!gc)
-		return ;
-	current = gc->head;
-	len = gc->size;
-	count = 0;
-	while (current && count < len)
-	{
-		tmp = current->next;
-		free(current->data);
-		free(current);
-		current = tmp;
-		count++;
-	}
-	gc = NULL;
-}
+// 	gc = get_gc();
+// 	if (!gc)
+// 		return ;
+// 	current = gc->head;
+// 	len = gc->size;
+// 	count = 0;
+// 	while (current && count < len)
+// 	{
+// 		tmp = current->next;
+// 		free(current->data);
+// 		free(current);
+// 		current = tmp;
+// 		count++;
+// 	}
+// 	gc->head = NULL;
+// 	gc->tail = NULL;
+// 	gc->size = 0;
+// 	// gc = NULL;
+// }
 
 // void	gc_add(void *ptr)
 // {

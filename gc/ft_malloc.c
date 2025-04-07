@@ -44,7 +44,7 @@ size is the size of each element (int or char or struct)
 // {
 // 	t_gc_list *gc;
 
-// 	//get a static t_gc_list 
+// 	//get a static t_gc_list
 // 	gc = get_gc();
 
 // 	char *str_single_pointer;
@@ -58,10 +58,10 @@ size is the size of each element (int or char or struct)
 // 	// int *int_single_ptr;
 // 	// char **char_double_ptr;
 
-// 	//initialize the garbage collector 
+// 	//initialize the garbage collector
 // 	gc_init();
 
-// 	//print the size of the list 
+// 	//print the size of the list
 // 	printf("\ngc size: %ld\n\n", gc->size);
 
 // 	// for an array the size will be the number of elements in
