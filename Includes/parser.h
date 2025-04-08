@@ -80,10 +80,6 @@ void			check_redirs(t_token_list *list, char *input, int *i);
 void			handle_pipe(t_token_list *list, int *i);
 //check_actions.c -- END
 
-//error.c -- BEGIN
-void			error_message(char *str);
-//error.c -- END
-
 //expansions.c -- BEGIN
 void			handle_exit_code(t_segment *segment, char *beforer, int *i);
 void			handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i, char start);

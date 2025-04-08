@@ -9,11 +9,15 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 
 	quote = input[(*i)];
 	start = *i;
+	DEBUG_INFO("Processing quotes: %c at position %d", quote, start);
 	(*i)++;
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	if (!input[*i])
-		error_message("Syntax error: Open quotes!\n");
+	{
+		ft_putstr_fd("Syntax error: Open quotes!\n",2 );
+		return ;
+	}
 	(*i)++;
 	if (quote == '"')
 		token_type = D_QUOTES;
@@ -21,6 +25,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 		token_type = S_QUOTES;
 	token_value = gc_substr(input, start, *i - start);
 	add_token(list, token_value, token_type);
+	DEBUG_INFO("Added %s token: %s", (token_type == D_QUOTES) ? "double quote" : "single quote", token_value); // ADD HERE
 }
 
 void	check_operators(t_token_list *list, char *input, int *i)
@@ -30,6 +35,7 @@ void	check_operators(t_token_list *list, char *input, int *i)
 
 	start = *i;
 	token_type = 0;
+	DEBUG_INFO("Processing operator at position %d: %.*s", start, (input[*i + 1] == '&' || input[*i + 1] == '|') ? 2 : 1, input + start); // ADD HERE
 	if (input[*i] == '&' && input[*i + 1] == '&')
 	{
 		token_type = TK_AND;
@@ -46,7 +52,10 @@ void	check_operators(t_token_list *list, char *input, int *i)
 		(*i)++;
 	}
 	if (token_type != 0)
+	{
 		add_token(list, gc_substr(input, start, *i - start), token_type);
+		DEBUG_INFO("Added operator token type %d: %s", token_type, gc_substr(input, start, *i - start)); // ADD HERE
+	}
 }
 
 void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
@@ -84,7 +93,9 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 
 	start = *i;
 	redir_type = 0;
+	DEBUG_INFO("Processing redirection at position %d", start); // ADD HERE
 	check_and_assign(list, input, i, redir_type);
+	DEBUG_INFO("Added redirection token type %d", list->tail->token); // ADD HERE after check_and_assign
 	while (input[*i] == ' ' || input[*i] == '\t')
 		(*i)++;
 	start = *i;
@@ -97,7 +108,7 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 			(*i)++;
 		if (start == *i)
 		{
-			printf("Syntax error: Missing filename!\n");
+			ft_putstr_fd("Syntax error: Missing filename!\n",2);
 			return ;
 		}
 		add_token(list, gc_substr(input, start, *i - start), TK_WORD);
