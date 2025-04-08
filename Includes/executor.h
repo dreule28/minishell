@@ -20,8 +20,8 @@ typedef struct s_cmd_list t_cmd_list;
 void	execute(char **env);
 void	single_builtin_execution(t_cmd_list *cmd_list);
 void	single_cmd_execution(t_cmd_list *cmd_list, char **env);
-void	child_proccess(t_cmd_list *cmd_list, int *pipe_fd, char **env);
-void	parent_proccess(t_cmd_list *cmd_list, int *pipe_fd);
+void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, char **env);
+void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd);
 
 
 // io_redir.c 
@@ -32,9 +32,9 @@ int	redir_outfile(t_file_node *file_node, int *pipe_fd);
 int	redir_append(t_file_node *file_node, int *pipe_fd);
 
 // io_redir_utils.c
-int file_redirecting_child(t_cmd_list *cmd_list, int *pipe_fd);
-int file_redirecting_parent(t_cmd_list *cmd_list, int *pipe_fd);
-int	redir_loop(t_cmd_list *cmd_list,int *pipe_fd);
+int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd);
+int file_redirecting_parent(t_cmd_node *cmd_node, int *pipe_fd);
+int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd);
 
 // process_utils.c
 void reset_redirection(int saved_stdin, int saved_stdout);

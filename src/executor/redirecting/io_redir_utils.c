@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-int file_redirecting_child(t_cmd_list *cmd_list, int *pipe_fd)
+int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd)
 {
 	int outfile_check;
 
 	outfile_check = 0;
-	outfile_check = redir_loop(cmd_list, pipe_fd);
+	outfile_check = redir_loop(cmd_node, pipe_fd);
 	if(outfile_check == -1)
 		return(-1);
 	else if(outfile_check == OUTFILE_NOT_USED)
@@ -16,14 +16,16 @@ int file_redirecting_child(t_cmd_list *cmd_list, int *pipe_fd)
 	return(0);
 }
 
-int file_redirecting_parent(t_cmd_list *cmd_list, int *pipe_fd)
+int file_redirecting_parent(t_cmd_node *cmd_node, int *pipe_fd)
 {
 	int outfile_check;
 	int	saved_stdout;
 
 	outfile_check = 0;
+	if(cmd_node == NULL)
+		return (OUTFILE_NOT_USED);
 	saved_stdout = dup(STDOUT_FILENO);
-	outfile_check = redir_loop(cmd_list, pipe_fd);
+	outfile_check = redir_loop(cmd_node, pipe_fd);
 	if(outfile_check == -1)
 		return(-1);
 	else if(outfile_check == OUTFILE_NOT_USED)
@@ -34,7 +36,7 @@ int file_redirecting_parent(t_cmd_list *cmd_list, int *pipe_fd)
 	return(0);
 }
 
-int	redir_loop(t_cmd_list *cmd_list,int *pipe_fd)
+int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd)
 {
 	t_file_node *file_node;
 	int outfile_status;
@@ -42,7 +44,9 @@ int	redir_loop(t_cmd_list *cmd_list,int *pipe_fd)
 
 	return_value = 0;
 	outfile_status = OUTFILE_NOT_USED;
-	file_node = cmd_list->head->files->head;
+	if(cmd_node == NULL)
+		return (OUTFILE_NOT_USED);
+	file_node = cmd_node->files->head;
 	while (file_node != NULL)  
 	{
 		if (file_node->redir_type == INFILE)
