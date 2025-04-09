@@ -12,7 +12,7 @@ void save_stdin_stdout(int *saved_stdin, int *saved_stdout)
 	*saved_stdout = dup(STDOUT_FILENO);
 }
 
-void	fd_error_handle(int *fd)
+void	pipe_creation(int *fd)
 {
 	if (pipe(fd) == -1)
 	{

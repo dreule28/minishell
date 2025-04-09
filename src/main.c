@@ -20,6 +20,7 @@ int	main(int argc, char **argv, char **env)
 			// history_add("");
 			if (ft_strncmp(prompt, "exit", 4) == 0)
 				break ;
+			clean_up();
 		}
 	}
 	clean_up(); 

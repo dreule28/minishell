@@ -19,10 +19,11 @@ typedef struct s_cmd_list t_cmd_list;
 // execute.c
 void	execute(char **env);
 void	single_builtin_execution(t_cmd_list *cmd_list);
-void	single_cmd_execution(t_cmd_list *cmd_list, char **env);
-void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, char **env);
-void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd);
+void	execution(t_cmd_list *cmd_list, t_env_list *env_list);
+void	execution_loop(t_cmd_list *cmd_list, t_env_list *env_list);
 
+
+void	single_cmd_execution(t_cmd_list *cmd_list, char **env); // removed
 
 // io_redir.c 
 int	redir_infile(t_file_node *file_node, int *pipe_fd);
@@ -39,14 +40,25 @@ int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd);
 // process_utils.c
 void reset_redirection(int saved_stdin, int saved_stdout);
 void save_stdin_stdout(int *saved_stdin, int *saved_stdout);
-void	fd_error_handle(int *fd);
+void	pipe_creation(int *fd);
 
+// processes.c
+void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list);
+void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list);
+char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list);
+void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env_list);
 
-// testing.c
-void 	free_structs(t_cmd_list *cmd_list);
-void	init_structs(t_cmd_list **cmd_list);
-void	fill_structs(t_cmd_list *cmd_list);	
-void	print_structs(t_cmd_list *cmd_list);
+// env_functions.c
+int		env_lenght(t_env_list *env_list);
+char	**env_converter(t_env_list *env_list);
+char	*env_search_path_var(t_env_list *env_list);
+
+// pipe_utils.c
+void	dup_stdin_stdout(int *pipe_fd);
+void	close_pipes(int *pipe_fd);
+void	set_invalid_pipe(int *pipe_fd);
+void	set_new_prev_pipe(int *pipe_fd, int *prev_pipe_fd);
+
 
 
 //Functions -- END

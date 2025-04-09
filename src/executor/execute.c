@@ -1,43 +1,53 @@
-#include "minishell.h"
+#include "executor.h"
 
-void multiple_cmd_execution(t_cmd_list *cmd_list, char **env)
-{
-	(void)cmd_list;
-	(void)env;
-	// multiple command execution
-}
-
-void execute(char **env)
+void testing_function(t_cmd_list *cmd_list)
 {
 	//// testing functions
-	t_cmd_list *cmd_list;   // declare a pointer to a struct of type t_cmd_list
-	// t_file_node *file_node;
-	cmd_list = init_cmd_list(); // initialize the struct
-	
 	// first command
 	
-	t_cmd_node *cmd_node1; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd[] = {"cat", NULL};
-	cmd_node1 = add_cmd_node(cmd_list,cmd, CMD); // add a node to the struct
-	// (void)cmd_node1;
-	add_file_node(cmd_node1->files, "END", INFILE); // add a file node to the struct
+
 	// add_file_node(cmd_node1->files, "outfile", OUTFILE);
 
 	// second command
-	
+	(void)cmd_list;
 	// t_cmd_node *cmd_node2;
 	// cmd_node2 = add_cmd_node(cmd_list, cmd, CMD); // add a node to the struct
 	// add_file_node(cmd_node2->files, "END2", OUTFILE); // add a file node to the struct
 
 	// thired command
 	
+}
 
-	////main functions
+void execute(char **env)
+{
+	t_env_list *env_list;
+	
+	
+	t_cmd_list *cmd_list;
+	cmd_list = init_cmd_list();
 
+	t_cmd_node *cmd_node1; // declare a pointer to a struct of type t_cmd_node1
+	char *cmd1[] = {"cat", NULL};
+	cmd_node1 = add_cmd_node(cmd_list,cmd1, CMD); // add a node to the struct
+	add_file_node(cmd_node1->files, "END", INFILE);
+
+	t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
+	char *cmd2[] = {"cat", NULL};
+	cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
+	add_file_node(cmd_node2->files, "hallöchen", OUTFILE_APPEND);
+
+	t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
+	char *cmd3[] = {"ls", "-al", NULL};
+	cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
+	add_file_node(cmd_node3->files, "pups", OUTFILE_APPEND);
+
+	env_list = get_envs(env);
+
+		printf("%s\n" , cmd_list->head->cmd[0]);
 	if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 		single_builtin_execution(cmd_list); // single builtin
 	else
-		single_cmd_execution(cmd_list, env); // singel command
+		execution(cmd_list, env_list); // normal execution
 }
 
 void	single_builtin_execution(t_cmd_list *cmd_list)
@@ -45,7 +55,7 @@ void	single_builtin_execution(t_cmd_list *cmd_list)
 	if(strcmp(cmd_list->head->cmd[0], "exit") == 0)
 		exit(0);
 }
-
+/*
 void single_cmd_execution(t_cmd_list *cmd_list, char **env)
 {
 	int pipe_fd[2];
@@ -59,7 +69,7 @@ void single_cmd_execution(t_cmd_list *cmd_list, char **env)
 	while(node)	
 	{
 		if(node->next)
-			fd_error_handle(pipe_fd);
+			pipe_creation(pipe_fd);
 		else
 		{	pipe_fd[0] = saved_stdin;
 			pipe_fd[1] = saved_stdout;
@@ -72,7 +82,6 @@ void single_cmd_execution(t_cmd_list *cmd_list, char **env)
 		else
 		{
 			waitpid(pid, NULL, 0);
-			printf("pid: %d\n", pid);
 			if(node->next)
 				parent_proccess(node->next, pipe_fd);
 		}
@@ -81,137 +90,92 @@ void single_cmd_execution(t_cmd_list *cmd_list, char **env)
 	reset_redirection(saved_stdin, saved_stdout);
 }
 
-char *env_search_path(t_env_list *env_list)
+*/
+
+void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
 {
+	int saved_stdin;
+	int saved_stdout;
 
-	t_env_node *node;
-
-	node = env_list->head;
-	while(node->next != NULL)
-	{
-		if(ft_strncmp(node->type, "PATH", 4) == 0)
-			return(node->value);
-		node = node->next;
-	}
-	ft_putstr_fd("PATH variable not found", 2);
-	return(NULL);
+	saved_stdout = 0;
+	saved_stdin = 0;
+	save_stdin_stdout(&saved_stdin, &saved_stdout);
+	execution_loop(cmd_list, env_list);
+	reset_redirection(saved_stdin, saved_stdout);
 }
 
-char *create_command_path(t_cmd_node *cmd_node, char **env_path_list)
+void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 {
-	char *temp_path;
-	char *full_cmd_path;
-	int	command_index;
+	pid_t pid;
+	int pipe_fd[2];
+	int prev_pipe_fd[2];
+	t_cmd_node	*cmd_node;
 
-	command_index = 0;
-	while(env_path_list[command_index] != NULL)
+	cmd_node = cmd_list->head;
+	while(cmd_node)
 	{
-		temp_path = ft_strjoin(env_path_list[command_index], "/");
-		if(!temp_path)
-			return(ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
-		full_cmd_path = ft_strjoin(temp_path, cmd_node->cmd[0]);
-		free(temp_path);
-		if(access(full_cmd_path, F_OK) == 0)
+		if(cmd_node->next)
+			pipe_creation(pipe_fd);
+		else
+			dup_stdin_stdout(pipe_fd);
+		pid = fork();
+		if(pid < 0)
+			return (ft_putstr_fd("Error while forking", 2));
+		if(pid == 0)
 		{
-			gc_add(full_cmd_path);
-			return (full_cmd_path);
+			if(prev_pipe_fd[0] == -1)
+				dup2(prev_pipe_fd[0], STDIN_FILENO);
+			if(cmd_node->next)
+				dup2(pipe_fd[1], STDOUT_FILENO);
+			if(prev_pipe_fd[0] == -1)
+				close_pipes(prev_pipe_fd);
+			if(cmd_node->next)
+				close_pipes(pipe_fd);
+			child_proccess(cmd_node, pipe_fd, env_list);
+			}
+			else
+			{
+			waitpid(pid, NULL, 0);
+			if(prev_pipe_fd[0] == -1)
+				close_pipes(prev_pipe_fd);
+			if(cmd_node->next)
+			{	
+				set_new_prev_pipe(pipe_fd, prev_pipe_fd);
+				parent_proccess(cmd_node, prev_pipe_fd, env_list);
+			}
 		}
-		command_index++;
-		free(full_cmd_path);
+		cmd_node = cmd_node->next;
 	}
-	return(NULL);
+	if(prev_pipe_fd[0] == -1)
+		close_pipes(prev_pipe_fd);
 }
 
-int env_size(t_env_list *env_list)
+void	dup_stdin_stdout(int *pipe_fd)
 {
-	int count = 0;
-	t_env_node *node;
-
-	node = env_list->head;
-	while (node)
-	{
-		count++;
-		node = node->next;
-	}
-	return (count);
+	pipe_fd[0] = dup(STDIN_FILENO);
+	pipe_fd[1] = dup(STDOUT_FILENO);
 }
-
-char **env_converter(t_env_list *env_list)
+void	close_pipes(int *pipe_fd)
 {
-	int count = 0;
-	t_env_node *env_node;
-	char **converted_env_list;
-	char *tmp, *env_str;
-
-	count = 0;
-	env_node = env_list->head;
-	count = env_size(env_list);
-	converted_env_list = ft_malloc(count + 1, sizeof(char *));
-	if (!converted_env_list)
-		return(ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
-	env_node = env_list->head;
-	count = 0;
-	while (env_node)
-	{
-		tmp = ft_strjoin(env_node->type, "=");
-		env_str = gc_strjoin(tmp, env_node->value);
-		free(tmp);
-		if (!env_str)
-			return(ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
-		converted_env_list[count++] = env_str;
-		env_node = env_node->next;
-	}
-	converted_env_list[count] = NULL;
-	return (converted_env_list);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 }
 
-void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env_list)
+void	set_invalid_pipe(int *pipe_fd)
 {
-	char *full_cmd_path;
-	char **converted_env_list;
-
-	full_cmd_path = create_command_path(cmd_node, env_path_list);
-	if (full_cmd_path == NULL)
-	{
-		ft_putstr_fd("Error: command not found\n", 2);
-		return ;
-	}
-	converted_env_list = env_converter(env_list);
-	if(!converted_env_list)
-		return ;
-	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
-	ft_putstr_fd("Error: execve failed\n", 2);
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 }
 
-void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, char **env)
+void	set_new_prev_pipe(int *pipe_fd, int *prev_pipe_fd)
 {
-	t_env_list *env_list;
-	char *env_path_position;
-	char **env_path_list;
-	
-	env_list = get_envs(env);
-	if(file_redirecting_child(cmd_node, pipe_fd) == -1)
-		return ; 
-	env_path_position = env_search_path(env_list);
-	if(env_path_position == NULL)
-	{
-		ft_putstr_fd("Error: env not found\n", 2);
-		return ;
-	}
-	env_path_list = gc_split(env_path_position, ':');
-	if(!env_path_list)
-	{
-		ft_putstr_fd("Error: path not found\n", 2);
-		return ;
-	}
-	execute_command(cmd_node, env_path_list, env_list);
+	prev_pipe_fd[0] = pipe_fd[0];
+	prev_pipe_fd[1] = pipe_fd[1];
 }
 
-void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd)
-{
-	if(file_redirecting_parent(cmd_node, pipe_fd) == -1)
-		return ; 
-}
+
+
+
 
 
 
