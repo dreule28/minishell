@@ -22,7 +22,7 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS) $(SHELL_DIRS)
 ###############                  SOURCE FILES                     ##############
 ################################################################################
 
-PARSING_FILES :=envs.c lists_and_nodes_parser.c parser_utils.c parser.c
+PARSING_FILES := envs.c lists_and_nodes_parser.c token_to_cmd.c ttc_utils.c
 PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 
 LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c expansion.c expansion_utils.c segments.c
