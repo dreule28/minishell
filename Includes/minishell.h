@@ -43,7 +43,7 @@ typedef struct s_cmd_list
 
 typedef struct s_env_node
 {
-	char				*type;
+	char				*key;
 	char				*value;
 	struct s_env_node	*next;
 }	t_env_node;
