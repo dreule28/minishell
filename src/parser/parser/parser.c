@@ -151,32 +151,7 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 	curr = tk_list->head;
 	while (curr)
 	{
-		DEBUG_TRACE("Processing token: [%s] (type: %d)", curr->value, curr->token);
-		if (curr->token == TK_PIPE)
-		{
-			int next_cmd_type = CMD;
-			if (curr->next && curr->next->token == TK_BUILTIN)
-				next_cmd_type = BUILTIN;
-			add_cmd_node(cmd_list, NULL, next_cmd_type);
-			if (curr->next)
-			{
-				curr = curr->next;
-				continue;
-			}
-		}
-		else if (is_redirection(curr->token))
-		{
-			DEBUG_INFO("Handling redirection: %s", curr->value);
-			handle_redirection(cmd_list, curr);
-			if (curr->next)
-				curr = curr->next;
-		}
-		else
-		{
-			DEBUG_INFO("Handling command/argument: %s", curr->value);
-			handle_command(cmd_list, curr);
-			curr = curr->next;
-		}
+		process_token(cmd_list, &curr);
 	}
 	DEBUG_INFO("Token to command conversion complete");
 	validate_cmd_list(cmd_list);

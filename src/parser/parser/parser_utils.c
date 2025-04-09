@@ -50,3 +50,34 @@ void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 		append_arg(cmd_list, token);
 	}
 }
+
+void	process_token(t_cmd_list *cmd_list, t_token **curr)
+{
+	t_token	*token;
+	int	next_cmd_type;
+
+	token = *curr;
+	DEBUG_TRACE("Processing token: [%s] (type: %d)", curr->value, curr->token);
+	if (token->token == TK_PIPE)
+	{
+		next_cmd_type = CMD;
+		if (token->next && token->next->token == TK_BUILTIN)
+			next_cmd_type = BUILTIN;
+		add_cmd_node(cmd_list, NULL, next_cmd_type);
+		if (token->next)
+			*curr = token->next;
+	}
+	else if (is_redirection(token->token))
+	{
+		DEBUG_INFO("Handling redirection: %s", token->value);
+		handle_redirection(cmd_list, token);
+		if (token->next)
+			*curr = token->next;
+	}
+	else
+	{
+		DEBUG_INFO("Handling command/argument: %s", token->value);
+		handle_command(cmd_list, token);
+		*curr = token->next;
+	}
+}
