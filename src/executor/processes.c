@@ -4,7 +4,7 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
 {
 	char *env_path_position;
 	char **env_path_list;
-	
+
 	if(file_redirecting_child(cmd_node, pipe_fd) == -1)
 		return ; 
 	env_path_position = env_search_path_var(env_list);
@@ -19,14 +19,18 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
 		ft_putstr_fd("Error: path not found\n", 2);
 		return ;
 	}
+	
 	execute_command(cmd_node, env_path_list, env_list);
 }
 
 void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
-{
+{	
 	(void)env_list;
+	// (void)pipe_fd;
+	if(cmd_node == NULL)
+		return ;
 	if(file_redirecting_parent(cmd_node, pipe_fd) == -1)
-		return ; 
+		return ;
 }
 
 char *create_command_path(t_cmd_node *cmd_node, char **env_path_list)
@@ -60,7 +64,6 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env
 	char *full_cmd_path;
 	char **converted_env_list;
 
-	printf("%s\n", cmd_node->cmd[0]);
 	full_cmd_path = create_command_path(cmd_node, env_path_list);
 	if (full_cmd_path == NULL)
 	{
@@ -70,6 +73,8 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env
 	converted_env_list = env_converter(env_list);
 	if(!converted_env_list)
 		return ;
+		
+	// write(1, "hallo\n", 6);
 	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
 	ft_putstr_fd("Error: execve failed\n", 2);
 }

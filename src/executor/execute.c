@@ -22,28 +22,26 @@ void execute(char **env)
 {
 	t_env_list *env_list;
 	
-	
 	t_cmd_list *cmd_list;
 	cmd_list = init_cmd_list();
 
 	t_cmd_node *cmd_node1; // declare a pointer to a struct of type t_cmd_node1
 	char *cmd1[] = {"cat", NULL};
 	cmd_node1 = add_cmd_node(cmd_list,cmd1, CMD); // add a node to the struct
-	add_file_node(cmd_node1->files, "END", INFILE);
+	add_file_node(cmd_node1->files, "infile1", INFILE);
 
 	t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
 	char *cmd2[] = {"cat", NULL};
 	cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
-	add_file_node(cmd_node2->files, "hallöchen", OUTFILE_APPEND);
+	add_file_node(cmd_node2->files, "outfile2", OUTFILE);
 
-	t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd3[] = {"ls", "-al", NULL};
-	cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
-	add_file_node(cmd_node3->files, "pups", OUTFILE_APPEND);
+	// t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd3[] = {"ls", "-al", NULL};
+	// cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
+	// add_file_node(cmd_node3->files, "outfile3", OUTFILE_APPEND);
 
 	env_list = get_envs(env);
 
-		printf("%s\n" , cmd_list->head->cmd[0]);
 	if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 		single_builtin_execution(cmd_list); // single builtin
 	else
@@ -112,6 +110,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	t_cmd_node	*cmd_node;
 
 	cmd_node = cmd_list->head;
+	set_invalid_pipe(prev_pipe_fd);
 	while(cmd_node)
 	{
 		if(cmd_node->next)
@@ -125,26 +124,30 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 		{
 			if(prev_pipe_fd[0] == -1)
 				dup2(prev_pipe_fd[0], STDIN_FILENO);
-			if(cmd_node->next)
-				dup2(pipe_fd[1], STDOUT_FILENO);
+			// if(cmd_node->next)
+			// 	dup2(pipe_fd[1], STDOUT_FILENO);
 			if(prev_pipe_fd[0] == -1)
 				close_pipes(prev_pipe_fd);
-			if(cmd_node->next)
-				close_pipes(pipe_fd);
+			// if(cmd_node->next)
+			// 	close_pipes(pipe_fd);
 			child_proccess(cmd_node, pipe_fd, env_list);
-			}
-			else
-			{
+		}
+		else
+		{
+			// write(1, "hallo\n", 6);
 			waitpid(pid, NULL, 0);
+			// write(1, "hallo\n", 6);
+
 			if(prev_pipe_fd[0] == -1)
 				close_pipes(prev_pipe_fd);
 			if(cmd_node->next)
 			{	
 				set_new_prev_pipe(pipe_fd, prev_pipe_fd);
-				parent_proccess(cmd_node, prev_pipe_fd, env_list);
+				// parent_proccess(cmd_node, prev_pipe_fd, env_list);
 			}
 		}
 		cmd_node = cmd_node->next;
+		// write(1, "hallo\n", 6);
 	}
 	if(prev_pipe_fd[0] == -1)
 		close_pipes(prev_pipe_fd);

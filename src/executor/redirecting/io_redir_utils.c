@@ -59,8 +59,8 @@ int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd)
 			return_value = redir_append(file_node, pipe_fd);
 		if(return_value == -1)
 			return(-1);
-		if (return_value == OUTFILE_USED)
-			outfile_status = OUTFILE_USED;
+		if (return_value != OUTFILE_USED)
+			outfile_status = return_value;
 		file_node = file_node->next;
 	}
 	return (outfile_status);
