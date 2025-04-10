@@ -56,8 +56,8 @@ char	*env_search_path_var(t_env_list *env_list);
 // pipe_utils.c
 void	dup_stdin_stdout(int *pipe_fd);
 void	close_pipes(int *pipe_fd);
-void	set_invalid_pipe(int *pipe_fd);
-void	set_new_prev_pipe(int *pipe_fd, int *prev_pipe_fd);
+void	set_invalid_pipe(int *prev_pipe_fd);
+void	set_new_prev_pipe(int *prev_pipe_fd, int *pipe_fd);
 
 
 

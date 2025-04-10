@@ -19,7 +19,6 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
 		ft_putstr_fd("Error: path not found\n", 2);
 		return ;
 	}
-	
 	execute_command(cmd_node, env_path_list, env_list);
 }
 
@@ -74,7 +73,7 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env
 	if(!converted_env_list)
 		return ;
 		
-	// write(1, "hallo\n", 6);
+	// ft_putstr_fd("Child: finished command processing; exiting\n", 2);
 	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
 	ft_putstr_fd("Error: execve failed\n", 2);
 }

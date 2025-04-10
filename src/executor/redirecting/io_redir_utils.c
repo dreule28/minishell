@@ -8,11 +8,6 @@ int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd)
 	outfile_check = redir_loop(cmd_node, pipe_fd);
 	if(outfile_check == -1)
 		return(-1);
-	else if(outfile_check == OUTFILE_NOT_USED)
-	{
-		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-			return (ft_putstr_fd("Error using dup2(outfile)", 2), -1);
-	}
 	return(0);
 }
 
