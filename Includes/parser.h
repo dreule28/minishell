@@ -60,6 +60,7 @@ typedef struct s_token
 
 typedef struct s_token_list
 {
+	int		syntax_error;
 	t_token	*head;
 	t_token	*tail;
 	ssize_t	size;
@@ -74,7 +75,7 @@ void			print_cmd_list(t_cmd_list *cmd_list);
 //check_actions.c -- BEGIN
 void			check_quotes(t_token_list *list, char *input, int *i);
 void			check_and_assign(t_token_list *list, char *input, int *i, int redir_typ);
-void			check_redirs(t_token_list *list, char *input, int *i);
+int				check_redirs(t_token_list *list, char *input, int *i);
 void			handle_pipe(t_token_list *list, int *i);
 //check_actions.c -- END
 
@@ -140,7 +141,7 @@ t_file_list		*init_file_list(void);
 //list_and_nodes.c -- END
 
 //token_to_cmd.c -- BEGIN
-void			handle_redirection(t_cmd_list *cmd_list, t_token *token);
+int				handle_redirection(t_cmd_list *cmd_list, t_token *token);
 void			append_arg(t_cmd_list *cmd_list, t_token *token);
 void			handle_command(t_cmd_list *cmd_list, t_token *token);
 t_cmd_list		*token_to_cmd(t_token_list *tk_list);
@@ -150,7 +151,7 @@ t_cmd_list		*token_to_cmd(t_token_list *tk_list);
 bool			is_redirection(int token_type);
 bool			check_command(int token_type);
 void			process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type);
-void			handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr);
+int				handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr);
 void			process_token(t_cmd_list *cmd_list, t_token **curr);
 //ttc_utils.c -- END
 //Parser-Folder -- END

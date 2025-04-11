@@ -36,6 +36,7 @@ typedef struct s_cmd_node
 
 typedef struct s_cmd_list
 {
+	int			syntax_error;
 	t_cmd_node	*head;
 	t_cmd_node	*tail;
 	ssize_t		size;
