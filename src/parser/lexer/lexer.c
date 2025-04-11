@@ -60,8 +60,6 @@ t_token_list	*lexer(char *input)
 			check_quotes(list, input, &i);
 		else if (is_redir(&input[i]))
 			check_redirs(list, input, &i);
-		else if (input[i] == '&' || (input[i] == '|' && input[i + 1] == '|'))
-			check_operators(list, input, &i);
 		else if (input[i] == '|')
 			handle_pipe(list, &i);
 		else

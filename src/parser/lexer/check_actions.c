@@ -15,7 +15,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 		(*i)++;
 	if (!input[*i])
 	{
-		ft_putstr_fd("Syntax error: Open quotes!\n",2 );
+		ft_putstr_fd("Syntax error: Open quotes!\n", 2);
 		return ;
 	}
 	(*i)++;
@@ -28,42 +28,12 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 	DEBUG_INFO("Added %s token: %s", (token_type == D_QUOTES) ? "double quote" : "single quote", token_value); // ADD HERE
 }
 
-void	check_operators(t_token_list *list, char *input, int *i)
-{
-	int		start;
-	int		token_type;
-
-	start = *i;
-	token_type = 0;
-	DEBUG_INFO("Processing operator at position %d: %.*s", start, (input[*i + 1] == '&' || input[*i + 1] == '|') ? 2 : 1, input + start); // ADD HERE
-	if (input[*i] == '&' && input[*i + 1] == '&')
-	{
-		token_type = TK_AND;
-		(*i) += 2;
-	}
-	else if (input[*i] == '|' && input[*i + 1] == '|')
-	{
-		token_type = TK_OR;
-		(*i) += 2;
-	}
-	else if (input[*i] == '&')
-	{
-		token_type = TK_AMPERSAND;
-		(*i)++;
-	}
-	if (token_type != 0)
-	{
-		add_token(list, gc_substr(input, start, *i - start), token_type);
-		DEBUG_INFO("Added operator token type %d: %s", token_type, gc_substr(input, start, *i - start)); // ADD HERE
-	}
-}
-
 void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
 {
 	int	start;
 
 	start = *i;
-	if (input[*i] == '<' && input[*i + 1] == '<')
+	if (input[*i] && input[*i] == '<' && input[*i + 1] == '<')
 	{
 		redir_typ = TK_HEREDOC;
 		(*i) += 2;

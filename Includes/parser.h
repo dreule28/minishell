@@ -73,7 +73,6 @@ void			print_cmd_list(t_cmd_list *cmd_list);
 //Lexer-FOLDER -- BEGIN
 //check_actions.c -- BEGIN
 void			check_quotes(t_token_list *list, char *input, int *i);
-void			check_operators(t_token_list *list, char *input, int *i);
 void			check_and_assign(t_token_list *list, char *input, int *i, int redir_typ);
 void			check_redirs(t_token_list *list, char *input, int *i);
 void			handle_pipe(t_token_list *list, int *i);
