@@ -16,6 +16,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 	if (!input[*i])
 	{
 		ft_putstr_fd("Syntax error: Open quotes!\n", 2);
+		list->syntax_error = 1;
 		return ;
 	}
 	(*i)++;
@@ -33,7 +34,7 @@ void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
 	int	start;
 
 	start = *i;
-	if (input[*i] && input[*i] == '<' && input[*i + 1] == '<')
+	if (input[*i] == '<' && input[*i + 1] == '<')
 	{
 		redir_typ = TK_HEREDOC;
 		(*i) += 2;
@@ -56,7 +57,7 @@ void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
 	add_token(list, gc_substr(input, start, *i - start), redir_typ);
 }
 
-void	check_redirs(t_token_list *list, char *input, int *i)
+int	check_redirs(t_token_list *list, char *input, int *i)
 {
 	int	redir_type;
 	int	start;
@@ -79,10 +80,12 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 		if (start == *i)
 		{
 			ft_putstr_fd("Syntax error: Missing filename!\n",2);
-			return ;
+			list->syntax_error = 1;
+			return (0);
 		}
 		add_token(list, gc_substr(input, start, *i - start), TK_WORD);
 	}
+	return (1);
 }
 
 void	handle_pipe(t_token_list *list, int *i)

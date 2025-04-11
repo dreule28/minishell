@@ -17,7 +17,7 @@ void	transfer_cmd(char **new_cmd, char **old_cmd, int *i)
 	DEBUG_TRACE("Successfully transferred %d command arguments", *i);
 }
 
-void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
+int	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 {
 	t_cmd_node	*cmd_node;
 	t_file_node	*file_node;
@@ -25,7 +25,8 @@ void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 	if (!cmd_list || !token || !token->next)
 	{
 		DEBUG_ERROR("Invalid parameters in handle_redirection");
-		return ;
+		cmd_list->syntax_error = 1;
+		return (0);
 	}
 	DEBUG_TRACE("Handling redirection of type %d, target: %s", token->token, token->next->value);
 	if (!cmd_list->tail)
@@ -35,7 +36,7 @@ void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 		if (!cmd_node)
 		{
 			DEBUG_ERROR("Failed to create command node for redirection");
-			return;
+			return (0);
 		}
 	}
 	else
@@ -44,9 +45,10 @@ void	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 	if (!file_node)
 	{
 		DEBUG_ERROR("Failed to add file node for redirection");
-		return;
+		return (0);
 	}
 	DEBUG_INFO("Added redirection for file: %s with type %d", token->next->value, token->token);
+	return (1);
 }
 
 void	append_arg(t_cmd_list *cmd_list, t_token *token)
@@ -148,6 +150,11 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 	while (curr)
 	{
 		process_token(cmd_list, &curr);
+		if (cmd_list->syntax_error)
+		{
+			DEBUG_ERROR("Syntax error detected, stopping token_to_cmd processing");
+			return (0);
+		}
 	}
 	DEBUG_INFO("Token to command conversion complete");
 	validate_cmd_list(cmd_list);

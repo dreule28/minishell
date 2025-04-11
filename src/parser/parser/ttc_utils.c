@@ -66,9 +66,10 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 
 	token = *curr;
 	DEBUG_TRACE("Processing token: [%s] (type: %d)", token->value, token->token);
-	if (token->token == TK_PIPE && !token->next)
+	if (token->token == TK_PIPE && (!token->next || cmd_list->size == 0))
 	{
 		ft_putstr_fd("Syntax error: Empty Pipe", 2);
+		cmd_list->syntax_error = 1;
 		*curr = NULL;
 		return ;
 	}
@@ -76,7 +77,7 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 	{
 		handle_pipe_node(cmd_list, token, curr);
 	}
-	else if (is_redirection(token->token))
+	else if (is_redirection(token->token) && !cmd_list->syntax_error)
 	{
 		DEBUG_INFO("Handling redirection: %s", token->value);
 		handle_redirection(cmd_list, token);

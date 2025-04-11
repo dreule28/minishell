@@ -31,6 +31,7 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 			if (!input[*i])
 			{
 				ft_putstr_fd("Syntax error: Open quotes!\n",2 );
+				list->syntax_error = 1;
 				return ;
 			}
 			if (input[*i])
@@ -64,6 +65,11 @@ t_token_list	*lexer(char *input)
 			handle_pipe(list, &i);
 		else
 			handle_word_or_arg(list, input, &i);
+		if (list->syntax_error)
+		{
+			DEBUG_ERROR("Syntax error detected, stopping lexer processing");
+			break ;
+		}
 	}
 	return (list);
 }
