@@ -103,6 +103,8 @@ int				get_bultin_type(const char *str);
 
 //lexer.c -- BEGIN
 void			token_found(t_token_list *list, char *input, int *i, int start);
+int				handle_quotes(t_token_list *list, char *input, int *i);
+int				is_word_boundary(char *input, int *i);
 void			handle_word_or_arg(t_token_list *list, char *input, int *i);
 t_token_list	*lexer(char *input);
 //lexer.c --END
