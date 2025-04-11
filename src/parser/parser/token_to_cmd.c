@@ -10,9 +10,6 @@ void	transfer_cmd(char **new_cmd, char **old_cmd, int *i)
 		if (!new_cmd[(*i)])
 		{
 			DEBUG_ERROR("Memory allocation failed during command transfer");
-			while (--(*i) >= 0)
-				free(new_cmd[(*i)]);
-			free(new_cmd);
 			return ;
 		}
 		(*i)++;
@@ -120,7 +117,6 @@ void	handle_command(t_cmd_list *cmd_list, t_token *token)
 		if (!cmd[0])
 		{
 			DEBUG_ERROR("Failed to duplicate command value");
-			free(cmd);
 			return ;
 		}
 		cmd[1] = NULL;

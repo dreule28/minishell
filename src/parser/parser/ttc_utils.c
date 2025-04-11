@@ -31,15 +31,12 @@ void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 		if (!cmd[0])
 		{
 			DEBUG_ERROR("Failed to duplicate command value");
-			free(cmd);
 			return;
 		}
 		cmd[1] = NULL;
 		if (!add_cmd_node(cmd_list, cmd, cmd_type))
 		{
 			DEBUG_ERROR("Failed to add command node");
-			free(cmd[0]);
-			free(cmd);
 			return;
 		}
 		DEBUG_INFO("Added new command node with command: %s", cmd[0]);

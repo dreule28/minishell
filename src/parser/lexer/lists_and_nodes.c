@@ -12,10 +12,7 @@ t_token_list	*init_token_list(char *input)
 	list->size = 0;
 	list->input = gc_strdup(input);
 	if (!list->input)
-	{
-		free(list);
 		return (NULL);
-	}
 	return (list);
 }
 
@@ -32,10 +29,7 @@ void	add_token(t_token_list *list, char *token, int type)
 	new_token->token = type;
 	new_token->value = gc_strdup(token);
 	if (!new_token->value)
-	{
-		free(new_token);
 		return ;
-	}
 	if (!list->head)
 		list->head = new_token;
 	else
@@ -55,10 +49,7 @@ t_segment	*create_segment(char *value, t_seg_type type)
 	segment->next = NULL;
 	segment->value = gc_strdup(value);
 	if (!segment->value)
-	{
-		free(segment);
 		return (NULL);
-	}
 	return (segment);
 }
 
