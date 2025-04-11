@@ -13,22 +13,21 @@ int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd)
 
 int file_redirecting_parent(t_cmd_node *cmd_node, int *pipe_fd)
 {
-	int outfile_check;
-	int	saved_stdout;
+    int outfile_check;
+    int saved_stdout;
 
-	outfile_check = 0;
-	if(cmd_node == NULL)
-		return (OUTFILE_NOT_USED);
-	saved_stdout = dup(STDOUT_FILENO);
-	outfile_check = redir_loop(cmd_node, pipe_fd);
-	if(outfile_check == -1)
-		return(-1);
-	else if(outfile_check == OUTFILE_NOT_USED)
-	{
-		if (dup2(saved_stdout, STDOUT_FILENO) == -1)
-			return (ft_putstr_fd("Error using dup2(outfile)", 2), -1);
-	}
-	return(0);
+    if (cmd_node == NULL)
+        return (OUTFILE_NOT_USED);
+    saved_stdout = dup(STDOUT_FILENO);
+    outfile_check = redir_loop(cmd_node, pipe_fd);
+    if (outfile_check == -1)
+        return (-1);
+    else if (outfile_check == OUTFILE_NOT_USED)
+    {
+        if (dup2(saved_stdout, STDOUT_FILENO) == -1)
+            return (ft_putstr_fd("Error using dup2(outfile)", 2), -1);
+    }
+    return (0);
 }
 
 int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd)

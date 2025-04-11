@@ -3,7 +3,7 @@
 void	dup_stdin_stdout(int *pipe_fd)
 {
 	pipe_fd[0] = dup(STDIN_FILENO);
-	pipe_fd[1] = dup(STDOUT_FILENO);
+	
 }
 void	close_pipes(int *pipe_fd)
 {

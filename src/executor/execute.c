@@ -12,15 +12,25 @@ void execute(char **env)
 	cmd_node1 = add_cmd_node(cmd_list,cmd1, CMD); // add a node to the struct
 	add_file_node(cmd_node1->files, "infile1", INFILE);
 
-	// t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
-	// char *cmd2[] = {"cat", NULL};
-	// cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
-	// add_file_node(cmd_node2->files, "outfile2", OUTFILE);
+	t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
+	char *cmd2[] = {"cat", NULL};
+	cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
+	add_file_node(cmd_node2->files, "outfile1", OUTFILE_APPEND);
 
 	// t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
 	// char *cmd3[] = {"ls", NULL};
 	// cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
-	// add_file_node(cmd_node3->files, "outfile3", OUTFILE_APPEND);
+	// add_file_node(cmd_node3->files, "outfil123123e3", OUTFILE_APPEND);
+
+	// t_cmd_node *cmd_node4; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd4[] = {"ls", NULL};
+	// cmd_node4 = add_cmd_node(cmd_list,cmd4, CMD); // add a node to the struct
+	// add_file_node(cmd_node4->files, "outfile4", OUTFILE_APPEND);
+
+	// t_cmd_node *cmd_node5; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd5[] = {"ls", NULL};
+	// cmd_node5 = add_cmd_node(cmd_list,cmd5, CMD); // add a node to the struct
+	// add_file_node(cmd_node5->files, "outfile5", OUTFILE_APPEND);
 
 	env_list = get_envs(env);
 
@@ -46,113 +56,49 @@ void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
 	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	execution_loop(cmd_list, env_list);
 	reset_redirection(saved_stdin, saved_stdout);
+	ft_putstr_fd("ende\n \n \n ", 2);
+	close(saved_stdin);
+	close(saved_stdout);
 }
-
-// void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
-// {
-// 	pid_t pid;
-// 	int pipe_fd[2];
-// 	int prev_pipe_fd[2];
-// 	t_cmd_node	*cmd_node;
-
-// 	cmd_node = cmd_list->head;
-// 	set_invalid_pipe(prev_pipe_fd);
-// 	while(cmd_node)
-// 	{
-// 		if(cmd_node->next)
-// 			pipe_creation(pipe_fd);
-// 		else
-// 			dup_stdin_stdout(pipe_fd);
-// 		pid = fork();
-// 		if(pid < 0)
-// 			return (ft_putstr_fd("Error while forking", 2));
-// 		if(pid == 0)
-// 		{
-// 			if(prev_pipe_fd[0] != -1)
-// 				dup2(prev_pipe_fd[0], STDIN_FILENO);
-// 			// if(cmd_node->next)
-// 			// 	dup2(pipe_fd[1], STDOUT_FILENO);
-// 			if(prev_pipe_fd[0] == -1)
-// 				close_pipes(prev_pipe_fd);
-// 			// if(cmd_node->next)
-// 			// 	close_pipes(pipe_fd);
-// 			child_proccess(cmd_node, pipe_fd, env_list);
-// 		}
-// 		else
-// 		{
-// 			waitpid(pid, NULL, 0);
-// 			if(prev_pipe_fd[0] == -1)
-// 				close_pipes(prev_pipe_fd);
-// 			if(cmd_node->next)	
-// 				set_new_prev_pipe(pipe_fd, prev_pipe_fd);
-// 		}
-// 		cmd_node = cmd_node->next;
-// 	}
-// 	if(prev_pipe_fd[0] == -1)
-// 		close_pipes(prev_pipe_fd);
-// }
 
 void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 {
-	pid_t pid;						// speichert die process id von dem jeweiligen prozzess (child und parent)
-	int pipe_fd[2];					// der file descriptor der bestimmt ob in stdin oder stdout geschrieben wird
-	int prev_pipe_fd[2];			// ??
+	pid_t pid;	// speichert die process id von dem jeweiligen prozzess (child und parent)
 	t_cmd_node *cmd_node;			// momentane cmd_node die ausgefürt wird
-
+	int pipe_fd[2];
+	
 	cmd_node = cmd_list->head;		// setzt den potiner von der metastruct auf die cmd_node damit der pointer von dem metastruct nicht verschoben werde muss
-	set_invalid_pipe(prev_pipe_fd);	// macht die prev_pipe invalid (setzt auf -1) damit der childproccess beim ersten mal den stdin benutzt
-	while(cmd_node)					// solange eine cmd_node exestiert hält der loop an
+	while(cmd_node)
 	{
-		if(cmd_node->next)			// wenn noch ein command folgt erstelle eine pipe 
-			pipe_creation(pipe_fd);	// erstellt eine pipe
-		else								// wenn nicht nehme die stdin und stdout als file descriptor
-			dup_stdin_stdout(pipe_fd);		// gibt der pipe_fd stdin und stdout
-		pid = fork();						// erstellt die processes
-		if(pid < 0)							// wenn fork gefailt hat
-			return (ft_putstr_fd("Error  forking", 2));		// error message
-		if(pid == 0)										// wenn childproccess ist
+
+		if(cmd_node->next != NULL)
+			pipe_creation(pipe_fd);
+		else
 		{
-			(void)env_list;
-			if(prev_pipe_fd[0] != -1)														// wenn eine valid file vorhanden ist redirected es diese vorhandene file als stdin
-				if(dup2(prev_pipe_fd[0], STDIN_FILENO) < 0)
-					ft_putstr_fd("Error duplicating previous pipe to STDIN\n", 2);
-			if(cmd_node->next)															// wenn es eine nächste node gibt nimm diese als stdout(also scheibt es in die pipe)
-				if(dup2(pipe_fd[1], STDOUT_FILENO) < 0)
-					ft_putstr_fd("Error duplicating current pipe to STDOUT\n", 2);
-			if (prev_pipe_fd[0] != -1)
-				close_pipes(prev_pipe_fd);
-			// if(cmd_node->next)
-			// 	close_pipes(pipe_fd);
-			child_proccess(cmd_node, pipe_fd, env_list);	// execute command
+			// pipe_creation(pipe_fd);
+			dup2(pipe_fd[1], STDOUT_FILENO);
 		}
-		else												// wenn parent proccess
+			pid =  fork();
+		if(pid < 0)		
+			return (ft_putstr_fd("Error  forking", 2));		
+		if(pid == 0)
 		{
-			waitpid(pid, NULL, 0);							// warte auf child 
-			// ft_putstr_fd("Parent: child finished, updating pipes\n", 2);
-			if (prev_pipe_fd[0] != -1)
-                close_pipes(prev_pipe_fd);
-			if(cmd_node->next)
-			{
-                // Close the write end in the parent to signal EOF to the reading child.
-                close(pipe_fd[1]);
-                // Save the read end as the previous pipe for the next iteration.
-                prev_pipe_fd[0] = pipe_fd[0];
-                prev_pipe_fd[1] = -1; // mark the write end as closed here in the parent.
-            }
+			child_proccess(cmd_node, pipe_fd, env_list);
+			ft_putstr_fd("child hat nicht richtif fetig gemacht \n \n \n \n \n \n \n \n \n \n \n \n \n \n\n \n \n \n ", 2);
 		}
-		cmd_node = cmd_node->next;							// nächst command node
+		else
+		{
+			waitpid(pid, NULL, 0);
+			ft_putstr_fd("ende\n \n \n ", 2);
+			// if(cmd_node->next != NULL)
+			// {
+			// 	close(pipe_fd[0]);
+			// 	close(pipe_fd[1]);
+			// }
+		}
+
+		cmd_node = cmd_node->next;
 	}
-	if (prev_pipe_fd[0] != -1)
-		close_pipes(prev_pipe_fd);
+	ft_putstr_fd("ende\n \n \n ", 2);
+
 }
-
-
-
-
-
-
-
-
-
-
-
