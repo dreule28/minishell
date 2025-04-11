@@ -152,6 +152,7 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 		process_token(cmd_list, &curr);
 		if (cmd_list->syntax_error)
 		{
+			// ft_putstr_fd("Syntax error: Learn syntax lol", 2);
 			DEBUG_ERROR("Syntax error detected, stopping token_to_cmd processing");
 			return (0);
 		}
