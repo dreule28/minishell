@@ -13,11 +13,33 @@ void	token_found(t_token_list *list, char *input, int *i, int start)
 	}
 }
 
+int	handle_quotes(t_token_list *list, char *input, int *i)
+{
+	char	quote;
+
+	quote = input[(*i)++];
+	while (input[*i] && input[*i] != quote)
+		(*i)++;
+	if (!input[*i])
+	{
+		ft_putstr_fd("Syntax error: Open quotes!\n",2 );
+		list->syntax_error = 1;
+		return (0);
+	}
+	(*i)++;
+	return (1);
+}
+
+int	is_word_boundary(char *input, int *i)
+{
+	return (input[*i] == ' ' || input[*i] == '\t'
+				|| is_special_char(&input[*i]));
+}
+
 void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 {
 	int		start;
 	int		in_word;
-	char	quote;
 
 	start = *i;
 	in_word = 1;
@@ -25,20 +47,10 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 	{
 		if (input[*i] == '"' || input[*i] == '\'')
 		{
-			quote = input[(*i)++];
-			while (input[*i] && input[*i] != quote)
-				(*i)++;
-			if (!input[*i])
-			{
-				ft_putstr_fd("Syntax error: Open quotes!\n",2 );
-				list->syntax_error = 1;
+			if (!handle_quotes(list, input, i))
 				return ;
-			}
-			if (input[*i])
-				(*i)++;
 		}
-		else if (input[*i] == ' ' || input[*i] == '\t'
-		|| is_special_char(&input[*i]))
+		else if (is_word_boundary(input, i))
 			in_word = 0;
 		else
 			(*i)++;
