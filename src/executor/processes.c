@@ -1,12 +1,14 @@
 #include "minishell.h"
 
-void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
+void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_cmd_list *cmd_list)
 {
 	char *env_path_position;
 	char **env_path_list;
 
-	if(file_redirecting_child(cmd_node, pipe_fd) == -1)
-		return ; 
+	if(cmd_node->files->size > 0)
+	DEBUG_INFO("FROM CHILD-> HEAD ADRESS: %p \t NODE ADRESS: %p", cmd_list->head, cmd_node);
+		if(file_redirecting_child(cmd_node, pipe_fd, cmd_list) == -1)
+			return ; 
 	env_path_position = env_search_path_var(env_list);
 	if(env_path_position == NULL)
 	{
@@ -19,17 +21,9 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
 		ft_putstr_fd("Error: path not found\n", 2);
 		return ;
 	}
+	// ft_putstr_fd("nach redir \n ", 2);
+	// check_fds();
 	execute_command(cmd_node, env_path_list, env_list);
-}
-
-void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list)
-{	
-	(void)env_list;
-	// (void)pipe_fd;
-	if(cmd_node == NULL)
-		return ;
-	if(file_redirecting_parent(cmd_node, pipe_fd) == -1)
-		return ;
 }
 
 char *create_command_path(t_cmd_node *cmd_node, char **env_path_list)
@@ -72,8 +66,7 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env
 	converted_env_list = env_converter(env_list);
 	if(!converted_env_list)
 		return ;
-		
-	// ft_putstr_fd("Child: finished command processing; exiting\n", 2);
+	ft_putstr_fd("Child: finished command processing \n", 2);
 	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
 	ft_putstr_fd("Error: execve failed\n", 2);
 }

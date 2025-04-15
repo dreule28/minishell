@@ -33,7 +33,7 @@ int	redir_outfile(t_file_node *file_node, int *pipe_fd);
 int	redir_append(t_file_node *file_node, int *pipe_fd);
 
 // io_redir_utils.c
-int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd);
+int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd, t_cmd_list *cmd_list);
 int file_redirecting_parent(t_cmd_node *cmd_node, int *pipe_fd);
 int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd);
 
@@ -43,7 +43,7 @@ void save_stdin_stdout(int *saved_stdin, int *saved_stdout);
 void	pipe_creation(int *fd);
 
 // processes.c
-void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list);
+void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_cmd_list *cmd_list);
 void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list);
 char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list);
 void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env_list);
@@ -60,14 +60,23 @@ void	set_invalid_pipe(int *prev_pipe_fd);
 void	set_new_prev_pipe(int *prev_pipe_fd, int *pipe_fd);
 
 
+int redir_loop_infiles(t_cmd_node *cmd_node, int *pipe_fd);
+int	redir_loop_outfiles(t_cmd_node *cmd_node,int *pipe_fd);
 
 //Functions -- END
 
-typedef enum OUTFILE_CHECK				// got the redirecting types for the files
+
+int is_fd_open(int fd);
+void    check_fds(void);
+
+
+typedef enum FILE_CHECK				// got the redirecting types for the files
 {
 	OUTFILE_NOT_USED,
-	OUTFILE_USED
-}	OUTFILE_CHECK;
+	OUTFILE_USED,
+	INFILE_NOT_USED,
+	INFILE_USED
+}	FILE_CHECK;
 
 typedef enum ERRORS				// got the redirecting types for the files
 {
