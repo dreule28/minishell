@@ -43,7 +43,7 @@ char	*get_env_value(t_env_list *env_list, char *variable_name)
 	curr = env_list->head;
 	while (curr)
 	{
-		if (!ft_strcmp(curr->key, variable_name))
+		if (!ft_strcmp(curr->type, variable_name))
 			return (gc_strdup(curr->value));
 		curr = curr->next;
 	}
