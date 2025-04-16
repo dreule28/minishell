@@ -17,7 +17,7 @@ typedef struct s_cmd_list t_cmd_list;
 //Functions -- BEGIN
 
 // execute.c
-void	execute(char **env);
+void	 execute(t_env_list *env_list, t_cmd_list *cmd_list);
 void	single_builtin_execution(t_cmd_list *cmd_list);
 void	execution(t_cmd_list *cmd_list, t_env_list *env_list);
 void	execution_loop(t_cmd_list *cmd_list, t_env_list *env_list);
@@ -25,7 +25,7 @@ void	execution_loop(t_cmd_list *cmd_list, t_env_list *env_list);
 
 void	single_cmd_execution(t_cmd_list *cmd_list, char **env); // removed
 
-// io_redir.c 
+// io_redir.c
 int	redir_infile(t_file_node *file_node, int *pipe_fd);
 int	redir_here_doc(t_file_node *file_node, int *pipe_fd);
 int create_here_doc(t_file_node *file_node);
