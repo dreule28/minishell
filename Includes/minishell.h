@@ -44,7 +44,7 @@ typedef struct s_cmd_list
 
 typedef struct s_env_node
 {
-	char				*key;
+	char				*type;
 	char				*value;
 	struct s_env_node	*next;
 }	t_env_node;
