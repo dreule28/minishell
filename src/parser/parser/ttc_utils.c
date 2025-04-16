@@ -17,26 +17,18 @@ bool	check_command(int token_type)
 void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 {
 	char	**cmd;
-	t_type	redir_type;
 
-	(void)cmd_type;
 	if (!cmd_list->tail)
 	{
 		cmd = ft_malloc(sizeof(char *) * 2, 1);
 		if (!cmd)
 			return;
-		redir_type = is_redirection(token->token);
-		if (token->token == redir_type)
-		{
-			// DEBUG_INFO("FROM ttc_utils.c-> redirtype: %s\n", token->value);
-			cmd[0] = gc_strdup(token->value);
-			if (!cmd[0])
-				return;
-			cmd[1] = NULL;
-			if (!add_cmd_node(cmd_list, cmd, cmd_type))
-				return;
-		}
-		// DEBUG_INFO("CMDLIST SIZE: %ld\n", cmd_list->size);
+		cmd[0] = gc_strdup(token->value);
+		if (!cmd[0])
+			return;
+		cmd[1] = NULL;
+		if (!add_cmd_node(cmd_list, cmd, cmd_type))
+			return;
 	}
 	else
 		append_arg(cmd_list, token);
@@ -79,7 +71,9 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 	else if (is_redirection(token->token) && !cmd_list->syntax_error)
 	{
 		handle_redirection(cmd_list, token);
-		if (token->next)
+		if (token->next )
+			*curr = token->next->next;
+		else
 			*curr = token->next;
 	}
 	else

@@ -21,14 +21,27 @@ int	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 		cmd_list->syntax_error = 1;
 		return (0);
 	}
-	DEBUG_INFO("Tokenvalue: %s\n", token->value);
-	DEBUG_INFO("Tokentype: %d\n", token->token);
-	cmd_node = add_cmd_node(cmd_list, NULL, CMD);
-	if (!cmd_node)
-		return (0);
+	DEBUG_INFO("=== HANDLE REDIRECTION ===");
+    DEBUG_INFO("Redirect operator: '%s' (type: %d)", token->value, token->token);
+    DEBUG_INFO("Filename: '%s'", token->next->value);
+    DEBUG_INFO("Current command count: %zu", cmd_list->size);
+    DEBUG_INFO("Should we add a new node? NO - we should use existing node");
+	if (cmd_list->size > 0 && cmd_list->tail)
+	{
+		cmd_node = cmd_list->tail;
+		DEBUG_INFO("Using existing command node");
+	}
+	else
+	{
+		DEBUG_INFO("Creating new command node for redirection");
+		cmd_node = add_cmd_node(cmd_list, NULL, CMD);
+		if (!cmd_node)
+			return (0);
+	}
 	file_node = add_file_node(cmd_node->files, token->next->value, token->token);
 	if (!file_node)
 		return (0);
+	DEBUG_INFO("Added file '%s' to command node", token->next->value);
 	return (1);
 }
 
