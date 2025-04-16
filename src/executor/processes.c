@@ -9,10 +9,10 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_
 	test = 0;
 	if(cmd_node->files->size > 0)
 		test = file_redirecting_child(cmd_node, pipe_fd, cmd_list);
-	
+
 	// DEBUG_INFO("TEST :  %d \n", test);
 	if(test == -1)
-			return ; 
+			return ;
 	env_path_position = env_search_path_var(env_list);
 	if(env_path_position == NULL)
 	{
@@ -27,6 +27,7 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_
 	}
 	// ft_putstr_fd("nach redir \n ", 2);
 	// check_fds();
+
 	execute_command(cmd_node, env_path_list, env_list);
 }
 
@@ -70,7 +71,9 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env
 	converted_env_list = env_converter(env_list);
 	if(!converted_env_list)
 		return ;
-	ft_putstr_fd("Child: finished command processing \n", 2);
+	// ft_putstr_fd("Child: finished command processing \n", 2);
+	DEBUG_INFO("CMD[0] : %s\n", cmd_node->cmd[0]);
+	DEBUG_INFO("CMD[1] : %s\n", cmd_node->cmd[1]);
 	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
 	ft_putstr_fd("Error: execve failed\n", 2);
 }

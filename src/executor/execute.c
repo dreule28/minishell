@@ -1,51 +1,18 @@
 #include "executor.h"
 #include "minishell.h"
 
-void execute(char **env)
+void execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
-	t_env_list *env_list;
-	
-	t_cmd_list *cmd_list;
-	cmd_list = init_cmd_list();
-
-	t_cmd_node *cmd_node1; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd1[] = {"cat", NULL};
-	cmd_node1 = add_cmd_node(cmd_list,cmd1, CMD); // add a node to the struct
-	add_file_node(cmd_node1->files, "END1", HEREDOC);
-
-	
-	// t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
-	// char *cmd2[] = {"echo", "second" , NULL};
-	// cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
-	// add_file_node(cmd_node2->files, "file.txt", OUTFILE_APPEND);
-
-	// t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
-	// char *cmd3[] = {"cat" , NULL};
-	// cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
-	// add_file_node(cmd_node3->files, "outfile2", INFILE);
-
-	// t_cmd_node *cmd_node4; // declare a pointer to a struct of type t_cmd_node1
-	// char *cmd4[] = {"cat"  , NULL};
-	// cmd_node4 = add_cmd_node(cmd_list,cmd4, CMD); // add a node to the struct
-	// add_file_node(cmd_node4->files, "file.txt", INFILE);
-
-	// t_cmd_node *cmd_node5; // declare a pointer to a struct of type t_cmd_node1
-	// char *cmd5[] = {"cat" , NULL};
-	// cmd_node5 = add_cmd_node(cmd_list,cmd5, CMD); // add a node to the struct
-	// add_file_node(cmd_node5->files, "infile1", INFILE);
-
-	env_list = get_envs(env);
-
-	if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
-		single_builtin_execution(cmd_list); // single builtin
-	else
+	// if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
+	// 	single_builtin_execution(cmd_list); // single builtin
+	// else
 		execution(cmd_list, env_list); // normal execution
 }
 
 void	single_builtin_execution(t_cmd_list *cmd_list)
 {
-	if(strcmp(cmd_list->head->cmd[0], "exit") == 0)
-		exit(0);
+	(void)cmd_list;
+	// if(strcmp(cmd_list->head->cmd[0], "exit") == 0);
 }
 
 void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
@@ -58,12 +25,12 @@ void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
 	// check_fds();
 	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	execution_loop(cmd_list, env_list);
-	ft_putstr_fd("We are after execution loop\n", 2);
+	// ft_putstr_fd("We are after execution loop\n", 2);
 	reset_redirection(saved_stdin, saved_stdout);
 	close(saved_stdin);
 	close(saved_stdout);
-	ft_putstr_fd("WE ARE IN EXEC\n", 2);
-	check_fds();
+	// ft_putstr_fd("WE ARE IN EXEC\n", 2);
+	// check_fds();
 }
 
 #include <errno.h>
@@ -86,18 +53,18 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			pipe_creation(pipe_fd);
 		}
 		pid =  fork();
-		if(pid < 0)		
-			return (ft_putstr_fd("\033Error  forking", 2));	
+		if(pid < 0)
+			return (ft_putstr_fd("\033Error  forking", 2));
 		else if(pid == 0)
 		{
 		if (prev_pipe_fd[0] != -1)
             dup2(prev_pipe_fd[0], STDIN_FILENO);
         if (cmd_node->next)
             dup2(pipe_fd[1], STDOUT_FILENO);
-        if (pipe_fd[0] != -1)
-            close(pipe_fd[0]);
-        if (pipe_fd[1] != -1)
-            close(pipe_fd[1]);
+        // if (pipe_fd[0] != -1)
+        //     close(pipe_fd[0]);
+        // if (pipe_fd[1] != -1)
+        //     close(pipe_fd[1]);
         if (prev_pipe_fd[0] != -1)
             close(prev_pipe_fd[0]);
         if (prev_pipe_fd[1] != -1)
@@ -115,7 +82,8 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	}
 	// close_pipes(pipe_fd);
 	while((waited = waitpid(-1, &status, 0)) > 0)
-		ft_putstr_fd("waiting\n", 2);
+		;
+		// ft_putstr_fd("waiting\n", 2);
 }
 
 int is_fd_open(int fd)

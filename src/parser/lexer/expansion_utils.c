@@ -37,6 +37,7 @@ void	handle_double_quotes(t_token *token, int *i, int *start)
 char	*get_env_value(t_env_list *env_list, char *variable_name)
 {
 	t_env_node	*curr;
+	char		*result;
 
 	if (!env_list || !variable_name || variable_name[0] == '\0')
 		return (gc_strdup(""));
@@ -47,7 +48,8 @@ char	*get_env_value(t_env_list *env_list, char *variable_name)
 			return (gc_strdup(curr->value));
 		curr = curr->next;
 	}
-	return (gc_strdup(""));
+	result = gc_strdup("");
+	return (result);
 }
 
 void	rebuild_token_value(t_token *token)

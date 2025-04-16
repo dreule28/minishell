@@ -21,14 +21,11 @@ int	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 		cmd_list->syntax_error = 1;
 		return (0);
 	}
-	if (!cmd_list->tail)
-	{
-		cmd_node = add_cmd_node(cmd_list, NULL, CMD);
-		if (!cmd_node)
-			return (0);
-	}
-	else
-		cmd_node = cmd_list->tail;
+	DEBUG_INFO("Tokenvalue: %s\n", token->value);
+	DEBUG_INFO("Tokentype: %d\n", token->token);
+	cmd_node = add_cmd_node(cmd_list, NULL, CMD);
+	if (!cmd_node)
+		return (0);
 	file_node = add_file_node(cmd_node->files, token->next->value, token->token);
 	if (!file_node)
 		return (0);
@@ -104,8 +101,9 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 		process_token(cmd_list, &curr);
 		if (cmd_list->syntax_error)
 		{
-			ft_putstr_fd("Syntax error: Learn syntax lol", 2);
-			return (0);
+			ft_putstr_fd("Syntax error: Learn syntax lol\n", 2);
+			break ;
+			// return (0);
 		}
 	}
 	return (cmd_list);

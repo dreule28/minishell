@@ -4,7 +4,7 @@ int file_redirecting_child(t_cmd_node *cmd_node, int *pipe_fd, t_cmd_list *cmd_l
 {
     int file_check_outfile;
 	int file_check_infile;
-    
+
 		(void)cmd_list;
 	file_check_infile = redir_loop_infiles(cmd_node, pipe_fd);
 	// DEBUG_INFO("file_redir_child enum : %d", file_check_infile);
@@ -39,14 +39,14 @@ int redir_loop_infiles(t_cmd_node *cmd_node, int *pipe_fd)
 	if(cmd_node == NULL)
 		return (INFILE_NOT_USED);
 	file_node = cmd_node->files->head;
-	while (file_node != NULL)  
+	while (file_node != NULL)
 	{
-		if (file_node->redir_type == INFILE)
+		if (file_node->redir_type == TK_INFILE)
 		{
 			return_value = redir_infile(file_node, pipe_fd);
 			// DEBUG_INFO("ENUM: %d", return_value);
 		}
-		else if (file_node->redir_type == HEREDOC)
+		else if (file_node->redir_type == TK_HEREDOC)
 		{
 			return_value = redir_here_doc(file_node, pipe_fd);
 			// DEBUG_INFO("ENUM: %d", return_value);
@@ -74,11 +74,11 @@ int	redir_loop_outfiles(t_cmd_node *cmd_node,int *pipe_fd)
 	if(cmd_node == NULL)
 		return (OUTFILE_NOT_USED);
 	file_node = cmd_node->files->head;
-	while (file_node != NULL)  
+	while (file_node != NULL)
 	{
-		if (file_node->redir_type == OUTFILE)
+		if (file_node->redir_type == TK_OUTFILE)
 			return_value = redir_outfile(file_node, pipe_fd);
-		else if (file_node->redir_type == OUTFILE_APPEND)
+		else if (file_node->redir_type == TK_APPEND)
 			return_value = redir_append(file_node, pipe_fd);
 		if(return_value == -1)
 			return(-1);

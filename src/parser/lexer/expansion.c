@@ -46,9 +46,7 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 		{
 			before = gc_substr(segment->value, 0, i);
 			if (segment->value[i + 1] == '?')
-			{
 				handle_exit_code(segment, before, &i);
-			}
 			else
 				handle_rest(env_list, before, segment, &i);
 		}

@@ -1,63 +1,118 @@
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **env)
+
+#include "minishell.h"
+
+// Helper function to print environment list contents
+void print_env_list(t_env_list *list)
 {
-	char	*prompt;
-	// int		exit_code;
-	(void)argc;
-	(void)argv;
-	(void)env;
-	// (void)exit_code;
-	// check_fds();
-	// ft_putstr_fd("BEFORE INIT\n", 2);
-	gc_init();
-	while (1)
-	{
-		ft_putstr_fd("We are here\n", 2);
-		prompt = readline("2, 3 Years dagestan forget > ");
-		if (prompt)
-		{
-			gc_add(prompt); 								// adds the prompt string to the garbage collector
-			// fromp_parser(prompt);
-			execute(env);
-			// history_add("");
-			if (ft_strncmp(prompt, "exit", 4) == 0)
-				break ;
-		}
-		clean_up(); 
-	}
-	return (0);
+    t_env_node *current;
+    int i = 0;
+
+    if (!list)
+    {
+        DEBUG_ERROR("Cannot print NULL env list");
+        return;
+    }
+
+    printf("\n%s=== Environment List ===%s\n", COLOR_GREEN, COLOR_RESET);
+    printf("Total environment variables: %zu\n", list->size);
+
+    current = list->head;
+    while (current)
+    {
+        printf("ENV %d: [%s%s%s=%s%s%s]\n",
+               i++, COLOR_CYAN, current->type, COLOR_RESET,
+               COLOR_YELLOW, current->value, COLOR_RESET);
+        current = current->next;
+    }
+    printf("%s=====================%s\n\n", COLOR_GREEN, COLOR_RESET);
 }
 
-// #include <errno.h>
-// void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
+int main(int argc, char **argv, char **env)
+{
+    char *prompt;
+    t_token_list *tk_list;
+    t_cmd_list *cmd_list;
+    t_env_list *env_list;
+    (void)argc;
+    (void)argv;
+
+    gc_init();
+    env_list = get_envs(env);
+    // DEBUG_INFO("Environment list initialized");
+    // print_env_list(env_list);
+
+    while (1)
+    {
+        prompt = readline("2, 3 Years dagestan forget > ");
+		if (*prompt == '\0')
+			continue;
+			// break;
+        if (prompt)
+        {
+            gc_add(prompt);
+            // DEBUG_INFO("Processing input: [%s]", prompt);
+
+			if (ft_strlen(prompt) > 0)
+				add_history(prompt);
+            tk_list = lexer(prompt);
+            DEBUG_INFO("Lexer completed");
+            print_tokens(tk_list);
+
+            tk_list = process_token_list(tk_list);
+            DEBUG_INFO("Token processing completed");
+            print_tokens(tk_list);
+
+			segment_tokens(tk_list, env_list);
+			DEBUG_INFO("Variable expansion complete");
+            cmd_list = token_to_cmd(tk_list);
+			// DEBUG_INFO("REDIRTYPE: %d\n",cmd_list->tail->files->head->redir_type);
+            // DEBUG_INFO("Command list generation completed");
+            print_cmd_list(cmd_list);
+
+            if (ft_strcmp(prompt, "exit") == 0)
+                break;
+
+            // DEBUG_INFO("Executing command");
+            execute(env_list, cmd_list);
+            // DEBUG_INFO("Command execution completed");
+        }
+    }
+    clean_up();
+    return (0);
+}
+// int	main(int argc, char **argv, char **env)
 // {
-// 	pid_t pid;	// speichert die process id von dem jeweiligen prozzess (child und parent)
-// 	t_cmd_node *cmd_node;			// momentane cmd_node die ausgefürt wird
-// 	int pipe_fd[2];
-// 	ssize_t count;
-// 	int		status;
-	
-// 	count = 0;
-// 	cmd_node = cmd_list->head;		// setzt den potiner von der metastruct auf die cmd_node damit der pointer von dem metastruct nicht verschoben werde muss
-// 	while(cmd_node)
+// 	char	*prompt;
+// 	t_env_list	*env_list;
+// 	t_cmd_list	*cmd_list;
+// 	t_token_list	*tk_list;
+// 	t_token_list	*tk_list2;
+// 	// int		exit_code;
+// 	(void)argc;
+// 	(void)argv;
+// 	// (void)exit_code;
+// 	gc_init();
+// 	env_list = get_envs(env);
+// 	while (1)
 // 	{
-// 		ft_putstr_fd("We are in the loop\n", 2);
-// 		if(cmd_node->next != NULL)
-// 			pipe_creation(pipe_fd);
-// 		pid =  fork();
-// 		if(pid < 0)		
-// 			return (ft_putstr_fd("Error  forking", 2));		
-// 		if(pid == 0)
-// 			child_proccess(cmd_node, pipe_fd, env_list);
-// 		if(cmd_node->next == NULL)
-// 			break ;
-// 		cmd_node = cmd_node->next;
+// 		prompt = readline("2, 3 Years dagestan forget > ");
+// 		if (prompt)
+// 		{
+// 			gc_add(prompt); 								// adds the prompt string to the garbage collector
+// 			tk_list = lexer(prompt);
+// 			tk_list2 = process_token_list(tk_list);
+// 			cmd_list = token_to_cmd(tk_list2);
+// 			if (ft_strcmp(prompt, "exit") == 0)
+// 				break ;
+// 			execute(env_list, cmd_list);
+// 			// history_add("");
+// 		}
 // 	}
-// 	while(count <= cmd_list->size )
-// 	{
-// 		count++;
-// 		waitpid(-1, &status, 0);
-// 	}
-// 	close_pipes(pipe_fd);
+// 	clean_up();
+// 	return (0);
 // }
+
+
+// dorker valgrind --leak-check=full  --show-leak-kinds=all --suppressions=sub.sub --track-fds=yes ./minishell

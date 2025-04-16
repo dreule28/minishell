@@ -22,7 +22,7 @@ int	redir_here_doc(t_file_node *file_node, int *pipe_fd)
 	int file_redirecting;
 	int saved_stdin;
 	int saved_stdout;
-	
+
 
 	(void)pipe_fd;
 	file_redirecting = 0;
