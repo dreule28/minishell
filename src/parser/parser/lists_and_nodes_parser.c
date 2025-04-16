@@ -21,12 +21,6 @@ t_cmd_node	*add_cmd_node(t_cmd_list *cmd_list, char **cmd, int cmd_type)
 {
 	t_cmd_node	*new_node;
 
-	//can be deleted for norm(25 line)
-	// if (!cmd_list)
-	// {
-	// 	DEBUG_ERROR("Cannot add node to NULL command list");
-	// 	return (NULL);
-	// }
 	DEBUG_TRACE("Adding command node of type %d", cmd_type);
 	new_node = ft_malloc(sizeof(t_cmd_node), 1);
 	if (!new_node)
@@ -37,16 +31,7 @@ t_cmd_node	*add_cmd_node(t_cmd_list *cmd_list, char **cmd, int cmd_type)
 	new_node->next = NULL;
 	new_node->cmd_type = cmd_type;
 	new_node->cmd = cmd;
-	new_node->files = ft_malloc(sizeof(t_file_list), 1);
-	if (!new_node->files)
-	{
-		DEBUG_ERROR("Failed to allocate memory for file list");
-		free(new_node);
-		return (NULL);
-	}
-	new_node->files->head = NULL;
-	new_node->files->tail = NULL;
-	new_node->files->size = 0;
+	new_node->files = init_file_list();
 	if (!cmd_list->head)
 	{
 		cmd_list->head = new_node;

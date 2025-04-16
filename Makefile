@@ -22,13 +22,13 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS) $(SHELL_DIRS)
 ###############                  SOURCE FILES                     ##############
 ################################################################################
 
-PARSING_FILES :=envs.c lists_and_nodes_parser.c parser_utils.c parser.c
+PARSING_FILES := envs.c lists_and_nodes_parser.c token_to_cmd.c ttc_utils.c
 PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 
-LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c error.c
+LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c expansion.c expansion_utils.c segments.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
-EXECUTOR_FILES := 	 execute.c redirecting/io_redir_utils.c redirecting/io_redir.c process_utils.c processes.c env_functions.c pipe_utils.c
+EXECUTOR_FILES := 	 execute.c redirecting/io_redir_utils.c redirecting/io_redir.c process_utils.c processes.c testing.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
 GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c

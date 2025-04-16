@@ -21,7 +21,7 @@ t_env_node	*add_env_node(char *type, char *value)
 	if (!new_node)
 		return (NULL);
 	new_node->next = NULL;
-	new_node->type = type;
+	new_node->key = type;
 	new_node->value = value;
 	return (new_node);
 }

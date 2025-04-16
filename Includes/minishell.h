@@ -36,6 +36,7 @@ typedef struct s_cmd_node
 
 typedef struct s_cmd_list
 {
+	int			syntax_error;
 	t_cmd_node	*head;
 	t_cmd_node	*tail;
 	ssize_t		size;
@@ -43,7 +44,7 @@ typedef struct s_cmd_list
 
 typedef struct s_env_node
 {
-	char				*type;
+	char				*key;
 	char				*value;
 	struct s_env_node	*next;
 }	t_env_node;

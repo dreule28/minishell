@@ -13,7 +13,11 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	if (!input[*i])
-		error_message("Syntax error: Open quotes!\n");
+	{
+		ft_putstr_fd("Syntax error: Open quotes!\n", 2);
+		list->syntax_error = 1;
+		return ;
+	}
 	(*i)++;
 	if (quote == '"')
 		token_type = D_QUOTES;
@@ -21,32 +25,6 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 		token_type = S_QUOTES;
 	token_value = gc_substr(input, start, *i - start);
 	add_token(list, token_value, token_type);
-}
-
-void	check_operators(t_token_list *list, char *input, int *i)
-{
-	int		start;
-	int		token_type;
-
-	start = *i;
-	token_type = 0;
-	if (input[*i] == '&' && input[*i + 1] == '&')
-	{
-		token_type = TK_AND;
-		(*i) += 2;
-	}
-	else if (input[*i] == '|' && input[*i + 1] == '|')
-	{
-		token_type = TK_OR;
-		(*i) += 2;
-	}
-	else if (input[*i] == '&')
-	{
-		token_type = TK_AMPERSAND;
-		(*i)++;
-	}
-	if (token_type != 0)
-		add_token(list, gc_substr(input, start, *i - start), token_type);
 }
 
 void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
@@ -77,7 +55,7 @@ void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
 	add_token(list, gc_substr(input, start, *i - start), redir_typ);
 }
 
-void	check_redirs(t_token_list *list, char *input, int *i)
+int	check_redirs(t_token_list *list, char *input, int *i)
 {
 	int	redir_type;
 	int	start;
@@ -97,11 +75,13 @@ void	check_redirs(t_token_list *list, char *input, int *i)
 			(*i)++;
 		if (start == *i)
 		{
-			printf("Syntax error: Missing filename!\n");
-			return ;
+			ft_putstr_fd("Syntax error: Missing filename!\n",2);
+			list->syntax_error = 1;
+			return (0);
 		}
 		add_token(list, gc_substr(input, start, *i - start), TK_WORD);
 	}
+	return (1);
 }
 
 void	handle_pipe(t_token_list *list, int *i)
