@@ -2,7 +2,7 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	// char	*prompt;
+	char	*prompt;
 	// int		exit_code;
 	(void)argc;
 	(void)argv;
@@ -11,22 +11,22 @@ int	main(int argc, char **argv, char **env)
 	// check_fds();
 	// ft_putstr_fd("BEFORE INIT\n", 2);
 	gc_init();
-	// while (1)
-	// {
-	// 	ft_putstr_fd("We are here\n", 2);
-	// 	prompt = readline("2, 3 Years dagestan forget > ");
-	// 	if (prompt)
-	// 	{
-	// 		gc_add(prompt); 								// adds the prompt string to the garbage collector
-	// 		// fromp_parser(prompt);
+	while (1)
+	{
+		ft_putstr_fd("We are here\n", 2);
+		prompt = readline("2, 3 Years dagestan forget > ");
+		if (prompt)
+		{
+			gc_add(prompt); 								// adds the prompt string to the garbage collector
+			// fromp_parser(prompt);
 			execute(env);
-	// 		history_add("");
-	// 		if (ft_strncmp(prompt, "exit", 4) == 0)
-	// 			break ;
-	// 	}
-	// 	clean_up(); 
-	// }
-	// return (0);
+			// history_add("");
+			if (ft_strncmp(prompt, "exit", 4) == 0)
+				break ;
+		}
+		clean_up(); 
+	}
+	return (0);
 }
 
 // #include <errno.h>

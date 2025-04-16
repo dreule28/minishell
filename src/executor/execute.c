@@ -11,28 +11,28 @@ void execute(char **env)
 	t_cmd_node *cmd_node1; // declare a pointer to a struct of type t_cmd_node1
 	char *cmd1[] = {"cat", NULL};
 	cmd_node1 = add_cmd_node(cmd_list,cmd1, CMD); // add a node to the struct
-	add_file_node(cmd_node1->files, "src/main.c", INFILE);
+	add_file_node(cmd_node1->files, "END1", HEREDOC);
+
 	
-	t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd2[] = {"cat", NULL};
-	cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
-	add_file_node(cmd_node2->files, "outfile1", OUTFILE);
-	
+	// t_cmd_node *cmd_node2; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd2[] = {"echo", "second" , NULL};
+	// cmd_node2 = add_cmd_node(cmd_list,cmd2, CMD); // add a node to the struct
+	// add_file_node(cmd_node2->files, "file.txt", OUTFILE_APPEND);
 
-	t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd3[] = {"sleep", "5" , NULL};
-	cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
-	add_file_node(cmd_node3->files, "oufile1", OUTFILE);
+	// t_cmd_node *cmd_node3; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd3[] = {"cat" , NULL};
+	// cmd_node3 = add_cmd_node(cmd_list,cmd3, CMD); // add a node to the struct
+	// add_file_node(cmd_node3->files, "outfile2", INFILE);
 
-	t_cmd_node *cmd_node4; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd4[] = {"sleep", "5"  , NULL};
-	cmd_node4 = add_cmd_node(cmd_list,cmd4, CMD); // add a node to the struct
-	add_file_node(cmd_node4->files, "infile1", INFILE);
+	// t_cmd_node *cmd_node4; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd4[] = {"cat"  , NULL};
+	// cmd_node4 = add_cmd_node(cmd_list,cmd4, CMD); // add a node to the struct
+	// add_file_node(cmd_node4->files, "file.txt", INFILE);
 
-	t_cmd_node *cmd_node5; // declare a pointer to a struct of type t_cmd_node1
-	char *cmd5[] = {"cat", NULL};
-	cmd_node5 = add_cmd_node(cmd_list,cmd5, CMD); // add a node to the struct
-	add_file_node(cmd_node5->files, "infile1", INFILE);
+	// t_cmd_node *cmd_node5; // declare a pointer to a struct of type t_cmd_node1
+	// char *cmd5[] = {"cat" , NULL};
+	// cmd_node5 = add_cmd_node(cmd_list,cmd5, CMD); // add a node to the struct
+	// add_file_node(cmd_node5->files, "infile1", INFILE);
 
 	env_list = get_envs(env);
 
@@ -90,12 +90,10 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			return (ft_putstr_fd("\033Error  forking", 2));	
 		else if(pid == 0)
 		{
-			if (prev_pipe_fd[0] != -1)
+		if (prev_pipe_fd[0] != -1)
             dup2(prev_pipe_fd[0], STDIN_FILENO);
         if (cmd_node->next)
             dup2(pipe_fd[1], STDOUT_FILENO);
-
-        // Close all pipe fds in the child
         if (pipe_fd[0] != -1)
             close(pipe_fd[0]);
         if (pipe_fd[1] != -1)
@@ -104,7 +102,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
             close(prev_pipe_fd[0]);
         if (prev_pipe_fd[1] != -1)
             close(prev_pipe_fd[1]);
-			DEBUG_INFO("FROM LOOP-> HEAD ADRESS: %p \t NDOE ADRESS: %p", cmd_list->head, cmd_node);
+			// DEBUG_INFO("FROM LOOP-> HEAD ADRESS: %p \t NDOE ADRESS: %p", cmd_list->head, cmd_node);
 			child_proccess(cmd_node, pipe_fd, env_list , cmd_list);
 		}
 		if (prev_pipe_fd[0] != -1)

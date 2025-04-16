@@ -4,21 +4,25 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_
 {
 	char *env_path_position;
 	char **env_path_list;
+	int test;
 
+	test = 0;
 	if(cmd_node->files->size > 0)
-	DEBUG_INFO("FROM CHILD-> HEAD ADRESS: %p \t NODE ADRESS: %p", cmd_list->head, cmd_node);
-		if(file_redirecting_child(cmd_node, pipe_fd, cmd_list) == -1)
+		test = file_redirecting_child(cmd_node, pipe_fd, cmd_list);
+	
+	// DEBUG_INFO("TEST :  %d \n", test);
+	if(test == -1)
 			return ; 
 	env_path_position = env_search_path_var(env_list);
 	if(env_path_position == NULL)
 	{
-		ft_putstr_fd("Error: env not found\n", 2);
+		ft_putstr_fd("\033Error: env not found\n", 2);
 		return ;
 	}
 	env_path_list = gc_split(env_path_position, ':');
 	if(!env_path_list)
 	{
-		ft_putstr_fd("Error: path not found\n", 2);
+		ft_putstr_fd("\033Error: path not found\n", 2);
 		return ;
 	}
 	// ft_putstr_fd("nach redir \n ", 2);
