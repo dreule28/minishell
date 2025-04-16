@@ -65,5 +65,4 @@ void	rebuild_token_value(t_token *token)
 		segment = segment->next;
 	}
 	token->value = result;
-	DEBUG_INFO("Rebuilt token value: %s", token->value);
 }

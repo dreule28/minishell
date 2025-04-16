@@ -78,10 +78,7 @@ t_token_list	*lexer(char *input)
 		else
 			handle_word_or_arg(list, input, &i);
 		if (list->syntax_error)
-		{
-			DEBUG_ERROR("Syntax error detected, stopping lexer processing");
 			break ;
-		}
 	}
 	return (list);
 }

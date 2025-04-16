@@ -9,7 +9,6 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 
 	quote = input[(*i)];
 	start = *i;
-	DEBUG_INFO("Processing quotes: %c at position %d", quote, start);
 	(*i)++;
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
@@ -26,7 +25,6 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 		token_type = S_QUOTES;
 	token_value = gc_substr(input, start, *i - start);
 	add_token(list, token_value, token_type);
-	DEBUG_INFO("Added %s token: %s", (token_type == D_QUOTES) ? "double quote" : "single quote", token_value); // ADD HERE
 }
 
 void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
@@ -64,9 +62,7 @@ int	check_redirs(t_token_list *list, char *input, int *i)
 
 	start = *i;
 	redir_type = 0;
-	DEBUG_INFO("Processing redirection at position %d", start); // ADD HERE
 	check_and_assign(list, input, i, redir_type);
-	DEBUG_INFO("Added redirection token type %d", list->tail->token); // ADD HERE after check_and_assign
 	while (input[*i] == ' ' || input[*i] == '\t')
 		(*i)++;
 	start = *i;

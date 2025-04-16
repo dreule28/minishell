@@ -20,32 +20,18 @@ void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 
 	if (!cmd_list->tail)
 	{
-		DEBUG_INFO("No tail exists, creating new command node for: %s", token->value);
 		cmd = ft_malloc(sizeof(char *) * 2, 1);
 		if (!cmd)
-		{
-			DEBUG_ERROR("Memory allocation failed for command array");
 			return;
-		}
 		cmd[0] = gc_strdup(token->value);
 		if (!cmd[0])
-		{
-			DEBUG_ERROR("Failed to duplicate command value");
 			return;
-		}
 		cmd[1] = NULL;
 		if (!add_cmd_node(cmd_list, cmd, cmd_type))
-		{
-			DEBUG_ERROR("Failed to add command node");
 			return;
-		}
-		DEBUG_INFO("Added new command node with command: %s", cmd[0]);
 	}
 	else
-	{
-		DEBUG_INFO("Appending to existing command");
 		append_arg(cmd_list, token);
-	}
 }
 
 int	handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr)
@@ -54,7 +40,6 @@ int	handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr)
 
 	if (token->next->token == TK_PIPE)
 	{
-		DEBUG_ERROR("Invalid parameters in handle_pipe_node");
 		cmd_list->syntax_error = 1;
 		return (0);
 	}
@@ -72,7 +57,6 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 	t_token	*token;
 
 	token = *curr;
-	DEBUG_TRACE("Processing token: [%s] (type: %d)", token->value, token->token);
 	if (token->token == TK_PIPE && (!token->next || cmd_list->size == 0))
 	{
 		ft_putstr_fd("Syntax error: Empty Pipe", 2);
@@ -86,14 +70,12 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 	}
 	else if (is_redirection(token->token) && !cmd_list->syntax_error)
 	{
-		DEBUG_INFO("Handling redirection: %s", token->value);
 		handle_redirection(cmd_list, token);
 		if (token->next)
 			*curr = token->next;
 	}
 	else
 	{
-		DEBUG_INFO("Handling command/argument: %s", token->value);
 		handle_command(cmd_list, token);
 		*curr = token->next;
 	}
