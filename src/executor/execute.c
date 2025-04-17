@@ -70,7 +70,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
         if (prev_pipe_fd[1] != -1)
             close(prev_pipe_fd[1]);
 			// DEBUG_INFO("FROM LOOP-> HEAD ADRESS: %p \t NDOE ADRESS: %p", cmd_list->head, cmd_node);
-			child_proccess(cmd_node, pipe_fd, env_list , cmd_list);
+			child_proccess(cmd_node, env_list , cmd_list);
 		}
 		if (prev_pipe_fd[0] != -1)
         	close(prev_pipe_fd[0]);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_cmd_list *cmd_list)
+void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list, t_cmd_list *cmd_list)
 {
 	char *env_path_position;
 	char **env_path_list;
@@ -8,7 +8,7 @@ void	child_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list, t_
 
 	test = 0;
 	if(cmd_node->files->size > 0)
-		test = file_redirecting_child(cmd_node, pipe_fd, cmd_list);
+		test = file_redirecting_child(cmd_node, cmd_list, env_list);
 
 	// DEBUG_INFO("TEST :  %d \n", test);
 	if(test == -1)
