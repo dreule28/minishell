@@ -3,6 +3,8 @@
 
 //Includes -- BEGIN
 # include <stdio.h>
+# include <errno.h>
+# include <dirent.h>
 # include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
