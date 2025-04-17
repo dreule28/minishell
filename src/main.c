@@ -75,8 +75,10 @@ int main(int argc, char **argv, char **env)
                 break;
 
             // DEBUG_INFO("Executing command");
+			DEBUG_INFO("env list : %s\n", env_list->head->type);
+
             execute(env_list, cmd_list);
-            // DEBUG_INFO("Command execution completed");
+            delete_tmp_files("tmp");
         }
     }
     clean_up();

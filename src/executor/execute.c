@@ -3,6 +3,8 @@
 
 void execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
+	// DEBUG_INFO("starting execution\n");
+
 	// if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	// 	single_builtin_execution(cmd_list); // single builtin
 	// else
@@ -11,8 +13,8 @@ void execute(t_env_list *env_list, t_cmd_list *cmd_list)
 
 void	single_builtin_execution(t_cmd_list *cmd_list)
 {
-	(void)cmd_list;
-	// if(strcmp(cmd_list->head->cmd[0], "exit") == 0);
+	if(strcmp(cmd_list->head->cmd[0], "exit") == 0)
+		exit(0);
 }
 
 void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
@@ -22,18 +24,14 @@ void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
 
 	saved_stdout = 0;
 	saved_stdin = 0;
-	// check_fds();
 	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	execution_loop(cmd_list, env_list);
-	// ft_putstr_fd("We are after execution loop\n", 2);
-	reset_redirection(saved_stdin, saved_stdout);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
-	// ft_putstr_fd("WE ARE IN EXEC\n", 2);
-	// check_fds();
 }
 
-#include <errno.h>
 void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 {
 	pid_t pid;	// speichert die process id von dem jeweiligen prozzess (child und parent)
@@ -53,8 +51,8 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			pipe_creation(pipe_fd);
 		}
 		pid =  fork();
-		if(pid < 0)
-			return (ft_putstr_fd("\033Error  forking", 2));
+		if(pid < 0)		
+			return (ft_putstr_fd("\033Error  forking", 2));	
 		else if(pid == 0)
 		{
 		if (prev_pipe_fd[0] != -1)
@@ -70,7 +68,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
         if (prev_pipe_fd[1] != -1)
             close(prev_pipe_fd[1]);
 			// DEBUG_INFO("FROM LOOP-> HEAD ADRESS: %p \t NDOE ADRESS: %p", cmd_list->head, cmd_node);
-			child_proccess(cmd_node, env_list , cmd_list);
+			child_proccess(cmd_node, env_list);
 		}
 		if (prev_pipe_fd[0] != -1)
         	close(prev_pipe_fd[0]);

@@ -1,17 +1,12 @@
 #include "minishell.h"
 
-void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list, t_cmd_list *cmd_list)
+void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	char *env_path_position;
 	char **env_path_list;
-	int test;
 
-	test = 0;
 	if(cmd_node->files->size > 0)
-		test = file_redirecting_child(cmd_node, cmd_list, env_list);
-
-	// DEBUG_INFO("TEST :  %d \n", test);
-	if(test == -1)
+		if(file_redirecting_child(cmd_node) == -1)
 			return ;
 	env_path_position = env_search_path_var(env_list);
 	if(env_path_position == NULL)
@@ -25,9 +20,6 @@ void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list, t_cmd_list *cmd_
 		ft_putstr_fd("\033Error: path not found\n", 2);
 		return ;
 	}
-	// ft_putstr_fd("nach redir \n ", 2);
-	// check_fds();
-
 	execute_command(cmd_node, env_path_list, env_list);
 }
 
@@ -51,7 +43,6 @@ char *create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 			return (full_cmd_path);
 		}
 		command_index++;
-		// printf("%s\n", full_cmd_path);
 		free(full_cmd_path);
 	}
 	return(NULL);
@@ -71,9 +62,6 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env
 	converted_env_list = env_converter(env_list);
 	if(!converted_env_list)
 		return ;
-	// ft_putstr_fd("Child: finished command processing \n", 2);
-	DEBUG_INFO("CMD[0] : %s\n", cmd_node->cmd[0]);
-	DEBUG_INFO("CMD[1] : %s\n", cmd_node->cmd[1]);
 	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
 	ft_putstr_fd("Error: execve failed\n", 2);
 }
