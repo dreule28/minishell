@@ -154,7 +154,6 @@ t_cmd_list		*token_to_cmd(t_token_list *tk_list);
 bool			is_redirection(int token_type);
 bool			check_command(int token_type);
 void			process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type);
-int				handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr);
 void			process_token(t_cmd_list *cmd_list, t_token **curr);
 //ttc_utils.c -- END
 //Parser-Folder -- END
