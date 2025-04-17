@@ -8,7 +8,9 @@ void execute(t_env_list *env_list, t_cmd_list *cmd_list)
 	// if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	// 	single_builtin_execution(cmd_list); // single builtin
 	// else
+	if (!cmd_list->syntax_error)
 		execution(cmd_list, env_list); // normal execution
+	return ;
 }
 
 void	single_builtin_execution(t_cmd_list *cmd_list)
@@ -51,8 +53,8 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			pipe_creation(pipe_fd);
 		}
 		pid =  fork();
-		if(pid < 0)		
-			return (ft_putstr_fd("\033Error  forking", 2));	
+		if(pid < 0)
+			return (ft_putstr_fd("\033Error  forking", 2));
 		else if(pid == 0)
 		{
 		if (prev_pipe_fd[0] != -1)
