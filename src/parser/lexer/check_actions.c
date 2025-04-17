@@ -16,7 +16,6 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 	{
 		ft_putstr_fd("Syntax error: Open quotes!\n", 2);
 		list->syntax_error = 1;
-		return ;
 	}
 	(*i)++;
 	if (quote == '"')

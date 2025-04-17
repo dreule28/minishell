@@ -22,7 +22,7 @@ int	handle_quotes(t_token_list *list, char *input, int *i)
 		(*i)++;
 	if (!input[*i])
 	{
-		ft_putstr_fd("Syntax error: Open quotes!\n",2 );
+		ft_putstr_fd("Synax error: Open quotes!\n", 2);
 		list->syntax_error = 1;
 		return (0);
 	}
