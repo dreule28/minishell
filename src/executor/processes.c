@@ -6,7 +6,7 @@ void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 	char **env_path_list;
 
 	if(cmd_node->files->size > 0)
-		if(file_redirecting_child(cmd_node) == -1)
+		if(file_redirecting_child(cmd_node, env_list) == -1)
 			return ;
 	env_path_position = env_search_path_var(env_list);
 	if(env_path_position == NULL)

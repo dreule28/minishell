@@ -16,13 +16,13 @@ int	redir_infile(t_file_node *file_node)
 }
 
 
-int	redir_here_doc(t_file_node *file_node)
+int	redir_here_doc(t_file_node *file_node, t_env_list *env_list)
 {
 	int file_redirecting;
 	char *file_name;
 
 	file_redirecting = 0;
-	file_name = create_here_doc(file_node);
+	file_name = create_here_doc(file_node, env_list);
 	if(file_name == NULL)
 		return(-1);
 	file_redirecting = open(file_name, O_RDONLY);
@@ -40,14 +40,14 @@ int	redir_here_doc(t_file_node *file_node)
 	return (INFILE_USED);
 }
 
-char	*create_here_doc(t_file_node *file_node)
+char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 {
 	int write_fd;
 	char *line;
 	char *str;
+	t_token *token;
 
 	set_interaktive_line();
-	
 	str = gc_strjoin("tmp/.", file_node->filename);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
@@ -62,8 +62,13 @@ char	*create_here_doc(t_file_node *file_node)
 			free(line);
 			break ;
 		}
-		ft_putstr_fd(line, write_fd);
-		ft_putstr_fd("\n", write_fd);
+		token = ft_malloc(sizeof(t_token), 1);
+        token->value = gc_strdup(line);
+        token->segment_list = NULL;
+        split_token_into_heredocs(token);
+        expand_token(token, env_list);
+        ft_putstr_fd(token->value, write_fd);
+        ft_putstr_fd("\n", write_fd);
 		free(line);
 	}
 	close(write_fd);

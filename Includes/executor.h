@@ -23,19 +23,19 @@ void	execution(t_cmd_list *cmd_list, t_env_list *env_list);
 void	execution_loop(t_cmd_list *cmd_list, t_env_list *env_list);
 
 
-// void	single_cmd_execution(t_cmd_list *cmd_list, char **env); // removed
 
 // io_redir.c
 int	redir_infile(t_file_node *file_node);
 int	redir_here_doc(t_file_node *file_node, t_env_list *env_list);
-int create_here_doc(t_file_node *file_node, t_env_list *env_list);
+char *create_here_doc(t_file_node *file_node, t_env_list *env_list);
 int	redir_outfile(t_file_node *file_node);
 int	redir_append(t_file_node *file_node);
 
 // io_redir_utils.c
-int file_redirecting_child(t_cmd_node *cmd_node, t_cmd_list *cmd_list, t_env_list *env_list);
-// int file_redirecting_parent(t_cmd_node *cmd_node, int *pipe_fd);
-// int	redir_loop(t_cmd_node *cmd_node,int *pipe_fd);
+int file_redirecting_child(t_cmd_node *cmd_node,t_env_list *env_list);
+void	set_interaktive_line(void);
+void	delete_tmp_files(const char *folder_name);
+
 
 // process_utils.c
 void reset_redirection(int saved_stdin, int saved_stdout);
@@ -43,8 +43,7 @@ void save_stdin_stdout(int *saved_stdin, int *saved_stdout);
 void	pipe_creation(int *fd);
 
 // processes.c
-void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list, t_cmd_list *cmd_list);
-// void	parent_proccess(t_cmd_node *cmd_node, int *pipe_fd, t_env_list *env_list);
+void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list);
 char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list);
 void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env_list);
 

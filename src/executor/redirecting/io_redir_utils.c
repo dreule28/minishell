@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-int file_redirecting_child(t_cmd_node *cmd_node)
+int file_redirecting_child(t_cmd_node *cmd_node, t_env_list *env_list)
 {
     int file_check_outfile;
 	int file_check_infile;
 
-	file_check_infile = redir_loop_infiles(cmd_node);
+	file_check_infile = redir_loop_infiles(cmd_node, env_list);
 	file_check_outfile = redir_loop_outfiles(cmd_node);
     if (file_check_outfile == -1 || file_check_infile == -1)
 		return (-1);
@@ -13,7 +13,7 @@ int file_redirecting_child(t_cmd_node *cmd_node)
 }
 
 
-int redir_loop_infiles(t_cmd_node *cmd_node)
+int redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	t_file_node *file_node;
 	int infile_status;
@@ -29,7 +29,7 @@ int redir_loop_infiles(t_cmd_node *cmd_node)
 		if (file_node->redir_type == TK_INFILE)
 			return_value = redir_infile(file_node);
 		else if (file_node->redir_type == TK_HEREDOC)
-			return_value = redir_here_doc(file_node);
+			return_value = redir_here_doc(file_node, env_list);
 		if(return_value == -1)
 			return(-1);
 		if (return_value == INFILE_USED)
