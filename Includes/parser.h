@@ -120,6 +120,7 @@ t_segment_list	*init_segment_list(void);
 void			add_segment_to_list(t_segment_list *list, char *value, t_seg_type type);
 void			add_segment_to_token(t_token *token, char *value, t_seg_type type);
 void			split_token_into_segments(t_token *token);
+void			split_token_into_heredocs(t_token *token);
 t_token_list	*process_token_list(t_token_list *token_list);
 //segments.c -- END
 

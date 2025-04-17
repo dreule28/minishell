@@ -57,6 +57,19 @@ void	split_token_into_segments(t_token *token)
 		add_segment_to_token(token, gc_substr(token->value, start, i - start), SEG_NO_QUOTE);
 }
 
+void	split_token_into_heredocs(t_token *token)
+{
+	int	i;
+	int	start;
+
+	start = 0;
+	if (!token || !token->value)
+		return ;
+	i = ft_strlen(token->value);
+	if (i > start)
+		add_segment_to_token(token, gc_substr(token->value, start, i - start), SEG_NO_QUOTE);
+}
+
 t_token_list	*process_token_list(t_token_list *token_list)
 {
 	t_token	*curr;
