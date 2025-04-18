@@ -1,84 +1,112 @@
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-//Includes -- BEGIN
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-# include <sys/wait.h>
-
+// Includes -- BEGIN
 # include "minishell.h"
-//Includes -- END
+# include <fcntl.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/wait.h>
+# include <unistd.h>
+// Includes -- END
 
-typedef struct s_cmd_list t_cmd_list;
+typedef struct s_cmd_list	t_cmd_list;
 
-
-//Functions -- BEGIN
+// Functions -- BEGIN
 
 // execute.c
-void	 execute(t_env_list *env_list, t_cmd_list *cmd_list);
-void	single_builtin_execution(t_cmd_list *cmd_list);
-void	execution(t_cmd_list *cmd_list, t_env_list *env_list);
-void	execution_loop(t_cmd_list *cmd_list, t_env_list *env_list);
+void						execute(t_env_list *env_list, t_cmd_list *cmd_list);
+void						execution(t_cmd_list *cmd_list,
+								t_env_list *env_list);
+void						execution_loop(t_cmd_list *cmd_list,
+								t_env_list *env_list);
 
+// debug_utils.c
+int							is_fd_open(int fd);
+void						check_fds(void);
 
+// redirecting/io_redir_utils.c
+int							file_redirecting(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						delete_tmp_files(const char *folder_name);
+void						set_interaktive_line(void);
+void						write_here_doc_file(char *line, int write_fd,
+								t_env_list *env_list);
 
-// io_redir.c
-int	redir_infile(t_file_node *file_node);
-int	redir_here_doc(t_file_node *file_node, t_env_list *env_list);
-char *create_here_doc(t_file_node *file_node, t_env_list *env_list);
-int	redir_outfile(t_file_node *file_node);
-int	redir_append(t_file_node *file_node);
+// redirecting/io_redir.c
+int							redir_infile(t_file_node *file_node);
+int							redir_here_doc(t_file_node *file_node,
+								t_env_list *env_list);
+char						*create_here_doc(t_file_node *file_node,
+								t_env_list *env_list);
+int							redir_outfile(t_file_node *file_node);
+int							redir_append(t_file_node *file_node);
 
-// io_redir_utils.c
-int file_redirecting_child(t_cmd_node *cmd_node,t_env_list *env_list);
-void	set_interaktive_line(void);
-void	delete_tmp_files(const char *folder_name);
+// redirecting/io_redir_loops.c
+int							redir_loop_infiles(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+int							redir_loop_outfiles(t_cmd_node *cmd_node);
 
+// process/env_functions.c
+int							env_lenght(t_env_list *env_list);
+char						**env_converter(t_env_list *env_list);
+char						*env_search_path_var(t_env_list *env_list);
 
-// process_utils.c
-void reset_redirection(int saved_stdin, int saved_stdout);
-void save_stdin_stdout(int *saved_stdin, int *saved_stdout);
-void	pipe_creation(int *fd);
+// process/process_utils.c
+void						reset_redirection(int saved_stdin,
+								int saved_stdout);
+void						save_stdin_stdout(int *saved_stdin,
+								int *saved_stdout);
+void						pipe_creation(int *fd);
+int							error_check_null(char *str);
 
-// processes.c
-void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list);
-char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list);
-void	execute_command(t_cmd_node *cmd_node, char **env_path_list, t_env_list *env_list);
+// process/pipe_utils.c
+void						close_pipes(int *pipe_fd);
+void						set_invalid_pipe(int *prev_pipe_fd);
+void						set_new_prev_pipe(int *prev_pipe_fd, int *pipe_fd);
+int							set_pipes_child(t_cmd_node *cmd_node, int *pipe_fd,
+								int *prev_pipe_fd);
+void						set_pipes_parent(int *pipe_fd, int *prev_pipe_fd);
 
-// env_functions.c
-int		env_lenght(t_env_list *env_list);
-char	**env_converter(t_env_list *env_list);
-char	*env_search_path_var(t_env_list *env_list);
+// process/processes.c
+void						child_proccess(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+char						*create_command_path(t_cmd_node *cmd_node,
+								char **env_path_list);
+void						execute_command(t_cmd_node *cmd_node,
+								char **env_path_list, t_env_list *env_list);
 
-// pipe_utils.c
-void	dup_stdin_stdout(int *pipe_fd);
-void	close_pipes(int *pipe_fd);
-void	set_invalid_pipe(int *prev_pipe_fd);
-void	set_new_prev_pipe(int *prev_pipe_fd, int *pipe_fd);
+// builtins/utils.c
+void						single_builtin_execution(t_cmd_node *cmd_node,
+								t_env_list *env_list);
 
+// builtins/builtins.c
+void						builtin_echo(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						builtin_cd(t_cmd_node *cmd_node);
+void						builtin_pwd(t_cmd_node *cmd_node);
+void						builtin_exit(t_cmd_node *cmd_node);
 
-int redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list);
-int	redir_loop_outfiles(t_cmd_node *cmd_node);
+// builtins/env_builtins.c
+void						builtin_env(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						builtin_export(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						builtin_unset(t_cmd_node *cmd_node,
+								t_env_list *env_list);
 
-//Functions -- END
+// Functions -- END
 
-
-int is_fd_open(int fd);
-void    check_fds(void);
-
-
-typedef enum FILE_CHECK				// got the redirecting types for the files
+typedef enum FILE_CHECK // got the redirecting types for the files
 {
 	OUTFILE_NOT_USED,
 	OUTFILE_USED,
 	INFILE_NOT_USED,
 	INFILE_USED
-}	FILE_CHECK;
+}							FILE_CHECK;
 
-typedef enum ERRORS				// got the redirecting types for the files
+typedef enum ERRORS // got the redirecting types for the files
 {
 	ERROR = -1
-}	ERRORS;
+}							ERRORS;
 #endif

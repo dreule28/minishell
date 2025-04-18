@@ -79,6 +79,7 @@ int main(int argc, char **argv, char **env)
 
             execute(env_list, cmd_list);
             delete_tmp_files("tmp");
+			check_fds();
         }
     }
     clean_up();
