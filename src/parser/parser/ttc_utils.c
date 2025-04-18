@@ -34,6 +34,24 @@ void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 		append_arg(cmd_list, token);
 }
 
+int	handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr)
+{
+	int	next_cmd_type;
+
+	if (token->next->token == TK_PIPE)
+	{
+		cmd_list->syntax_error = 1;
+		return (0);
+	}
+	next_cmd_type = CMD;
+	if (token->next && token->next->token == TK_BUILTIN)
+		next_cmd_type = BUILTIN;
+	add_cmd_node(cmd_list, NULL, next_cmd_type);
+	if (token->next)
+		*curr = token->next;
+	return (1);
+}
+
 void	process_token(t_cmd_list *cmd_list, t_token **curr)
 {
 	t_token	*token;
@@ -45,6 +63,10 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 		cmd_list->syntax_error = 1;
 		*curr = NULL;
 		return ;
+	}
+	else if (token->token == TK_PIPE)
+	{
+		handle_pipe_node(cmd_list, token, curr);
 	}
 	else if (is_redirection(token->token) && !cmd_list->syntax_error)
 	{
