@@ -49,7 +49,6 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 
 	set_interaktive_line();
 	str = gc_strjoin("tmp/.here_doc_", file_node->filename);
-	DEBUG_INFO("str %s\n", str);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
 		return (ft_putstr_fd("Operation not permitted\n", 2), NULL);
@@ -63,7 +62,10 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 			free(line);
 			break ;
 		}
-		write_here_doc_file(line, write_fd, env_list);
+		if(count_single_quotes(line) == 2 || count_double_quotes(line) == 2)
+			write_here_doc_file(line, write_fd);
+		else
+			write_here_doc_file_expand(line, write_fd, env_list);
 		free(line);
 	}
 	close(write_fd);

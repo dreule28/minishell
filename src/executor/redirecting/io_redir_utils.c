@@ -46,7 +46,7 @@ void	set_interaktive_line(void)
 	close(tty_fd);
 }
 
-void	write_here_doc_file(char *line, int write_fd, t_env_list *env_list)
+void	write_here_doc_file_expand(char *line, int write_fd, t_env_list *env_list)
 {
 	t_token	*token;
 

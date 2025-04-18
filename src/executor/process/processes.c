@@ -9,11 +9,11 @@ void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 		if (file_redirecting(cmd_node, env_list) == -1)
 			return ;
 	env_path_position = env_search_path_var(env_list);
-	// if (error_check_null(env_path_position) == -1)
-	// 	return ;
+	if (error_check_null(env_path_position) == -1)
+		return ;
 	env_path_list = gc_split(env_path_position, ':');
-	// if (error_check_null(env_path_list[0]) == -1)
-	// 	return ;
+	if (error_check_null(env_path_list[0]) == -1)
+		return ;
 	execute_command(cmd_node, env_path_list, env_list);
 }
 

@@ -30,7 +30,7 @@ int							file_redirecting(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 void						delete_tmp_files(const char *folder_name);
 void						set_interaktive_line(void);
-void						write_here_doc_file(char *line, int write_fd,
+void						write_here_doc_file_expand(char *line, int write_fd,
 								t_env_list *env_list);
 
 // redirecting/io_redir.c
@@ -46,6 +46,11 @@ int							redir_append(t_file_node *file_node);
 int							redir_loop_infiles(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 int							redir_loop_outfiles(t_cmd_node *cmd_node);
+
+// redirecion/here_doc_utils.c
+int count_single_quotes(char *line);
+int count_double_quotes(char *line);
+void 	write_here_doc_file(char *line, int write_fd);
 
 // process/env_functions.c
 int							env_lenght(t_env_list *env_list);

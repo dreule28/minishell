@@ -37,7 +37,7 @@ BUILTINS := $(addprefix executor/builtins/, $(BUILTINS_FILES))
 PROCESS_FILES := env_functions.c pipe_utils.c process_utils.c processes.c
 PROCESS := $(addprefix executor/process/, $(PROCESS_FILES))
 
-REDIRECTING_FILES := io_redir_loops.c io_redir_utils.c io_redir.c
+REDIRECTING_FILES := io_redir_loops.c io_redir_utils.c io_redir.c here_doc_utils.c
 REDIRECTING := $(addprefix executor/redirecting/, $(REDIRECTING_FILES))
 
 GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c
