@@ -34,9 +34,6 @@ EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c
 GC := $(addprefix gc/, $(GC_FILES))
 
-SHELL_FILES := shell.c
-SHELL_ := $(addprefix shell/, $(SHELL_FILES))
-
 SRC_FILES := main.c debug.c
 SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(LEXER) $(EXECUTOR) $(SHELL_)) $(GC)
 
