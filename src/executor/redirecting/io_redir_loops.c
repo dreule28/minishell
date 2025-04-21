@@ -30,8 +30,6 @@ int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 	if (cmd_node == NULL)
 		return (INFILE_NOT_USED);
 	file_node = cmd_node->files->head;
-	if(create_here_doc_files(cmd_node, env_list) == -1)
-		return(-1);
 	while (file_node != NULL)
 	{
 		if (file_node->redir_type == TK_HEREDOC)

@@ -16,7 +16,8 @@ void builtin_pwd(t_cmd_node *cmd_node)
 	(void)cmd_node;
 }
 
-void builtin_exit(t_cmd_node *cmd_node)
+void builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	(void)cmd_node;
+	(void)env_list;
 }

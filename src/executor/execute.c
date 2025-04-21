@@ -6,11 +6,11 @@ void execute(t_env_list *env_list, t_cmd_list *cmd_list)
 	// DEBUG_INFO("starting execution\n");
 
 	// if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
-	// 	single_builtin_execution(cmd_list); // single builtin
+	// 	single_builtin_execution(cmd_list->head, env_list);
 	// else
-	if (!cmd_list->syntax_error)
-		execution(cmd_list, env_list);
-	return ;
+		if (!cmd_list->syntax_error)
+			execution(cmd_list, env_list);
+	// return ;
 }
 
 
@@ -41,8 +41,11 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	prev_pipe_fd[1] = -1;
 	pid = 0;
 	cmd_node = cmd_list->head;
+
 	while(cmd_node)
 	{
+		if(create_here_doc_files(cmd_node, env_list) == -1)
+			ft_putstr_fd("error in heredoc creation\n", 2);
 		if(cmd_node->next)
 			pipe_creation(pipe_fd);
 		pid =  fork();

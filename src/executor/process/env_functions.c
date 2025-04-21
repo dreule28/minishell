@@ -59,3 +59,36 @@ char	**env_converter(t_env_list *env_list)
 	converted_env_list[count] = NULL;
 	return (converted_env_list);
 }
+char	**env_converter_export(t_env_list *env_list)
+{
+	int			count;
+	t_env_node	*env_node;
+	char		**converted_env_list;
+	char *tmp;
+	char *env_str;
+
+	count = 0;
+	env_node = env_list->head;
+	count = env_lenght(env_list);
+	converted_env_list = ft_malloc(count + 1, sizeof(char *));
+	if (!converted_env_list)
+		return (ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
+	env_node = env_list->head;
+	count = 0;
+	while (env_node)
+	{
+		tmp = ft_strjoin(env_node->type, "=");
+		env_str = ft_strjoin(tmp, "\"");
+		free(tmp);
+		tmp = ft_strjoin(env_str, env_node->value);
+		free(env_str);
+		env_str = gc_strjoin(tmp, "\"");
+		free(tmp);
+		if (!env_str)
+			return (ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
+		converted_env_list[count++] = env_str;
+		env_node = env_node->next;
+	}
+	converted_env_list[count] = NULL;
+	return (converted_env_list);
+}

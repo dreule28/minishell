@@ -39,6 +39,7 @@ char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 		command_index++;
 		free(full_cmd_path);
 	}
+	ft_putstr_fd("Error: Command not found\n", 2);
 	return (NULL);
 }
 
@@ -49,11 +50,11 @@ void	execute_command(t_cmd_node *cmd_node, char **env_path_list,
 	char	**converted_env_list;
 
 	full_cmd_path = create_command_path(cmd_node, env_path_list);
-	// if (error_check_null(full_cmd_path) == -1)
-	// 	return ;
+	if (full_cmd_path == NULL)
+		return ;
 	converted_env_list = env_converter(env_list);
-	// if (error_check_null(converted_env_list[0]) == -1)
-	// 	return ;
+	if (error_check_null(converted_env_list[0]) == -1)
+		return ;
 	execve(full_cmd_path, cmd_node->cmd, converted_env_list);
 	ft_putstr_fd("Error: execve failed\n", 2);
 }

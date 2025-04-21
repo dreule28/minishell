@@ -46,15 +46,20 @@ int							redir_append(t_file_node *file_node);
 int							redir_loop_infiles(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 int							redir_loop_outfiles(t_cmd_node *cmd_node);
+int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list);
+
 
 // redirecion/here_doc_utils.c
 int count_single_quotes(char *line);
 int count_double_quotes(char *line);
 void 	write_here_doc_file(char *line, int write_fd);
+void	write_here_doc(char *line, int write_fd, t_env_list *env_list, t_file_node *file_node);
+
 
 // process/env_functions.c
 int							env_lenght(t_env_list *env_list);
 char						**env_converter(t_env_list *env_list);
+char						**env_converter_export(t_env_list *env_list);
 char						*env_search_path_var(t_env_list *env_list);
 
 // process/process_utils.c
@@ -84,17 +89,18 @@ void						execute_command(t_cmd_node *cmd_node,
 // builtins/utils.c
 void						single_builtin_execution(t_cmd_node *cmd_node,
 								t_env_list *env_list);
+void	sort_env_array(char **converted_env_list);
+
 
 // builtins/builtins.c
 void						builtin_echo(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 void						builtin_cd(t_cmd_node *cmd_node);
 void						builtin_pwd(t_cmd_node *cmd_node);
-void						builtin_exit(t_cmd_node *cmd_node);
+void						builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list);
 
 // builtins/env_builtins.c
-void						builtin_env(t_cmd_node *cmd_node,
-								t_env_list *env_list);
+void						builtin_env(t_env_list *env_list);
 void						builtin_export(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 void						builtin_unset(t_cmd_node *cmd_node,

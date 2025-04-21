@@ -62,10 +62,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 			free(line);
 			break ;
 		}
-		if(count_single_quotes(line) == 2 || count_double_quotes(line) == 2)
-			write_here_doc_file(line, write_fd);
-		else
-			write_here_doc_file_expand(line, write_fd, env_list);
+		write_here_doc(line, write_fd, env_list, file_node);
 		free(line);
 	}
 	close(write_fd);
