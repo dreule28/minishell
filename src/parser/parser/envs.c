@@ -13,7 +13,7 @@ t_env_list	*init_env_list(void)
 	return (new_list);
 }
 
-t_env_node	*add_env_node(char *type, char *value)
+void	add_env_node(t_env_list *env_list, char *type, char *value)
 {
 	t_env_node	*new_node;
 
@@ -23,7 +23,12 @@ t_env_node	*add_env_node(char *type, char *value)
 	new_node->next = NULL;
 	new_node->type = type;
 	new_node->value = value;
-	return (new_node);
+	if (!env_list->head)
+		env_list->head = new_node;
+	else
+		env_list->tail->next = new_node;
+	env_list->tail = new_node;
+	env_list->size++;
 }
 
 char	*find_equal_sign(char **env, int i, char **value)
@@ -55,15 +60,7 @@ t_env_list	*get_envs(char **env)
 	{
 		type = find_equal_sign(env, i, &value);
 		if (type)
-		{
-			new_node = add_env_node(type, value);
-			if (!env_list->head)
-				env_list->head = new_node;
-			else
-				env_list->tail->next = new_node;
-			env_list->tail = new_node;
-			env_list->size++;
-		}
+			add_env_node(env_list, type, value);
 		i++;
 	}
 	return (env_list);

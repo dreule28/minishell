@@ -59,7 +59,7 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 	token = *curr;
 	if (token->token == TK_PIPE && (!token->next || cmd_list->size == 0))
 	{
-		ft_putstr_fd("Syntax error: Empty Pipe", 2);
+		ft_putstr_fd("Syntax error: Empty Pipe from first check\n", 2);
 		cmd_list->syntax_error = 1;
 		*curr = NULL;
 		return ;
