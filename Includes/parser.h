@@ -131,7 +131,7 @@ t_token_list	*process_token_list(t_token_list *token_list);
 //Parser-Folder -- BEGIN
 //envs.c -- BEGIN
 t_env_list		*init_env_list(void);
-t_env_node		*add_env_node(char *type, char *value);
+void			add_env_node(t_env_list *env_list, char *type, char *value);
 char			*find_equal_sign(char **env, int i, char **value);
 t_env_list		*get_envs(char **env);
 //envs.c -- END
