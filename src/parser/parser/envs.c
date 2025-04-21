@@ -19,7 +19,7 @@ void	add_env_node(t_env_list *env_list, char *type, char *value)
 
 	new_node = ft_malloc(sizeof(t_env_node), 1);
 	if (!new_node)
-		return (NULL);
+		return ;
 	new_node->next = NULL;
 	new_node->type = type;
 	new_node->value = value;
@@ -49,7 +49,6 @@ char	*find_equal_sign(char **env, int i, char **value)
 t_env_list	*get_envs(char **env)
 {
 	t_env_list	*env_list;
-	t_env_node	*new_node;
 	int			i;
 	char		*type;
 	char		*value;

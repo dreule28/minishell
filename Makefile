@@ -28,15 +28,24 @@ PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c expansion.c expansion_utils.c segments.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
+
 EXECUTOR_FILES := execute.c debug_utils.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
+
+BUILTINS_FILES := builtins.c env_builtins.c builtins_utils.c 
+BUILTINS := $(addprefix executor/builtins/, $(BUILTINS_FILES))
+
+PROCESS_FILES := env_functions.c pipe_utils.c process_utils.c processes.c
+PROCESS := $(addprefix executor/process/, $(PROCESS_FILES))
+
+REDIRECTING_FILES := io_redir_loops.c io_redir_utils.c io_redir.c here_doc_utils.c
+REDIRECTING := $(addprefix executor/redirecting/, $(REDIRECTING_FILES))
 
 GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c
 GC := $(addprefix gc/, $(GC_FILES))
 
 SRC_FILES := main.c debug.c signals.c
-SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(LEXER) $(EXECUTOR) $(SHELL_)) $(GC)
-
+SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(LEXER) $(EXECUTOR) $(BUILTINS) $(PROCESS) $(REDIRECTING)) $(GC)
 
 ################################################################################
 ###############               OBJECT FILES & RULES                ##############

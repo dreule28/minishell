@@ -7,7 +7,7 @@ void	builtin_env(t_env_list *env_list)
 	env_node = env_list->head;
 	while (env_node != NULL)
 	{
-		if (env_node->value != NULL)
+		if (env_node->value != NULL && env_node->value[0] != '\0')
 		{
 			ft_putstr_fd(env_node->type, 1);
 			ft_putstr_fd("=", 1);
@@ -49,6 +49,29 @@ char *get_value(char *str)
 	return(value);
 }
 
+int	check_duplicates(t_cmd_node *cmd_node, t_env_list *env_list)
+{
+	int count;
+	char *type;
+	char *value;
+	t_env_node *env_node;
+
+	count = 0;
+	env_node = env_list->head;
+	type = get_type(cmd_node->cmd[1]);
+	value = get_value(cmd_node->cmd[1]);
+	while(env_node)
+	{
+		if(ft_strcmp(type, env_node->type) == 0)
+		{
+			env_node->value = value; // assign only the value part
+			return (-1);
+		}
+		env_node = env_node->next;
+	}
+	return (0);
+}
+
 
 void	builtin_export(t_cmd_node *cmd_node, t_env_list *env_list)
 {
@@ -72,12 +95,12 @@ void	builtin_export(t_cmd_node *cmd_node, t_env_list *env_list)
 	}
 	else
 	{
-		type = get_type(cmd_node->cmd[1]);
-		value = get_value(cmd_node->cmd[1]);
-		DEBUG_INFO("type : %s\n", type);
-
-		DEBUG_INFO("value : %s\n", value);
-		add_env_node(type, value);
+		if(check_duplicates(cmd_node, env_list) != -1)
+		{
+			type = get_type(cmd_node->cmd[1]);
+			value = get_value(cmd_node->cmd[1]);
+			add_env_node(env_list, type, value);
+		}
 	}
 }
 

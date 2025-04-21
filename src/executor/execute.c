@@ -5,10 +5,9 @@ void execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
 	// DEBUG_INFO("starting execution\n");
 
-	// if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
-	// 	single_builtin_execution(cmd_list->head, env_list);
-	// else
-	if (!cmd_list->syntax_error)
+	if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
+		single_builtin_execution(cmd_list->head, env_list);
+	else if (!cmd_list->syntax_error)
 		execution(cmd_list, env_list); // normal execution
 	return ;
 }
