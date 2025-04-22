@@ -38,6 +38,7 @@ int main(int argc, char **argv, char **env)
     (void)argc;
     (void)argv;
 
+
     gc_init();
     env_list = get_envs(env);
     // DEBUG_INFO("Environment list initialized");

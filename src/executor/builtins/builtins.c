@@ -14,6 +14,15 @@ void builtin_cd(t_cmd_node *cmd_node)
 void builtin_pwd(t_cmd_node *cmd_node)
 {
 	(void)cmd_node;
+	char *pwd;
+
+	pwd = getcwd(NULL, 0);
+	if(pwd != NULL)
+	{
+		ft_putstr_fd(pwd, 1);
+		free(pwd);
+		ft_putstr_fd("\n", 1);
+	}
 }
 
 void builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list)

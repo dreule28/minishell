@@ -20,8 +20,8 @@ void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
 
 	saved_stdout = 0;
 	saved_stdin = 0;
-	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	execution_loop(cmd_list, env_list);
+	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	reset_redirection(saved_stdin, saved_stdout);
 	close(saved_stdin);
 	close(saved_stdout);
@@ -38,6 +38,8 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 
 	prev_pipe_fd[0] = -1;
 	prev_pipe_fd[1] = -1;
+	pipe_fd[0] = -1;
+	pipe_fd[1] = -1;
 	pid = 0;
 	cmd_node = cmd_list->head;
 
@@ -54,12 +56,11 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 		{
 			if(set_pipes_child(cmd_node, pipe_fd, prev_pipe_fd) == -1)
 				return ;
-			// if(cmd_node->cmd_type == BUILTIN)
-			// {
-			// 	// single_builtin_execution(cmd_node, env_list);
-			// 	exit(0);
-			// }
-			child_proccess(cmd_node, env_list);
+			if(cmd_node->cmd_type == BUILTIN)
+				single_builtin_execution(cmd_node, env_list);
+			else
+				child_proccess(cmd_node, env_list);
+			clean_up();
 			exit(0);
 		}
 		set_pipes_parent(pipe_fd, prev_pipe_fd);

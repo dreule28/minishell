@@ -13,13 +13,13 @@ void    check_fds(void)
         if (i < 3)
         {
             ft_putstr_fd("\033[33mfd ", 2);
-            ft_putstr_fd(ft_itoa(i), 2);
+            ft_putstr_fd(gc_itoa(i), 2);
             ft_putstr_fd(" is: \033[0m", 2);
         }
         else
         {
             ft_putstr_fd("fd ", 2);
-            ft_putstr_fd(ft_itoa(i), 2);
+            ft_putstr_fd(gc_itoa(i), 2);
             ft_putstr_fd(" is: ", 2);
         }
         if (check == 1)
