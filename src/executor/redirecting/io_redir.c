@@ -1,4 +1,4 @@
-#include "executor.h"
+#include "minishell.h"
 
 int	redir_infile(t_file_node *file_node)
 {

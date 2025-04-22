@@ -1,4 +1,4 @@
-#include "executor.h"
+#include "minishell.h"
 
 void	close_pipes(int *pipe_fd)
 {
