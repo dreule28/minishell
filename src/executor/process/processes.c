@@ -36,6 +36,10 @@ char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 			gc_add(full_cmd_path);
 			return (full_cmd_path);
 		}
+		else if (access(cmd_node->cmd[0], F_OK) == 0)
+		{
+			return (cmd_node->cmd[0]);
+		}
 		command_index++;
 		free(full_cmd_path);
 	}
