@@ -8,7 +8,9 @@
 # include <stdbool.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-#include <signal.h>
+# include <sys/ioctl.h>
+# include <signal.h>
+# include <termios.h>
 # include "libft.h"
 # include "parser.h"
 # include "executor.h"
@@ -77,6 +79,11 @@ typedef enum REDIR_TYPE				// got the redirecting types for the files
 //Structs -- END
 
 //Functions -- BEGIN
+int		get_exit_status(int new_code, int set);
+void	handle_sig_int(int signal_nb);
+void	handle_sig_int_heredoc(int signal_nb);
+void	start_child_signals(void);
+void	start_parent_signals(void);
 void	start_signals(void);
 //Functions -- END
 

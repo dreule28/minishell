@@ -1,15 +1,24 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_exit_status = 0;
+volatile sig_atomic_t g_sigint_status = 0;
 
 void	handle_sig_int(int signal_nb)
 {
 	(void)signal_nb;
-	g_exit_status = 1;
+	g_sigint_status = 1;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	remove_ctrlc_echo(void)
+{
+	struct termios	setting;
+
+	tcgetattr(STDIN_FILENO, &setting);
+	setting.c_lflag &= ~ ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSAFLUSH, &setting);
 }
 
 void	start_signals(void)
@@ -26,4 +35,5 @@ void	start_signals(void)
 	if (sigaction(SIGINT, &sig_int, NULL) == -1||
 		sigaction(SIGQUIT, &sig_quit, NULL) == -1)
 		ft_putstr_fd("SIG_ERROR: Error while handling signals\n", 2);
+	remove_ctrlc_echo();
 }

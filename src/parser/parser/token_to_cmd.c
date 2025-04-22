@@ -100,6 +100,8 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 	cmd_list = init_cmd_list();
 	if (!cmd_list)
 		return (NULL);
+	if (tk_list->syntax_error)
+		cmd_list->syntax_error = 1;
 	curr = tk_list->head;
 	while (curr)
 	{
@@ -112,5 +114,3 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 	}
 	return (cmd_list);
 }
-
-// ls -l | grep .txt | echo "hello" | wc -l | < input

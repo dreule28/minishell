@@ -2,19 +2,17 @@
 
 void	handle_exit_code(t_segment *segment, char *before, int *i)
 {
-	char	*after;
+	char	*exit_status;
 
 	(*i)++;
-	before = gc_strjoin(before, gc_itoa(1)); 		//to be implemented (exit_status)
-	after = gc_substr(segment->value, *i, ft_strlen(segment->value) - *i);
-	segment->value = gc_strjoin(before, after);
+	exit_status = gc_itoa(get_exit_status(0,0));
+	segment->value = gc_strjoin(before, exit_status); 		//to be implemented (exit_status)
 }
 
 void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 {
 	char	*variable_name;
 	char	*env_value;
-	char	*after;
 	int		start;
 
 	start = *i + 1;
@@ -24,9 +22,7 @@ void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 		(*i)++;
 	variable_name = gc_substr(segment->value, start, (*i) - start);
 	env_value = get_env_value(env_list, variable_name);
-	after = gc_substr(segment->value, *i, ft_strlen(segment->value) - *i);
-	before = gc_strjoin(before, env_value);
-	segment->value = gc_strjoin(before, after);
+	segment->value = gc_strjoin(before, env_value);
 	*i = ft_strlen(before);
 }
 
