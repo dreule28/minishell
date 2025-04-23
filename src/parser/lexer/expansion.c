@@ -13,6 +13,7 @@ void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 {
 	char	*variable_name;
 	char	*env_value;
+	char	*after;
 	int		start;
 
 	start = *i + 1;
@@ -22,7 +23,9 @@ void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 		(*i)++;
 	variable_name = gc_substr(segment->value, start, (*i) - start);
 	env_value = get_env_value(env_list, variable_name);
-	segment->value = gc_strjoin(before, env_value);
+	after = gc_substr(segment->value, *i, ft_strlen(segment->value) - *i);
+	before = gc_strjoin(before, env_value);
+	segment->value = gc_strjoin(before, after);
 	*i = ft_strlen(before);
 }
 
