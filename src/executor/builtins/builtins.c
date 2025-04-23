@@ -1,9 +1,45 @@
 #include "minishell.h"
 
-void builtin_echo(t_cmd_node *cmd_node, t_env_list *env_list)
+bool	is_all_flag(char *flag, char c)
 {
-	(void)cmd_node;
-	(void)env_list;
+	int	i;
+
+	if (!flag || flag[0] != '-')
+		return (false);
+	i = 1;
+	if (!flag[i])
+		return (false);
+	while (flag[i])
+	{
+		if (flag[i] != c)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void builtin_echo(t_cmd_node *cmd_node)
+{
+	int	i;
+	int	no_flag;
+
+	i = 1;
+	no_flag = 1;
+	if (cmd_node->cmd[1])
+	{
+		while (cmd_node->cmd[i] && is_all_flag(cmd_node->cmd[i], 'n'))
+		{
+			no_flag = 0;
+			i++;
+		}
+		while (cmd_node->cmd[i])
+		{
+			printf("%s ", cmd_node->cmd[i]);
+			i++;
+		}
+		if (no_flag)
+			printf("\n");
+	}
 }
 
 void builtin_cd(t_cmd_node *cmd_node)
