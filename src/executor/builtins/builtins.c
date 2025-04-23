@@ -23,6 +23,8 @@ void builtin_pwd(t_cmd_node *cmd_node)
 		free(pwd);
 		ft_putstr_fd("\n", 1);
 	}
+	else
+		ft_putstr_fd("get_cwd function failed (returned NULL)\n", 2);
 }
 
 void builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list)

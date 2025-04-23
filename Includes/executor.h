@@ -107,11 +107,15 @@ void						builtin_unset(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 
 // builtins/env_builtins_utils.c
-char *get_type(char *str);
-char *get_value(char *str);
-int	check_duplicates(t_cmd_node *cmd_node, t_env_list *env_list);
 void export_variable(t_cmd_node *cmd_node, t_env_list *env_list);
 void	print_export_variables(t_env_list *env_list);
+
+// buitlins/export_utils.c
+char *get_type(char *str);
+char *get_value(char *str);
+int	check_duplicates(char *str, t_env_list *env_list);
+int	add_or_attach(char *str);
+int	export_attach(char *str, t_env_list *env_list);
 
 
 

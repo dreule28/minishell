@@ -30,26 +30,33 @@ void	builtin_unset(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	t_env_node	*env_node;
 	t_env_node	*prev_env_node;
+	int count;
 
-	env_node = env_list->head;
-	prev_env_node = NULL;
-	while (env_node != NULL)
+	count = 1;
+	while(cmd_node->cmd[count] != NULL)
 	{
-		if(ft_strchr(cmd_node->cmd[1], '=') != NULL)
+		if(ft_strchr(cmd_node->cmd[count], '=') != NULL)
 		{
 			ft_putstr_fd("not a valid identifier\n",1 );
-			return ;
+			count++;
+			continue;
 		}
-		if(ft_strcmp(cmd_node->cmd[1], env_node->type) == 0)
+		env_node = env_list->head;
+		prev_env_node = NULL;
+		while (env_node != NULL)
 		{
-			if(prev_env_node == NULL)
-				env_list->head = env_node->next;
-			else
-				prev_env_node->next = env_node->next;
+			if(ft_strcmp(cmd_node->cmd[count], env_node->type) == 0)
+			{
+				if(prev_env_node == NULL)
+					env_list->head = env_node->next;
+				else
+					prev_env_node->next = env_node->next;
+				env_node = env_node->next;
+				break;
+			}
+			prev_env_node = env_node;
 			env_node = env_node->next;
-			continue ;
 		}
-		prev_env_node = env_node;
-		env_node = env_node->next;
+		count++;
 	}
 }

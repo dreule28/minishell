@@ -87,10 +87,6 @@ int main(int argc, char **argv, char **env)
 
             if (ft_strcmp(prompt, "exit") == 0)
                 break;
-
-            // DEBUG_INFO("Executing command");
-			// DEBUG_INFO("env list : %s\n", env_list->head->type);
-			
             execute(env_list, cmd_list);
             delete_tmp_files("tmp");
 			// check_fds();
