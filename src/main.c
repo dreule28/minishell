@@ -52,10 +52,10 @@ int main(int argc, char **argv, char **env)
 
 			if (!execute(env_list, cmd_list))
 			{
-				delete_tmp_files("tmp");
+				// delete_tmp_files("tmp");
 				break ;
 			}
-			delete_tmp_files("tmp");
+			// delete_tmp_files("tmp");
 		}
 	}
 	clean_up();
