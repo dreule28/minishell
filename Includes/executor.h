@@ -46,15 +46,15 @@ int							redir_append(t_file_node *file_node);
 int							redir_loop_infiles(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 int							redir_loop_outfiles(t_cmd_node *cmd_node);
-int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list);
-
+int							create_here_doc_files(t_cmd_node *cmd_node,
+								t_env_list *env_list);
 
 // redirecion/here_doc_utils.c
-int count_single_quotes(char *line);
-int count_double_quotes(char *line);
-void 	write_here_doc_file(char *line, int write_fd);
-void	write_here_doc(char *line, int write_fd, t_env_list *env_list, t_file_node *file_node);
-
+int							count_single_quotes(char *line);
+int							count_double_quotes(char *line);
+void						write_here_doc_file(char *line, int write_fd);
+void						write_here_doc(char *line, int write_fd,
+								t_env_list *env_list, t_file_node *file_node);
 
 // process/env_functions.c
 int							env_lenght(t_env_list *env_list);
@@ -89,35 +89,35 @@ void						execute_command(t_cmd_node *cmd_node,
 // builtins/utils.c
 void						single_builtin_execution(t_cmd_node *cmd_node,
 								t_env_list *env_list);
-void	sort_env_array(char **converted_env_list);
-
+void						sort_env_array(char **converted_env_list);
 
 // builtins/builtins.c
 void						builtin_echo(t_cmd_node *cmd_node,
 								t_env_list *env_list);
-void						builtin_cd(t_cmd_node *cmd_node);
+void						builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list);
 void						builtin_pwd(t_cmd_node *cmd_node);
-void						builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list);
+void						builtin_exit(t_cmd_node *cmd_node,
+								t_env_list *env_list);
 
 // builtins/env_builtins.c
-void						builtin_env(t_env_list *env_list);
+void						builtin_env(t_cmd_node *cmd_node,
+								t_env_list *env_list);
 void						builtin_export(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 void						builtin_unset(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 
 // builtins/env_builtins_utils.c
-void export_variable(t_cmd_node *cmd_node, t_env_list *env_list);
-void	print_export_variables(t_env_list *env_list);
+void						export_variable(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						print_export_variables(t_env_list *env_list);
 
 // buitlins/export_utils.c
-char *get_type(char *str);
-char *get_value(char *str);
-int	check_duplicates(char *str, t_env_list *env_list);
-int	add_or_attach(char *str);
-int	export_attach(char *str, t_env_list *env_list);
-
-
+char						*get_type(char *str);
+char						*get_value(char *str);
+int							check_duplicates(char *str, t_env_list *env_list);
+int							add_or_attach(char *str);
+int							export_attach(char *str, t_env_list *env_list);
 
 // Functions -- END
 

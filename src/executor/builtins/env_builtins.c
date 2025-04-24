@@ -1,10 +1,17 @@
 #include "minishell.h"
 
-void	builtin_env(t_env_list *env_list)
+void	builtin_env(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	t_env_node	*env_node;
 
 	env_node = env_list->head;
+	if (cmd_node->cmd[1] != NULL)
+    {
+        ft_putstr_fd("env: ", 2);
+        ft_putstr_fd(cmd_node->cmd[1], 2);
+        ft_putstr_fd(": No such file or directory\n", 2);
+        return;
+    }
 	while (env_node != NULL)
 	{
 		if (env_node->value != NULL && env_node->value[0] != '\0')

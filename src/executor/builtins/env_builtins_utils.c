@@ -3,7 +3,7 @@
 int	check_type_name(char *str)
 {
 	int	count;
-
+	
 	if (!(ft_isalpha(str[0]) || str[0] == '_'))
 	{
 		ft_putstr_fd("not a valid identifier\n", 2);

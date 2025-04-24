@@ -44,6 +44,8 @@ int	check_duplicates(char *str, t_env_list *env_list)
 	{
 		if (ft_strcmp(type, env_node->type) == 0)
 		{
+			if(value[0] == '\0' && ft_strchr(str, '=') == NULL)
+				return(-1);
 			env_node->value = value;
 			return (-1);
 		}

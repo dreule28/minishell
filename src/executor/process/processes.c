@@ -8,6 +8,8 @@ void	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 	if (cmd_node->files->size > 0)
 		if (file_redirecting(cmd_node, env_list) == -1)
 			return ;
+	if (cmd_node->cmd == NULL || cmd_node->cmd[0] == NULL)
+		return;
 	env_path_position = env_search_path_var(env_list);
 	if (error_check_null(env_path_position) == -1)
 		return ;

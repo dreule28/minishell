@@ -18,13 +18,31 @@ int	redir_infile(t_file_node *file_node)
 	return (INFILE_USED);
 }
 
+char	*convert_file_name(char *file_name)
+{
+	int 	count;
+	char 	*converted;
+
+	count = 0;
+	converted = gc_strdup(file_name);
+	while(converted[count] != '\0')
+	{
+		if(!(ft_isalnum(converted[count])))
+			converted[count] = '_';
+		count++;
+	}
+	return(converted);
+}
+
 int	redir_here_doc(t_file_node *file_node, t_env_list *env_list)
 {
 	int		file_redirecting;
 	char	*file_name;
+	char	*converted_file_name;
 	(void)env_list;
 	file_redirecting = 0;
-	file_name = gc_strjoin("tmp/.here_doc_", file_node->filename);
+	converted_file_name = convert_file_name(file_node->filename);
+	file_name = gc_strjoin("tmp/.here_doc_", converted_file_name);
 	DEBUG_INFO("file_name %s ", file_name);
 	file_redirecting = open(file_name, O_RDONLY);
 	if (file_redirecting == -1)
@@ -46,9 +64,11 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 	int		write_fd;
 	char	*line;
 	char	*str;
+	char	*converted_file_name;
 
 	set_interaktive_line();
-	str = gc_strjoin("tmp/.here_doc_", file_node->filename);
+	converted_file_name = convert_file_name(file_node->filename);
+	str = gc_strjoin("tmp/.here_doc_", converted_file_name);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
 		return (ft_putstr_fd("Operation not permitted\n", 2), NULL);
@@ -57,7 +77,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, file_node->filename, ft_strlen(line)) == 0)
+		if (ft_strncmp(line, file_node->filename, ft_strlen(file_node->filename)) == 0)
 		{
 			free(line);
 			break ;

@@ -88,7 +88,7 @@ int main(int argc, char **argv, char **env)
             if (ft_strcmp(prompt, "exit") == 0)
                 break;
             execute(env_list, cmd_list);
-            delete_tmp_files("tmp");
+            // delete_tmp_files("tmp");
 			// check_fds();
         }
     }
