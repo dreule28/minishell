@@ -70,7 +70,8 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 
 	set_interaktive_line();
 	start_heredoc_signals();
-	str = gc_strjoin("tmp/.here_doc_", file_node->filename);
+	converted_file_name = convert_file_name(file_node->filename);
+	str = gc_strjoin("tmp/.here_doc_", converted_file_name);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
 		return (ft_putstr_fd("Operation not permitted\n", 2), NULL);
@@ -87,7 +88,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 			}
 			break ;
 		}
-		if (ft_strncmp(line, file_node->filename, ft_strlen(line)) == 0)
+		if (ft_strncmp(line, file_node->filename, ft_strlen(file_node->filename)) == 0)
 		{
 			free(line);
 			break ;
