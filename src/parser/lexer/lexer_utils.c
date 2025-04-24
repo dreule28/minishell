@@ -49,5 +49,7 @@ int	get_bultin_type(const char *str)
 		return (TK_BUILTIN);
 	if (!ft_strncmp(str, "exit", 4))
 		return (TK_BUILTIN);
+	if (!ft_strncmp(str, "$?", 2))
+		return (TK_BUILTIN);
 	return (TK_WORD);
 }
