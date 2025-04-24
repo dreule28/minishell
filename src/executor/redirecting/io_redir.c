@@ -108,7 +108,10 @@ int	redir_outfile(t_file_node *file_node)
 	file_redirecting = open(file_node->filename, O_WRONLY | O_CREAT | O_TRUNC,
 			0644);
 	if (file_redirecting == -1)
+	{
 		ft_putstr_fd("Operation not permitted\n", 2);
+		return (-1);
+	}
 	if (dup2(file_redirecting, STDOUT_FILENO) == -1)
 		return (ft_putstr_fd("Error using dup2(outfile)stdout\n", 2), -1);
 	close(file_redirecting);
@@ -122,7 +125,10 @@ int	redir_append(t_file_node *file_node)
 	file_redirecting = open(file_node->filename, O_WRONLY | O_CREAT | O_APPEND,
 			0644);
 	if (file_redirecting == -1)
+	{
 		ft_putstr_fd("Operation not permitted\n", 2);
+		return (-1);
+	}
 	if (dup2(file_redirecting, STDOUT_FILENO) == -1)
 		return (ft_putstr_fd("Error using dup2(append)stdout\n", 2), -1);
 	close(file_redirecting);
