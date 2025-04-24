@@ -1,13 +1,5 @@
 #include "minishell.h"
 
-void	builtin_exit_code(void)
-{
-	int	*code_ptr;
-
-	code_ptr = exit_code();
-	printf("%d\n", *code_ptr);
-}
-
 void builtin_echo(t_cmd_node *cmd_node)
 {
 	int	i;
