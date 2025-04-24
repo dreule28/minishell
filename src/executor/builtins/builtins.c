@@ -14,10 +14,13 @@ void builtin_echo(t_cmd_node *cmd_node)
 			no_flag = 0;
 			i++;
 		}
-		while (cmd_node->cmd[i])
+		if (cmd_node->cmd[i][0])
 		{
-			printf("%s ", cmd_node->cmd[i]);
-			i++;
+			while (cmd_node->cmd[i])
+			{
+				printf("%s ", cmd_node->cmd[i]);
+				i++;
+			}
 		}
 		if (no_flag)
 			printf("\n");
@@ -157,14 +160,33 @@ void	builtin_pwd(t_cmd_node *cmd_node)
 		ft_putstr_fd("get_cwd function failed (returned NULL)\n", 2);
 }
 
+int	ft_isnum(char *str)
+{
+	int count;
+
+	count = 0;
+	while(str[count] != '\0')
+	{
+		if(!(str[count] >= 48 && str[count] <= 57))
+		{
+			ft_putstr_fd("numeric argument required\n", 2);
+			return(-1);
+		}
+		count++;
+	}
+	return (0);
+}
+
 void builtin_exit(t_cmd_node *cmd_node)
 {
-	int	exit_val;
+	int		exit_val;
 
 	if (cmd_node->cmd[0] || (cmd_node->cmd[0] && cmd_node->cmd[1]))
 	{
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
+			if(ft_isnum(cmd_node->cmd[1]) == -1)
+				return ; 
 			exit_val = ft_atoi(cmd_node->cmd[1]);
 			ft_putstr_fd("exit\n", 2);
 			clean_up();
