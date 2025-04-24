@@ -33,10 +33,10 @@ typedef struct s_file_list
 
 typedef struct s_cmd_node
 {
-	struct s_cmd_node	*next;		// pointer to the next node
-	int					cmd_type;	// Token (BUILDIN, CMD, PIPE,  etc)
-	char				**cmd;		// array of the cmd (ls, -al) or (wc, -l)
-	t_file_list			*files;		// linked list of files ??
+	struct s_cmd_node	*next;
+	int					cmd_type;
+	char				**cmd;
+	t_file_list			*files;
 }	t_cmd_node;
 
 typedef struct s_cmd_list
@@ -62,28 +62,29 @@ typedef struct s_env_list
 }	t_env_list;
 
 //Structs -- BEGIN
-typedef enum CMD_TYPE				// got the cmd types (BULITIN  etc)1
+typedef enum CMD_TYPE
 {
 	BUILTIN,
 	CMD,
 	PIPE
-}	CMD_TYPE;
+}	t_CMD_TYPE;
 
-typedef enum REDIR_TYPE				// got the redirecting types for the files
+typedef enum REDIR_TYPE
 {
 	INFILE,
 	OUTFILE,
 	HEREDOC,
 	OUTFILE_APPEND
-}	REDIR_TYPE;
+}	t_REDIR_TYPE;
 //Structs -- END
 
+extern volatile sig_atomic_t	g_sigint_status;
+
 //Functions -- BEGIN
-int		get_exit_status(int new_code, int set);
+int		*exit_code(void);
+void	remove_ctrlc_echo(void);
 void	handle_sig_int(int signal_nb);
-void	handle_sig_int_heredoc(int signal_nb);
-void	start_child_signals(void);
-void	start_parent_signals(void);
+void	start_heredoc_signals(void);
 void	start_signals(void);
 //Functions -- END
 

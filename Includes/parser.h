@@ -73,15 +73,16 @@ void			print_cmd_list(t_cmd_list *cmd_list);
 
 //Lexer-FOLDER -- BEGIN
 //check_actions.c -- BEGIN
-void			check_quotes(t_token_list *list, char *input, int *i);
-void			check_and_assign(t_token_list *list, char *input, int *i, int redir_typ);
+int				check_quotes(t_token_list *list, char *input, int *i);
+void			check_and_assign(t_token_list *list, char *input, int *i,
+					int redir_typ);
 int				check_redirs(t_token_list *list, char *input, int *i);
 void			handle_pipe(t_token_list *list, int *i);
 //check_actions.c -- END
 
 //expansions.c -- BEGIN
-void			handle_exit_code(t_segment *segment, char *beforer, int *i);
-void			handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i);
+void			handle_rest(t_env_list *env_list, char *before,
+					t_segment *segment, int *i);
 void			expand_segment(t_segment *segment, t_env_list *env_list);
 void			expand_token(t_token *token, t_env_list *env_list);
 void			segment_tokens(t_token_list *tokens, t_env_list *env_list);
@@ -105,7 +106,7 @@ int				get_bultin_type(const char *str);
 void			token_found(t_token_list *list, char *input, int *i, int start);
 int				handle_quotes(t_token_list *list, char *input, int *i);
 int				is_word_boundary(char *input, int *i);
-void			handle_word_or_arg(t_token_list *list, char *input, int *i);
+int				handle_word_or_arg(t_token_list *list, char *input, int *i);
 t_token_list	*lexer(char *input);
 //lexer.c --END
 
@@ -117,16 +118,16 @@ t_segment_list	*init_segment_list(void);
 //list_and_nodes.c -- END
 
 //segments.c -- BEGIN
-void			add_segment_to_list(t_segment_list *list, char *value, t_seg_type type);
-void			add_segment_to_token(t_token *token, char *value, t_seg_type type);
+void			add_segment_to_list(t_segment_list *list, char *value,
+					t_seg_type type);
+void			add_segment_to_token(t_token *token, char *value,
+					t_seg_type type);
 void			split_token_into_segments(t_token *token);
 void			split_token_into_heredocs(t_token *token);
 t_token_list	*process_token_list(t_token_list *token_list);
 //segments.c -- END
 
 //Lexer-Folder -- END
-
-
 
 //Parser-Folder -- BEGIN
 //envs.c -- BEGIN
@@ -139,7 +140,8 @@ t_env_list		*get_envs(char **env);
 //list_and_nodes_parser.c -- BEGIN
 t_cmd_list		*init_cmd_list(void);
 t_cmd_node		*add_cmd_node(t_cmd_list *cmd_list, char **cmd, int cmd_type);
-t_file_node		*add_file_node(t_file_list *files, char *filename, int redir_type);
+t_file_node		*add_file_node(t_file_list *files, char *filename,
+					int redir_type);
 t_file_list		*init_file_list(void);
 //list_and_nodes.c -- END
 
@@ -153,8 +155,10 @@ t_cmd_list		*token_to_cmd(t_token_list *tk_list);
 //ttc_utils.c -- BEGIN
 bool			is_redirection(int token_type);
 bool			check_command(int token_type);
-void			process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type);
-int				handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr);
+void			process_cmd_node(t_cmd_list *cmd_list, t_token *token,
+					int cmd_type);
+int				handle_pipe_node(t_cmd_list *cmd_list, t_token *token,
+					t_token **curr);
 void			process_token(t_cmd_list *cmd_list, t_token **curr);
 //ttc_utils.c -- END
 //Parser-Folder -- END
