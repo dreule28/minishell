@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	handle_exit_code(t_segment *segment, char *before, int *i)
+{
+	(*i)++;
+	before = gc_strjoin(before, gc_itoa(*exit_code()));
+	segment->value = gc_strjoin(before, "");
+}
+
 void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 {
 	char	*variable_name;
@@ -36,7 +43,7 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 		{
 			before = gc_substr(segment->value, 0, i);
 			if (segment->value[i + 1] == '?')
-				i += 2;
+				handle_exit_code(segment, before, &i);
 			else
 				handle_rest(env_list, before, segment, &i);
 		}
