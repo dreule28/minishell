@@ -15,7 +15,7 @@ typedef struct s_cmd_list	t_cmd_list;
 // Functions -- BEGIN
 
 // execute.c
-void						execute(t_env_list *env_list, t_cmd_list *cmd_list);
+int						execute(t_env_list *env_list, t_cmd_list *cmd_list);
 void						execution(t_cmd_list *cmd_list,
 								t_env_list *env_list);
 void						execution_loop(t_cmd_list *cmd_list,
@@ -87,17 +87,18 @@ void						execute_command(t_cmd_node *cmd_node,
 								char **env_path_list, t_env_list *env_list);
 
 // builtins/utils.c
-void						single_builtin_execution(t_cmd_node *cmd_node,
+int						single_builtin_execution(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 void	sort_env_array(char **converted_env_list);
+bool	is_all_flag(char *flag, char c);
 
 
 // builtins/builtins.c
-void						builtin_echo(t_cmd_node *cmd_node,
-								t_env_list *env_list);
+void						builtin_exit_code(void);
+void						builtin_echo(t_cmd_node *cmd_node);
 void						builtin_cd(t_cmd_node *cmd_node);
 void						builtin_pwd(t_cmd_node *cmd_node);
-void						builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list);
+void						builtin_exit(t_cmd_node *cmd_node);
 
 // builtins/env_builtins.c
 void						builtin_env(t_env_list *env_list);
