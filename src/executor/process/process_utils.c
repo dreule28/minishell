@@ -25,7 +25,7 @@ int	error_check_null(char *str)
 {
 	if (str == NULL)
 	{
-		ft_putstr_fd("Error: path to create path\n", 2);
+		ft_putstr_fd("Error: PATH not found\n", 2);
 		return (-1);
 	}
 	return (0);
