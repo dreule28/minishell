@@ -59,6 +59,7 @@ int main(int argc, char **argv, char **env)
 		}
 	}
 	clean_up();
+	exit(*exit_code());
 	return (0);
 	}
 
