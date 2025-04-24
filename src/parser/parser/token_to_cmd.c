@@ -100,16 +100,14 @@ t_cmd_list	*token_to_cmd(t_token_list *tk_list)
 	cmd_list = init_cmd_list();
 	if (!cmd_list)
 		return (NULL);
-	if (tk_list->syntax_error)
-		cmd_list->syntax_error = 1;
 	curr = tk_list->head;
 	while (curr)
 	{
 		process_token(cmd_list, &curr);
 		if (cmd_list->syntax_error)
 		{
-			ft_putstr_fd("Syntax error: Learn syntax lol\n", 2);
-			break ;
+			*exit_code() = 258;
+			return (NULL);
 		}
 	}
 	return (cmd_list);

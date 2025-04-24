@@ -1,4 +1,4 @@
-#include "executor.h"
+#include "minishell.h"
 
 char	*env_search_path_var(t_env_list *env_list)
 {

@@ -1,9 +1,35 @@
 #include "minishell.h"
 
-void	builtin_echo(t_cmd_node *cmd_node, t_env_list *env_list)
+void	builtin_exit_code(void)
 {
-	(void)cmd_node;
-	(void)env_list;
+	int	*code_ptr;
+
+	code_ptr = exit_code();
+	printf("%d\n", *code_ptr);
+}
+
+void builtin_echo(t_cmd_node *cmd_node)
+{
+	int	i;
+	int	no_flag;
+
+	i = 1;
+	no_flag = 1;
+	if (cmd_node->cmd[1])
+	{
+		while (cmd_node->cmd[i] && is_all_flag(cmd_node->cmd[i], 'n'))
+		{
+			no_flag = 0;
+			i++;
+		}
+		while (cmd_node->cmd[i])
+		{
+			printf("%s ", cmd_node->cmd[i]);
+			i++;
+		}
+		if (no_flag)
+			printf("\n");
+	}
 }
 
 int	count_argument(char **argument)
@@ -139,8 +165,25 @@ void	builtin_pwd(t_cmd_node *cmd_node)
 		ft_putstr_fd("get_cwd function failed (returned NULL)\n", 2);
 }
 
-void	builtin_exit(t_cmd_node *cmd_node, t_env_list *env_list)
+void builtin_exit(t_cmd_node *cmd_node)
 {
-	(void)cmd_node;
-	(void)env_list;
+	int	exit_val;
+
+	if (cmd_node->cmd[0] || (cmd_node->cmd[0] && cmd_node->cmd[1]))
+	{
+		if (cmd_node->cmd[0] && cmd_node->cmd[1])
+		{
+			exit_val = ft_atoi(cmd_node->cmd[1]);
+			ft_putstr_fd("exit\n", 2);
+			clean_up();
+			*exit_code() = exit_val;
+			return ;
+		}
+		else if (cmd_node->cmd[0])
+		{
+			ft_putstr_fd("exit\n", 2);
+			clean_up();
+			return ;
+		}
+	}
 }

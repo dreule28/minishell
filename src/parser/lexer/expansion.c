@@ -1,18 +1,10 @@
 #include "minishell.h"
 
-void	handle_exit_code(t_segment *segment, char *before, int *i)
-{
-	char	*exit_status;
-
-	(*i)++;
-	exit_status = gc_itoa(get_exit_status(0,0));
-	segment->value = gc_strjoin(before, exit_status); 		//to be implemented (exit_status)
-}
-
 void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 {
 	char	*variable_name;
 	char	*env_value;
+	char	*after;
 	int		start;
 
 	start = *i + 1;
@@ -22,7 +14,9 @@ void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 		(*i)++;
 	variable_name = gc_substr(segment->value, start, (*i) - start);
 	env_value = get_env_value(env_list, variable_name);
-	segment->value = gc_strjoin(before, env_value);
+	after = gc_substr(segment->value, *i, ft_strlen(segment->value) - *i);
+	before = gc_strjoin(before, env_value);
+	segment->value = gc_strjoin(before, after);
 	*i = ft_strlen(before);
 }
 
@@ -42,7 +36,7 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 		{
 			before = gc_substr(segment->value, 0, i);
 			if (segment->value[i + 1] == '?')
-				handle_exit_code(segment, before, &i);
+				i += 2;
 			else
 				handle_rest(env_list, before, segment, &i);
 		}

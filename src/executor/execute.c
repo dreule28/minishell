@@ -1,15 +1,15 @@
-#include "executor.h"
 #include "minishell.h"
 
-void execute(t_env_list *env_list, t_cmd_list *cmd_list)
+int execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
-	// DEBUG_INFO("starting execution\n");
-
-	if(cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
-		single_builtin_execution(cmd_list->head, env_list);
-	else if (!cmd_list->syntax_error)
-		execution(cmd_list, env_list); // normal execution
-	return ;
+	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
+	{
+		if (!single_builtin_execution(cmd_list->head, env_list))
+			return (0);
+	}
+	else
+		execution(cmd_list, env_list);
+	return (1);
 }
 
 
@@ -46,7 +46,8 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	while(cmd_node)
 	{
 		if(create_here_doc_files(cmd_node, env_list) == -1)
-			ft_putstr_fd("error in heredoc creation\n", 2);
+			return ;
+		// ft_putstr_fd("arcg\n" , 2);
 		if(cmd_node->next)
 			pipe_creation(pipe_fd);
 		pid =  fork();
@@ -61,7 +62,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			else
 				child_proccess(cmd_node, env_list);
 			clean_up();
-			exit(0);
+			exit(1);
 		}
 		set_pipes_parent(pipe_fd, prev_pipe_fd);
 		cmd_node = cmd_node->next;

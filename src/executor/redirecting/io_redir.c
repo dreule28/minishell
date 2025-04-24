@@ -1,4 +1,4 @@
-#include "executor.h"
+#include "minishell.h"
 
 int	redir_infile(t_file_node *file_node)
 {
@@ -44,6 +44,8 @@ int	redir_here_doc(t_file_node *file_node, t_env_list *env_list)
 	converted_file_name = convert_file_name(file_node->filename);
 	file_name = gc_strjoin("tmp/.here_doc_", converted_file_name);
 	DEBUG_INFO("file_name %s ", file_name);
+	if (g_sigint_status == 2)
+		return (-1);
 	file_redirecting = open(file_name, O_RDONLY);
 	if (file_redirecting == -1)
 	{
@@ -67,17 +69,25 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 	char	*converted_file_name;
 
 	set_interaktive_line();
-	converted_file_name = convert_file_name(file_node->filename);
-	str = gc_strjoin("tmp/.here_doc_", converted_file_name);
+	start_heredoc_signals();
+	str = gc_strjoin("tmp/.here_doc_", file_node->filename);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
 		return (ft_putstr_fd("Operation not permitted\n", 2), NULL);
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
+		if (!line || g_sigint_status == 2)
+		{
+			if (g_sigint_status == 2)
+			{
+				start_signals();
+				close(write_fd);
+				return (NULL);
+			}
 			break ;
-		if (ft_strncmp(line, file_node->filename, ft_strlen(file_node->filename)) == 0)
+		}
+		if (ft_strncmp(line, file_node->filename, ft_strlen(line)) == 0)
 		{
 			free(line);
 			break ;
@@ -86,6 +96,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 		free(line);
 	}
 	close(write_fd);
+	start_signals();
 	return (str);
 }
 

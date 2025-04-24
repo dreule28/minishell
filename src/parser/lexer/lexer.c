@@ -36,7 +36,7 @@ int	is_word_boundary(char *input, int *i)
 				|| is_special_char(&input[*i]));
 }
 
-void	handle_word_or_arg(t_token_list *list, char *input, int *i)
+int	handle_word_or_arg(t_token_list *list, char *input, int *i)
 {
 	int		start;
 	int		in_word;
@@ -48,7 +48,7 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 		if (input[*i] == '"' || input[*i] == '\'')
 		{
 			if (!handle_quotes(list, input, i))
-				return ;
+				return (0);
 		}
 		else if (is_word_boundary(input, i))
 			in_word = 0;
@@ -56,6 +56,7 @@ void	handle_word_or_arg(t_token_list *list, char *input, int *i)
 			(*i)++;
 	}
 	token_found(list, input, i, start);
+	return (1);
 }
 
 t_token_list	*lexer(char *input)
@@ -78,7 +79,10 @@ t_token_list	*lexer(char *input)
 		else
 			handle_word_or_arg(list, input, &i);
 		if (list->syntax_error)
-			break ;
+		{
+			*exit_code() = 258;
+			return (NULL);
+		}
 	}
 	return (list);
 }

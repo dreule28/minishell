@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	check_quotes(t_token_list *list, char *input, int *i)
+int	check_quotes(t_token_list *list, char *input, int *i)
 {
 	int		start;
 	char	quote;
@@ -16,6 +16,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 	{
 		ft_putstr_fd("Syntax error: Open quotes!\n", 2);
 		list->syntax_error = 1;
+		return (0);
 	}
 	(*i)++;
 	if (quote == '"')
@@ -24,6 +25,7 @@ void	check_quotes(t_token_list *list, char *input, int *i)
 		token_type = S_QUOTES;
 	token_value = gc_substr(input, start, *i - start);
 	add_token(list, token_value, token_type);
+	return (1);
 }
 
 void	check_and_assign(t_token_list *list, char *input, int *i, int redir_typ)
