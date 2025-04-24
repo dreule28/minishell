@@ -106,6 +106,6 @@ help:
 	@echo "  all      - Build minishell (default)"
 	@echo "  clean    - Remove object files"
 	@echo "  fclean   - Remove all generated files"
-	@echo "  re       - Rebuild minishell"`
+	@echo "  re       - Rebuild minishell"
 
 .PHONY: all clean fclean re help
