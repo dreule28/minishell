@@ -16,9 +16,35 @@ void	remove_ctrlc_echo(void)
 {
 	struct termios	setting;
 
-	tcgetattr(STDIN_FILENO, &setting);
+	tcgetattr(1, &setting);
 	setting.c_lflag &= ~ ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &setting);
+	tcsetattr(1, TCSAFLUSH, &setting);
+}
+
+void	handle_ctrlc_heredoc(int signal_nb)
+{
+	(void)signal_nb;
+	g_sigint_status = 2;
+	write(1, "\n", 1);
+	rl_done = 1;
+	ioctl(STDERR_FILENO, TIOCSTI, "\t");
+}
+
+void	start_heredoc_signals(void)
+{
+	struct sigaction	sig_int;
+	struct sigaction	sig_quit;
+
+	sigemptyset(&sig_int.sa_mask);
+	sigemptyset(&sig_quit.sa_mask);
+	sig_int.sa_handler = handle_ctrlc_heredoc;
+	sig_quit.sa_handler = SIG_IGN;
+	sig_int.sa_flags = 0;
+	sig_quit.sa_flags = 0;
+	if (sigaction(SIGINT, &sig_int, NULL) == -1 ||
+		sigaction(SIGQUIT, &sig_quit, NULL) == -1)
+		ft_putstr_fd("SIG_ERROR: Error while handling signals\n", 2);
+	remove_ctrlc_echo();
 }
 
 void	start_signals(void)
