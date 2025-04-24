@@ -5,11 +5,16 @@ volatile sig_atomic_t g_sigint_status = 0;
 void	handle_sig_int(int signal_nb)
 {
 	(void)signal_nb;
-	g_sigint_status = 1;
 	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (g_sigint_status != 3)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		*exit_code() = 130;
+	}
+	g_sigint_status = 1;
+	*exit_code() = 1;
 }
 
 void	remove_ctrlc_echo(void)
