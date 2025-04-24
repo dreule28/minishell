@@ -30,7 +30,10 @@ int main(int argc, char **argv, char **env)
 			exit(0);
 		}
 		if (*prompt == '\0')
+		{
+			*exit_code() = 0;
 			continue;
+		}
 		if (prompt)
 		{
 			gc_add(prompt);
@@ -40,7 +43,6 @@ int main(int argc, char **argv, char **env)
 			tk_list = lexer(prompt);
 			if (!tk_list)
 				continue;
-
 			tk_list = process_token_list(tk_list);
 			if (!tk_list)
 				continue;
@@ -50,11 +52,8 @@ int main(int argc, char **argv, char **env)
 			if (!cmd_list)
 				continue;
 
-			if (!execute(env_list, cmd_list))
-			{
-				// delete_tmp_files("tmp");
-				break ;
-			}
+			if(execute(env_list, cmd_list) == 0)
+				break;
 			// delete_tmp_files("tmp");
 		}
 	}
