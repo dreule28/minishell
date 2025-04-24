@@ -79,11 +79,10 @@ int							set_pipes_child(t_cmd_node *cmd_node, int *pipe_fd,
 void						set_pipes_parent(int *pipe_fd, int *prev_pipe_fd);
 
 // process/processes.c
-void						child_proccess(t_cmd_node *cmd_node,
+int						child_proccess(t_cmd_node *cmd_node,
 								t_env_list *env_list);
-char						*create_command_path(t_cmd_node *cmd_node,
-								char **env_path_list);
-void						execute_command(t_cmd_node *cmd_node,
+char						*create_command_path(t_cmd_node *cmd_node, char **env_path_list);
+int						execute_command(t_cmd_node *cmd_node,
 								char **env_path_list, t_env_list *env_list);
 
 // builtins/utils.c
@@ -94,7 +93,6 @@ bool	is_all_flag(char *flag, char c);
 
 
 // builtins/builtins.c
-void						builtin_exit_code(void);
 void						builtin_echo(t_cmd_node *cmd_node);
 void						builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list);
 void						builtin_pwd(t_cmd_node *cmd_node);
