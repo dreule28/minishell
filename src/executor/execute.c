@@ -1,14 +1,15 @@
 #include "minishell.h"
 
-void execute(t_env_list *env_list, t_cmd_list *cmd_list)
+int execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
-	if (!cmd_list)
-		return ;
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
-		single_builtin_execution(cmd_list->head, env_list);
-	else if (!cmd_list->syntax_error)
+	{
+		if (!single_builtin_execution(cmd_list->head, env_list))
+			return (0);
+	}
+	else
 		execution(cmd_list, env_list);
-	return ;
+	return (1);
 }
 
 
