@@ -4,7 +4,7 @@ int execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	{
-		if (!single_builtin_execution(cmd_list->head, env_list))
+		if (single_builtin_execution(cmd_list->head, env_list) == -1)
 			return (0);
 	}
 	else
@@ -35,6 +35,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	int pipe_fd[2];
 	int prev_pipe_fd[2];
 	int waited;
+	int exit_status;
 
 	prev_pipe_fd[0] = -1;
 	prev_pipe_fd[1] = -1;
@@ -43,6 +44,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	pid = 0;
 	cmd_node = cmd_list->head;
 
+	g_sigint_status = 3;
 	while(cmd_node)
 	{
 		if(create_here_doc_files(cmd_node, env_list) == -1)
@@ -58,15 +60,21 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			if(set_pipes_child(cmd_node, pipe_fd, prev_pipe_fd) == -1)
 				return ;
 			if(cmd_node->cmd_type == BUILTIN)
-				single_builtin_execution(cmd_node, env_list);
+				exit_status = single_builtin_execution(cmd_node, env_list);
 			else
-				child_proccess(cmd_node, env_list);
+				exit_status = child_proccess(cmd_node, env_list);
 			clean_up();
-			exit(1);
+			exit(exit_status);
 		}
 		set_pipes_parent(pipe_fd, prev_pipe_fd);
 		cmd_node = cmd_node->next;
 	}
-	while((waited = waitpid(-1, NULL, 0)) > 0)
+	int status;
+	while ((waited = waitpid(-1, &status, 0)) > 0)
 		;
+	g_sigint_status = 0;
+	if (WIFSIGNALED(status))
+		*exit_code() = 128 + WTERMSIG(status);
+	else
+		*exit_code() = WEXITSTATUS(status);
 }
