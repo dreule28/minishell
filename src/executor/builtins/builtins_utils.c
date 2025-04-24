@@ -5,12 +5,13 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 	int saved_stdin, saved_stdout;
 
 
-	if(file_redirecting(cmd_node, env_list) == -1) {
+	if(file_redirecting(cmd_node, env_list) == -1) 
+	{
 		save_stdin_stdout(&saved_stdin, &saved_stdout);
 		reset_redirection(saved_stdin, saved_stdout);
 		close(saved_stdin);
 		close(saved_stdout);
-		return (0);
+		return (1);
 	}
 	if(ft_strcmp(cmd_node->cmd[0], "pwd") == 0)
 		builtin_pwd(cmd_node);
@@ -22,23 +23,19 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 		builtin_unset(cmd_node, env_list);
 	else if(ft_strcmp(cmd_node->cmd[0], "env") == 0)
 		builtin_env(cmd_node, env_list);
-	else if (cmd_node->cmd[1] && ft_strcmp(cmd_node->cmd[1], "$?") == 0)
-		builtin_exit_code();
 	else if (ft_strcmp(cmd_node->cmd[0], "echo") == 0)
 		builtin_echo(cmd_node);
 	else if (ft_strcmp(cmd_node->cmd[0], "exit") == 0)
 	{
 		builtin_exit(cmd_node);
-		return (0);
+		return (-1);
 	}
-	else
-		ft_putstr_fd("command not foun\n", 2);
-
 	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	reset_redirection(saved_stdin, saved_stdout);
 	close(saved_stdin);
 	close(saved_stdout);
-	return (1);
+	*exit_code() = 0;
+	return (0);
 }
 
 void	sort_env_array(char **converted_env_list)
