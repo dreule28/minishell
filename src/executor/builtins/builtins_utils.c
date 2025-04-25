@@ -13,23 +13,25 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 		close(saved_stdout);
 		return (1);
 	}
-	if(ft_strcmp(cmd_node->cmd[0], "pwd") == 0)
+	if(ft_strncmp(cmd_node->cmd[0], "pwd", ft_strlen(cmd_node->cmd[0])) == 0)
 		builtin_pwd(cmd_node);
-	else if(ft_strcmp(cmd_node->cmd[0], "export") == 0)
+	else if(ft_strncmp(cmd_node->cmd[0], "export", ft_strlen(cmd_node->cmd[0])) == 0)
 		builtin_export(cmd_node, env_list);
-	else if(ft_strcmp(cmd_node->cmd[0], "cd") == 0)
+	else if(ft_strncmp(cmd_node->cmd[0], "cd", ft_strlen(cmd_node->cmd[0])) == 0)
 		builtin_cd(cmd_node, env_list);
-	else if(ft_strcmp(cmd_node->cmd[0], "unset") == 0)
+	else if(ft_strncmp(cmd_node->cmd[0], "unset", ft_strlen(cmd_node->cmd[0])) == 0)
 		builtin_unset(cmd_node, env_list);
-	else if(ft_strcmp(cmd_node->cmd[0], "env") == 0)
+	else if(ft_strncmp(cmd_node->cmd[0], "env", ft_strlen(cmd_node->cmd[0])) == 0)
 		builtin_env(cmd_node, env_list);
-	else if (ft_strcmp(cmd_node->cmd[0], "echo") == 0)
+	else if (ft_strncmp(cmd_node->cmd[0], "echo", ft_strlen(cmd_node->cmd[0])) == 0)
 		builtin_echo(cmd_node);
-	else if (ft_strcmp(cmd_node->cmd[0], "exit") == 0)
+	else if (ft_strncmp(cmd_node->cmd[0], "exit", ft_strlen(cmd_node->cmd[0])) == 0)
 	{
 		builtin_exit(cmd_node);
 		return (-1);
 	}
+	else
+		ft_putstr_fd("Command not found\n", 2);
 	save_stdin_stdout(&saved_stdin, &saved_stdout);
 	reset_redirection(saved_stdin, saved_stdout);
 	close(saved_stdin);
