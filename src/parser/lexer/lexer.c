@@ -45,7 +45,8 @@ int	handle_word_or_arg(t_token_list *list, char *input, int *i)
 	in_word = 1;
 	while (input[*i] && in_word)
 	{
-		if (input[*i] == '"' || input[*i] == '\'')
+		if ((input[*i] == '"'  && input[*i - 1] != '"')
+			|| (input[*i] == '\'' && input[*i - 1] != '\''))
 		{
 			if (!handle_quotes(list, input, i))
 				return (0);
@@ -70,7 +71,11 @@ t_token_list	*lexer(char *input)
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
-		if (input[i] == '"' || input[i] == '\'')
+		if ((input[i] == '"' && input[i + 1] == '"')
+			|| (input[i] == '\'' && input[i + 1] == '\''))
+			check_same_quotes(list, input, &i);
+		else if ((input[i] == '"' && input[i - 1] != '"')
+			|| (input[i] == '\'' && input[i - 1] != '\''))
 			check_quotes(list, input, &i);
 		else if (is_redir(&input[i]))
 			check_redirs(list, input, &i);
@@ -79,10 +84,7 @@ t_token_list	*lexer(char *input)
 		else
 			handle_word_or_arg(list, input, &i);
 		if (list->syntax_error)
-		{
-			*exit_code() = 258;
-			return (NULL);
-		}
+			return (*exit_code() = 258, NULL);
 	}
 	return (list);
 }

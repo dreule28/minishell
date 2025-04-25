@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+void	print_loop(t_cmd_node *cmd_node, int *i)
+{
+	while (cmd_node->cmd[*i])
+	{
+		ft_putstr_fd(cmd_node->cmd[*i], 1);
+		if (cmd_node->cmd[*i + 1])
+			ft_putstr_fd(" ", 1);
+		(*i)++;
+	}
+}
+
 void builtin_echo(t_cmd_node *cmd_node)
 {
 	int	i;
@@ -15,16 +26,12 @@ void builtin_echo(t_cmd_node *cmd_node)
 			i++;
 		}
 		if (cmd_node->cmd[i][0])
-		{
-			while (cmd_node->cmd[i])
-			{
-				printf("%s ", cmd_node->cmd[i]);
-				i++;
-			}
-		}
+			print_loop(cmd_node, &i);
 		if (no_flag)
-			printf("\n");
+		ft_putstr_fd("\n", 1);
 	}
+	else
+		ft_putstr_fd("\n", 1);
 }
 
 int	count_argument(char **argument)
@@ -186,7 +193,7 @@ void builtin_exit(t_cmd_node *cmd_node)
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
 			if(ft_isnum(cmd_node->cmd[1]) == -1)
-				return ; 
+				return ;
 			exit_val = ft_atoi(cmd_node->cmd[1]);
 			ft_putstr_fd("exit\n", 2);
 			clean_up();
