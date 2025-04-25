@@ -53,8 +53,11 @@ int main(int argc, char **argv, char **env)
 				continue;
 
 			if(execute(env_list, cmd_list) == 0)
+			{
+				delete_tmp_files("tmp");
 				break;
-			// delete_tmp_files("tmp");
+			}
+			delete_tmp_files("tmp");
 		}
 	}
 	clean_up();

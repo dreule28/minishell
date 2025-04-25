@@ -118,6 +118,9 @@ int							check_duplicates(char *str, t_env_list *env_list);
 int							add_or_attach(char *str);
 int							export_attach(char *str, t_env_list *env_list);
 
+
+char	*convert_file_name(char *file_name);
+
 // Functions -- END
 
 typedef enum FILE_CHECK // got the redirecting types for the files

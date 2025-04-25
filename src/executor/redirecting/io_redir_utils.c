@@ -17,9 +17,11 @@ void	delete_tmp_files(const char *folder_name)
 	struct dirent	*file;
 
 	dir = opendir(folder_name);
+	if(!dir)
+		return ;
 	while ((file = readdir(dir)) != NULL)
 	{
-		if (file->d_name[0] == '.')
+		if (ft_strncmp(file->d_name, ".here_doc", 9) == 0)
 		{
 			tmp_str = ft_strjoin(folder_name, "/");
 			file_name = ft_strjoin(tmp_str, file->d_name);
