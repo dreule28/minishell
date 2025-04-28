@@ -22,12 +22,26 @@ int main(int argc, char **argv, char **env)
 	start_signals();
 	while (1)
 	{
-		prompt = readline("2, 3 Years dagestan forget > ");
+		if (isatty(fileno(stdin)))
+		{
+			prompt = readline("2, 3 Years dagestan forget > ");
+			if (prompt && ft_strlen(prompt) > 0)
+            	add_history(prompt);
+		}
+		else
+		{
+			char *line;
+			line = get_next_line(fileno(stdin));
+			if(!line)
+				break ; 
+			prompt = ft_strtrim(line, "\n");
+			free(line);
+		}
 		if (!prompt)
 		{
 			ft_putstr_fd("exit\n", 2);
 			clean_up();
-			exit(0);
+			exit(*exit_code());
 		}
 		if (*prompt == '\0')
 		{
@@ -38,8 +52,8 @@ int main(int argc, char **argv, char **env)
 		{
 			gc_add(prompt);
 
-			if (ft_strlen(prompt) > 0)
-				add_history(prompt);
+			// if (ft_strlen(prompt) > 0)
+			// 	add_history(prompt);
 			tk_list = lexer(prompt);
 			if (!tk_list)
 				continue;

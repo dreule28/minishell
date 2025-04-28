@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:46 by dreule            #+#    #+#             */
-/*   Updated: 2025/04/05 04:03:05 by dreule           ###   ########.fr       */
+/*   Updated: 2025/04/25 14:17:39 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include "ft_printf/ft_printf.h"
+# include "get_next_line/get_next_line.h"
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>

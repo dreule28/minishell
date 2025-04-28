@@ -43,7 +43,7 @@ int	redir_here_doc(t_file_node *file_node, t_env_list *env_list)
 	file_redirecting = 0;
 	converted_file_name = convert_file_name(file_node->filename);
 	file_name = gc_strjoin("tmp/.here_doc_", converted_file_name);
-	DEBUG_INFO("file_name %s ", file_name);
+	// DEBUG_INFO("file_name %s ", file_name);
 	if (g_sigint_status == 2)
 		return (-1);
 	file_redirecting = open(file_name, O_RDONLY);
