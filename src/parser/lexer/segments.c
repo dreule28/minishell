@@ -69,18 +69,3 @@ void	split_token_into_heredocs(t_token *token)
 	if (i > start)
 		add_segment_to_token(token, gc_substr(token->value, start, i - start), SEG_NO_QUOTE);
 }
-
-t_token_list	*process_token_list(t_token_list *token_list)
-{
-	t_token	*curr;
-
-	if (!token_list || !token_list->head)
-		return (NULL);
-	curr = token_list->head;
-	while (curr)
-	{
-		split_token_into_segments(curr);
-		curr = curr->next;
-	}
-	return (token_list);
-}
