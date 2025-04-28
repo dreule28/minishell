@@ -57,9 +57,10 @@ int main(int argc, char **argv, char **env)
 			tk_list = lexer(prompt);
 			if (!tk_list)
 				continue;
-			tk_list = process_token_list(tk_list);
-			if (!tk_list)
-				continue;
+			
+				tk_list = process_token_list(tk_list);
+				if (!tk_list)
+					continue;
 
 			segment_tokens(tk_list, env_list);
 			cmd_list = token_to_cmd(tk_list);

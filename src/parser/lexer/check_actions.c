@@ -1,5 +1,28 @@
 #include "minishell.h"
 
+int	check_same_quotes(t_token_list *list, char *input, int *i)
+{
+	int		start;
+	char	quote;
+	int		token_type;
+
+	quote = input[*i];
+	start = *i;
+	(*i)++;
+	if (input[*i] == quote || input[*i] == quote)
+	{
+		if (quote == '"')
+			token_type = D_QUOTES;
+		else
+			token_type = S_QUOTES;
+		if (!ft_strnstr(&input[*i], "\"\"", ft_strlen(input))
+			|| !ft_strnstr(&input[*i], "''", ft_strlen(input)))
+			add_token(list, "", token_type);
+	}
+	(*i)++;
+	return (1);
+}
+
 int	check_quotes(t_token_list *list, char *input, int *i)
 {
 	int		start;
