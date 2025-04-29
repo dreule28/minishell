@@ -45,8 +45,8 @@ int	handle_word_or_arg(t_token_list *list, char *input, int *i)
 	in_word = 1;
 	while (input[*i] && in_word)
 	{
-		if ((input[*i] == '"'  && input[*i - 1] != '"')
-			|| (input[*i] == '\'' && input[*i - 1] != '\''))
+		if ((input[*i] == '"'  && (*i == 0 || input[*i - 1] != '"'))
+			|| (input[*i] == '\'' && (*i == 0 || input[*i - 1] != '\'')))
 		{
 			if (!handle_quotes(list, input, i))
 				return (0);
@@ -71,11 +71,11 @@ t_token_list	*lexer(char *input)
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
-		if ((input[i] == '"' && input[i + 1] == '"')
-			|| (input[i] == '\'' && input[i + 1] == '\''))
-			check_same_quotes(list, input, &i);
-		else if ((input[i] == '"') || (input[i] == '\''))
-			check_quotes(list, input, &i);
+		if ((input[i] == '"' && input[i + 1] == '"' && (input[i+2] == ' ' || input[i+2] == '\t' || !input[i+2]))
+				|| (input[i] == '\'' && input[i + 1] == '\'' && (input[i+2] == ' ' || input[i+2] == '\t' || !input[i+2])))
+			{
+				check_same_quotes(list, input, &i);
+			}
 		else if (is_redir(&input[i]))
 			check_redirs(list, input, &i);
 		else if (input[i] == '|')

@@ -121,13 +121,11 @@ void	builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list)
 	if (directory_name == NULL)
 	{
 		ft_putstr_fd("HOME or OLDPWD not set\n", 2);
-		// free(old_pwd);
 		return ;
 	}
 	if (chdir(directory_name) != 0)
 	{
 		ft_putstr_fd("No such a file or directory\n", 2);
-		// free(old_pwd);
 		return ;
 	}
 	new_pwd = getcwd(NULL, 0);
