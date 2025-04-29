@@ -24,9 +24,6 @@ void	pipe_creation(int *fd)
 int	error_check_null(char *str)
 {
 	if (str == NULL)
-	{
-		ft_putstr_fd("Error: PATH not found\n", 2);
 		return (-1);
-	}
 	return (0);
 }

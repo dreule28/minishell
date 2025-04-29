@@ -73,6 +73,7 @@ void			print_cmd_list(t_cmd_list *cmd_list);
 
 //Lexer-FOLDER -- BEGIN
 //check_actions.c -- BEGIN
+int				check_same_quotes(t_token_list *list, char *input, int *i);
 int				check_quotes(t_token_list *list, char *input, int *i);
 void			check_and_assign(t_token_list *list, char *input, int *i,
 					int redir_typ);

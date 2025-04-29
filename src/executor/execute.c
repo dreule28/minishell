@@ -49,7 +49,6 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	{
 		if(create_here_doc_files(cmd_node, env_list) == -1)
 			return ;
-		// ft_putstr_fd("arcg\n" , 2);
 		if(cmd_node->next)
 			pipe_creation(pipe_fd);
 		pid =  fork();

@@ -62,5 +62,26 @@ t_env_list	*get_envs(char **env)
 			add_env_node(env_list, type, value);
 		i++;
 	}
+	add_shell_level(env_list);
 	return (env_list);
+}
+
+void	add_shell_level(t_env_list *env_list)
+{
+	int temp;
+	t_env_node	*env_node;
+
+	env_node = env_list->head;
+	while (env_node)
+	{
+		if (ft_strcmp("SHLVL", env_node->type) == 0)
+		{
+			temp = ft_atoi(env_node->value);
+			temp++;
+			env_node->value = gc_itoa(temp);
+			return ;
+		}
+		env_node = env_node->next;
+	}
+	add_env_node(env_list, gc_strdup("SHLVL"), gc_strdup("1"));
 }

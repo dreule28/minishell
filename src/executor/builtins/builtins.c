@@ -46,18 +46,13 @@ int	count_argument(char **argument)
 
 char	*get_home(t_env_list *env_list)
 {
-	char		*home_path;
 	t_env_node	*env_node;
 
 	env_node = env_list->head;
 	while (env_node)
 	{
 		if (ft_strcmp("HOME", env_node->type) == 0)
-		{
-			home_path = ft_malloc(ft_strlen(env_node->type), sizeof(char));
-			home_path = env_node->value;
-			return (home_path);
-		}
+			return (gc_strdup(env_node->value));
 		env_node = env_node->next;
 	}
 	return (NULL);
@@ -65,18 +60,13 @@ char	*get_home(t_env_list *env_list)
 
 char	*get_old_pwd(t_env_list *env_list)
 {
-	char		*old_pwd_path;
 	t_env_node	*env_node;
 
 	env_node = env_list->head;
 	while (env_node)
 	{
 		if (ft_strcmp("OLDPWD", env_node->type) == 0)
-		{
-			old_pwd_path = ft_malloc(ft_strlen(env_node->type), sizeof(char));
-			old_pwd_path = env_node->value;
-			return (old_pwd_path);
-		}
+			return (gc_strdup(env_node->value));
 		env_node = env_node->next;
 	}
 	return (NULL);
@@ -91,7 +81,7 @@ void	update_old_pwd(char *old_pwd, t_env_list *env_list)
 	{
 		if (ft_strcmp("OLDPWD", env_node->type) == 0)
 		{
-			env_node->value = old_pwd;
+			env_node->value = gc_strdup(old_pwd);
 			return ;
 		}
 		env_node = env_node->next;
@@ -131,13 +121,13 @@ void	builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list)
 	if (directory_name == NULL)
 	{
 		ft_putstr_fd("HOME or OLDPWD not set\n", 2);
-		free(old_pwd);
+		// free(old_pwd);
 		return ;
 	}
 	if (chdir(directory_name) != 0)
 	{
 		ft_putstr_fd("No such a file or directory\n", 2);
-		free(old_pwd);
+		// free(old_pwd);
 		return ;
 	}
 	new_pwd = getcwd(NULL, 0);
