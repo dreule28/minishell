@@ -35,10 +35,12 @@ int	check_type_name(char *str)
 void	export_variable(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	int		count;
+	int		not_valid;
 	char	*type;
 	char	*value;
 
 	count = 1;
+	not_valid = 0;
 	while (cmd_node->cmd[count] != NULL)
 	{
 		if (check_type_name(cmd_node->cmd[count]) == 0)
@@ -62,8 +64,11 @@ void	export_variable(t_cmd_node *cmd_node, t_env_list *env_list)
 				}
 			}
 		}
+		else
+			not_valid = 1;
 		count++;
 	}
+	*exit_code() = not_valid;
 }
 
 void	print_export_variables(t_env_list *env_list)

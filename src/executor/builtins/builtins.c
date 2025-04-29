@@ -120,14 +120,14 @@ void	builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list)
 		directory_name = cmd_node->cmd[1];
 	if (directory_name == NULL)
 	{
+		*exit_code() = 1;
 		ft_putstr_fd("HOME or OLDPWD not set\n", 2);
-		// free(old_pwd);
 		return ;
 	}
 	if (chdir(directory_name) != 0)
 	{
+		*exit_code() = 1;
 		ft_putstr_fd("No such a file or directory\n", 2);
-		// free(old_pwd);
 		return ;
 	}
 	new_pwd = getcwd(NULL, 0);
@@ -139,6 +139,7 @@ void	builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list)
 		ft_putstr_fd(new_pwd, 1);
 		ft_putstr_fd("\n", 1);
 	}
+	*exit_code() = 0;
 }
 
 void	builtin_pwd(t_cmd_node *cmd_node)
@@ -155,6 +156,7 @@ void	builtin_pwd(t_cmd_node *cmd_node)
 	}
 	else
 		ft_putstr_fd("get_cwd function failed (returned NULL)\n", 2);
+	*exit_code() = 0;
 }
 
 int	ft_isnum(char *str)
