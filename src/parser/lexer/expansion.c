@@ -46,7 +46,7 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 	while (segment->value[i])
 	{
 		if (segment->value[i] == '$' && segment->value[i + 1]
-			&& segment->value[i + 1] != ' ')
+			&& segment->value[i + 1] != ' ' && segment->value[i + 1] != '/')
 		{
 			before = gc_substr(segment->value, 0, i);
 			if (segment->value[i + 1] == '?')
