@@ -50,7 +50,7 @@ int main(int argc, char **argv, char **env)
 			char *line;
 			line = get_next_line(fileno(stdin));
 			if(!line)
-				break ; 
+				break ;
 			prompt = ft_strtrim(line, "\n");
 			free(line);
 		}
@@ -73,7 +73,7 @@ int main(int argc, char **argv, char **env)
 			// 	add_history(prompt);
 			tk_list = lexer(prompt);
 			if (!tk_list)
-				return (-1);
+				continue;
 			tk_list = process_token_list(tk_list);
 			if (!tk_list)
 				continue;
