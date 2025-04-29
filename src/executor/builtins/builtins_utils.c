@@ -36,7 +36,6 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 	reset_redirection(saved_stdin, saved_stdout);
 	close(saved_stdin);
 	close(saved_stdout);
-	*exit_code() = 0;
 	return (0);
 }
 

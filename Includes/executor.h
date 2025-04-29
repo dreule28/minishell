@@ -14,6 +14,9 @@ typedef struct s_cmd_list	t_cmd_list;
 
 // Functions -- BEGIN
 
+int	check_type_name(char *str);
+
+
 // execute.c
 int						execute(t_env_list *env_list, t_cmd_list *cmd_list);
 void						execution(t_cmd_list *cmd_list,
