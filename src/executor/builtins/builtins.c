@@ -32,6 +32,7 @@ void builtin_echo(t_cmd_node *cmd_node)
 	}
 	else
 		ft_putstr_fd("\n", 1);
+	*exit_code() = 0;
 }
 
 int	count_argument(char **argument)
