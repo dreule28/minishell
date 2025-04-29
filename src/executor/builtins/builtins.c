@@ -185,7 +185,10 @@ void builtin_exit(t_cmd_node *cmd_node)
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
 			if(ft_isnum(cmd_node->cmd[1]) == -1)
+			{
+				*exit_code() = 255;
 				return ;
+			}
 			exit_val = ft_atoi(cmd_node->cmd[1]);
 			ft_putstr_fd("exit\n", 2);
 			clean_up();
