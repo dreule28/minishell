@@ -25,10 +25,10 @@ void builtin_echo(t_cmd_node *cmd_node)
 			no_flag = 0;
 			i++;
 		}
-		if (cmd_node->cmd[i][0])
+		if (cmd_node->cmd[i] && cmd_node->cmd[i][0])
 			print_loop(cmd_node, &i);
 		if (no_flag)
-		ft_putstr_fd("\n", 1);
+			ft_putstr_fd("\n", 1);
 	}
 	else
 		ft_putstr_fd("\n", 1);

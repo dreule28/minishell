@@ -7,7 +7,7 @@ int	check_same_quotes(t_token_list *list, char *input, int *i)
 
 	quote = input[*i];
 	(*i)++;
-	if (input[*i] == quote || input[*i] == quote)
+	if (input[*i] == quote)
 	{
 		if (quote == '"')
 			token_type = D_QUOTES;

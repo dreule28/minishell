@@ -40,6 +40,7 @@ int	handle_pipe_node(t_cmd_list *cmd_list, t_token *token, t_token **curr)
 
 	if (token->next->token == TK_PIPE)
 	{
+		ft_putstr_fd("Syntax error: Empty Pipe\n", 2);
 		cmd_list->syntax_error = 1;
 		return (0);
 	}
