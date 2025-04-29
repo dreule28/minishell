@@ -90,7 +90,6 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 			line = readline("> ");
 		else
 			line = get_next_line(STDIN_FILENO); // You must implement or link this
-
 		if (!line || g_sigint_status == 2)
 		{
 			if (g_sigint_status == 2)
@@ -101,7 +100,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 			}
 			break ;
 		}
-		if (ft_strncmp(line, file_node->filename, ft_strlen(file_node->filename)) == 0)
+		if (ft_strcmp(line, file_node->filename) == 0)
 		{
 			free(line);
 			break ;
