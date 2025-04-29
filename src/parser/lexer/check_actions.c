@@ -2,14 +2,12 @@
 
 int	check_same_quotes(t_token_list *list, char *input, int *i)
 {
-	int		start;
 	char	quote;
 	int		token_type;
 
 	quote = input[*i];
-	start = *i;
 	(*i)++;
-	if (input[*i] == quote || input[*i] == quote)
+	if (input[*i] == quote)
 	{
 		if (quote == '"')
 			token_type = D_QUOTES;
