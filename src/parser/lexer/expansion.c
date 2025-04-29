@@ -2,9 +2,13 @@
 
 void	handle_exit_code(t_segment *segment, char *before, int *i)
 {
-	(*i)++;
+	char	*after;
+
+	(*i) += 2;
+	after = gc_substr(segment->value, *i, ft_strlen(segment->value) - *i);
 	before = gc_strjoin(before, gc_itoa(*exit_code()));
-	segment->value = gc_strjoin(before, "");
+	segment->value = gc_strjoin(before, after);
+	*i = ft_strlen(before);
 }
 
 void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
@@ -21,6 +25,8 @@ void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
 		(*i)++;
 	variable_name = gc_substr(segment->value, start, (*i) - start);
 	env_value = get_env_value(env_list, variable_name);
+	if (!env_value)
+		env_value = "";
 	after = gc_substr(segment->value, *i, ft_strlen(segment->value) - *i);
 	before = gc_strjoin(before, env_value);
 	segment->value = gc_strjoin(before, after);
@@ -39,7 +45,8 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 	i = 0;
 	while (segment->value[i])
 	{
-		if (segment->value[i] == '$' && segment->value[i + 1])
+		if (segment->value[i] == '$' && segment->value[i + 1]
+			&& segment->value[i + 1] != ' ')
 		{
 			before = gc_substr(segment->value, 0, i);
 			if (segment->value[i + 1] == '?')
