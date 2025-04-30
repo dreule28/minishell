@@ -3,14 +3,17 @@
 int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	char	*file_name;
+	static int		count_here_doc;
 	t_file_node *file_node;
 
+	count_here_doc = 1;
 	file_node = cmd_node->files->head;
 	while (file_node != NULL)
 	{
 		if(file_node->redir_type == TK_HEREDOC)
 		{
-			file_name = create_here_doc(file_node, env_list);
+			file_name = create_here_doc(file_node, env_list,count_here_doc);
+			count_here_doc++;
 			if (file_name == NULL)
 				return (-1);
 		}
@@ -24,8 +27,10 @@ int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 	t_file_node	*file_node;
 	int			infile_status;
 	int			return_value;
+	int			count_here_doc;
 
 	return_value = 0;
+	count_here_doc = 1;
 	infile_status = INFILE_NOT_USED;
 	if (cmd_node == NULL)
 		return (INFILE_NOT_USED);
@@ -33,8 +38,11 @@ int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 	while (file_node != NULL)
 	{
 		if (file_node->redir_type == TK_HEREDOC)
-			return_value = redir_here_doc(file_node, env_list);
-		if (file_node->redir_type == TK_INFILE)
+		{
+			return_value = redir_here_doc(file_node, env_list, count_here_doc);
+			count_here_doc++;
+		}
+			if (file_node->redir_type == TK_INFILE)
 			return_value = redir_infile(file_node);
 		if (return_value == -1)
 			return (-1);

@@ -18,10 +18,11 @@ int	redir_infile(t_file_node *file_node)
 	return (INFILE_USED);
 }
 
-char	*convert_file_name(char *file_name)
+char	*convert_file_name(char *file_name, int i)
 {
 	int 	count;
 	char 	*converted;
+	char	*numbered_str;
 
 	count = 0;
 	converted = gc_strdup(file_name);
@@ -31,25 +32,26 @@ char	*convert_file_name(char *file_name)
 			converted[count] = '_';
 		count++;
 	}
-	return(converted);
+	numbered_str = gc_strjoin(converted, gc_itoa(i));
+	return(numbered_str);
 }
 
-int	redir_here_doc(t_file_node *file_node, t_env_list *env_list)
+int	redir_here_doc(t_file_node *file_node, t_env_list *env_list, int i)
 {
 	int		file_redirecting;
 	char	*file_name;
 	char	*converted_file_name;
 	(void)env_list;
 	file_redirecting = 0;
-	converted_file_name = convert_file_name(file_node->filename);
+	converted_file_name = convert_file_name(file_node->filename, i);
+	(i)++;
 	file_name = gc_strjoin("tmp/.here_doc_", converted_file_name);
-	// DEBUG_INFO("file_name %s ", file_name);
 	if (g_sigint_status == 2)
 		return (-1);
 	file_redirecting = open(file_name, O_RDONLY);
 	if (file_redirecting == -1)
 	{
-		ft_putstr_fd("Operation 123123123123123213not permitted\n", 2);
+		ft_putstr_fd("Operation not permitted\n", 2);
 		return (-1);
 	}
 	if (dup2(file_redirecting, STDIN_FILENO) == -1)
@@ -67,7 +69,7 @@ int is_interactive_shell(void)
     return (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO));
 }
 
-char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
+char	*create_here_doc(t_file_node *file_node, t_env_list *env_list, int i)
 {
 	int		write_fd; 
 	char	*line;
@@ -79,7 +81,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
         set_interaktive_line();
         start_heredoc_signals();
     }
-	converted_file_name = convert_file_name(file_node->filename);
+	converted_file_name = convert_file_name(file_node->filename, i);
 	str = gc_strjoin("tmp/.here_doc_", converted_file_name);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
@@ -89,7 +91,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list)
 		if (is_interactive_shell())
 			line = readline("> ");
 		else
-			line = get_next_line(STDIN_FILENO); // You must implement or link this
+			line = get_next_line(STDIN_FILENO);
 		if (!line || g_sigint_status == 2)
 		{
 			if (g_sigint_status == 2)

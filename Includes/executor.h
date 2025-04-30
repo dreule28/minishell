@@ -39,9 +39,9 @@ void						write_here_doc_file_expand(char *line, int write_fd,
 // redirecting/io_redir.c
 int							redir_infile(t_file_node *file_node);
 int							redir_here_doc(t_file_node *file_node,
-								t_env_list *env_list);
+								t_env_list *env_list, int count_here_doc);
 char						*create_here_doc(t_file_node *file_node,
-								t_env_list *env_list);
+								t_env_list *env_list, int count_here_doc);
 int							redir_outfile(t_file_node *file_node);
 int							redir_append(t_file_node *file_node);
 
@@ -122,7 +122,7 @@ int							add_or_attach(char *str);
 int							export_attach(char *str, t_env_list *env_list);
 
 
-char	*convert_file_name(char *file_name);
+char	*convert_file_name(char *file_name, int i);
 void	add_shell_level(t_env_list *env_list);
 
 // Functions -- END

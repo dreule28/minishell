@@ -30,7 +30,7 @@ int	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 		}
 		else
 		{
-			ft_putstr_fd("Error: Command not found or not executable\n", 2);
+			ft_putstr_fd("Error: Command not found\n", 2);
 			return (127);
 		}
 	}
