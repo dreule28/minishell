@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void builtin_echo(t_cmd_node *cmd_node)
+void	builtin_echo(t_cmd_node *cmd_node)
 {
 	int	i;
 	int	no_flag;
@@ -9,8 +9,8 @@ void builtin_echo(t_cmd_node *cmd_node)
 	i = 1;
 	no_flag = 1;
 	print_space = 0;
-	while (cmd_node->cmd[i] && is_all_flag(cmd_node->cmd[i], 'n') &&
-			cmd_node->cmd[i][0] == '-')
+	while (cmd_node->cmd[i] && is_all_flag(cmd_node->cmd[i], 'n')
+		&& cmd_node->cmd[i][0] == '-')
 	{
 		no_flag = 0;
 		i++;
@@ -155,45 +155,63 @@ void	builtin_pwd(t_cmd_node *cmd_node)
 
 int	ft_isnum(char *str)
 {
-	int count;
+	int	count;
+	int	has_digit;
 
 	count = 0;
-	while(str[count] != '\0')
+	has_digit = 0;
+	while (str[count] == '+' || str[count] == '-')
+		count++;
+	while (str[count] != '\0')
 	{
-		if(!(str[count] >= 48 && str[count] <= 57))
+		if (!(str[count] >= '0' && str[count] <= '9'))
 		{
 			ft_putstr_fd("numeric argument required\n", 2);
-			return(-1);
+			return (-1);
 		}
+		has_digit = 1;
 		count++;
+	}
+	if (!has_digit)
+	{
+		ft_putstr_fd("numeric argument required\n", 2);
+		return (-1);
 	}
 	return (0);
 }
 
-void builtin_exit(t_cmd_node *cmd_node)
+void	builtin_exit(t_cmd_node *cmd_node)
 {
-	int		exit_val;
+	int	exit_val;
 
 	if (cmd_node->cmd[0] || (cmd_node->cmd[0] && cmd_node->cmd[1]))
 	{
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
-			if(ft_isnum(cmd_node->cmd[1]) == -1)
+			if (cmd_node->cmd[0] && cmd_node->cmd[1])
 			{
-				*exit_code() = 255;
+				if (ft_isnum(cmd_node->cmd[1]) == -1)
+				{
+					*exit_code() = 255;
+					return ;
+				}
+				if (cmd_node->cmd[1][0] == '-')
+				{
+					*exit_code() = 255;
+					return ;
+				}
+				exit_val = ft_atoi(cmd_node->cmd[1]);
+				ft_putstr_fd("exit\n", 2);
+				clean_up();
+				*exit_code() = exit_val % 256;
 				return ;
 			}
-			exit_val = ft_atoi(cmd_node->cmd[1]);
-			ft_putstr_fd("exit\n", 2);
-			clean_up();
-			*exit_code() = exit_val;
-			return ;
-		}
-		else if (cmd_node->cmd[0])
-		{
-			ft_putstr_fd("exit\n", 2);
-			clean_up();
-			return ;
+			else if (cmd_node->cmd[0])
+			{
+				ft_putstr_fd("exit\n", 2);
+				clean_up();
+				return ;
+			}
 		}
 	}
 }
