@@ -55,7 +55,8 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 				handle_rest(env_list, before, segment, &i);
 		}
 		else if ((segment->type != SEG_DOUBLE && segment->type != SEG_SINGLE)
-			&&(segment->value[i] == '~' && !segment->value[i + 1]))
+			&&(segment->value[i] == '~' && !segment->value[i + 1]
+			&& !segment->value[i - 1]))
 				segment->value = gc_strjoin(before, "$HOME");
 		else
 			i++;
