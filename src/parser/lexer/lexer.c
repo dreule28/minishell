@@ -45,8 +45,7 @@ int	handle_word_or_arg(t_token_list *list, char *input, int *i)
 	in_word = 1;
 	while (input[*i] && in_word)
 	{
-		if ((input[*i] == '"'  && (*i == 0 || input[*i - 1] != '"'))
-			|| (input[*i] == '\'' && (*i == 0 || input[*i - 1] != '\'')))
+		if (input[*i] == '"' || input[*i] == '\'')
 		{
 			if (!handle_quotes(list, input, i))
 				return (0);
