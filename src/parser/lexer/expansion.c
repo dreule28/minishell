@@ -45,17 +45,18 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 	i = 0;
 	while (segment->value[i])
 	{
+		before = gc_substr(segment->value, 0, i);
 		if (segment->value[i] == '$' && segment->value[i + 1]
 			&& segment->value[i + 1] != ' ' && segment->value[i + 1] != '/')
 		{
-			before = gc_substr(segment->value, 0, i);
 			if (segment->value[i + 1] == '?')
 				handle_exit_code(segment, before, &i);
 			else
 				handle_rest(env_list, before, segment, &i);
 		}
-		else if (segment->value[i] == '~' && !segment->value[i + 1])
-			segment->value = gc_strdup("$HOME");
+		else if ((segment->type != SEG_DOUBLE && segment->type != SEG_SINGLE)
+			&&(segment->value[i] == '~' && !segment->value[i + 1]))
+				segment->value = gc_strjoin(before, "$HOME");
 		else
 			i++;
 	}
