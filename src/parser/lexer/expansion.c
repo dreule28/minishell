@@ -54,6 +54,8 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 			else
 				handle_rest(env_list, before, segment, &i);
 		}
+		else if (segment->value[i] == '~' && !segment->value[i + 1])
+			segment->value = gc_strdup("$HOME");
 		else
 			i++;
 	}
