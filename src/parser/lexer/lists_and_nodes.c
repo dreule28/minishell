@@ -20,7 +20,7 @@ void	add_token(t_token_list *list, char *token, int type)
 {
 	t_token	*new_token;
 
-	if (!token || !*token)
+	if (!token || ((type != D_QUOTES && type != S_QUOTES) && !*token))
 		return ;
 	new_token = ft_malloc(sizeof(t_token), 1);
 	if (!new_token)
