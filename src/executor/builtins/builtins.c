@@ -1,36 +1,29 @@
 #include "minishell.h"
 
-void	print_loop(t_cmd_node *cmd_node, int *i)
-{
-	while (cmd_node->cmd[*i])
-	{
-		ft_putstr_fd(cmd_node->cmd[*i], 1);
-		if (cmd_node->cmd[*i + 1])
-			ft_putstr_fd(" ", 1);
-		(*i)++;
-	}
-}
-
 void builtin_echo(t_cmd_node *cmd_node)
 {
 	int	i;
 	int	no_flag;
+	int	print_space;
 
 	i = 1;
 	no_flag = 1;
-	if (cmd_node->cmd[1])
+	print_space = 0;
+	while (cmd_node->cmd[i] && is_all_flag(cmd_node->cmd[i], 'n') &&
+			cmd_node->cmd[i][0] == '-')
 	{
-		while (cmd_node->cmd[i] && is_all_flag(cmd_node->cmd[i], 'n'))
-		{
-			no_flag = 0;
-			i++;
-		}
-		if (cmd_node->cmd[i] && cmd_node->cmd[i][0])
-			print_loop(cmd_node, &i);
-		if (no_flag)
-			ft_putstr_fd("\n", 1);
+		no_flag = 0;
+		i++;
 	}
-	else
+	while (cmd_node->cmd[i])
+	{
+		if (print_space)
+			ft_putstr_fd(" ", 1);
+		ft_putstr_fd(cmd_node->cmd[i], 1);
+		print_space = 1;
+		i++;
+	}
+	if (no_flag)
 		ft_putstr_fd("\n", 1);
 	*exit_code() = 0;
 }
