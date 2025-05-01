@@ -26,7 +26,7 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 	int saved_stdin, saved_stdout;
 
 
-	if(file_redirecting(cmd_node, env_list) == -1) 
+	if(file_redirecting(cmd_node, env_list) == -1)
 	{
 		save_stdin_stdout(&saved_stdin, &saved_stdout);
 		reset_redirection(saved_stdin, saved_stdout);
@@ -34,19 +34,29 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 		close(saved_stdout);
 		return (1);
 	}
-	if(ft_strncmp(cmd_node->cmd[0], "pwd", ft_strlen(cmd_node->cmd[0])) == 0)
+	int		i;
+	char	*lower_str;
+
+	i = 0;
+	lower_str = gc_strdup(cmd_node->cmd[0]);
+	while (lower_str[i])
+	{
+		lower_str[i] = ft_tolower(lower_str[i]);
+		i++;
+	}
+	if(!ft_strncmp(lower_str, "pwd", ft_strlen(lower_str)))
 		builtin_pwd(cmd_node);
-	else if(ft_strncmp(cmd_node->cmd[0], "export", ft_strlen(cmd_node->cmd[0])) == 0)
+	else if(!ft_strncmp(lower_str, "export", ft_strlen(lower_str)))
 		builtin_export(cmd_node, env_list);
-	else if(ft_strncmp(cmd_node->cmd[0], "cd", ft_strlen(cmd_node->cmd[0])) == 0)
+	else if(!ft_strncmp(lower_str, "cd", ft_strlen(lower_str)))
 		builtin_cd(cmd_node, env_list);
-	else if(ft_strncmp(cmd_node->cmd[0], "unset", ft_strlen(cmd_node->cmd[0])) == 0)
+	else if(!ft_strncmp(lower_str, "unset", ft_strlen(lower_str)))
 		builtin_unset(cmd_node, env_list);
-	else if(ft_strncmp(cmd_node->cmd[0], "env", ft_strlen(cmd_node->cmd[0])) == 0)
+	else if(!ft_strncmp(lower_str, "env", ft_strlen(lower_str)))
 		builtin_env(cmd_node, env_list);
-	else if (ft_strncmp(cmd_node->cmd[0], "echo", ft_strlen(cmd_node->cmd[0])) == 0)
+	else if (!ft_strncmp(lower_str, "echo", ft_strlen(lower_str)))
 		builtin_echo(cmd_node);
-	else if (ft_strncmp(cmd_node->cmd[0], "exit", ft_strlen(cmd_node->cmd[0])) == 0)
+	else if (!ft_strncmp(lower_str, "exit", ft_strlen(lower_str)))
 	{
 		builtin_exit(cmd_node);
 		if(cmd_node->cmd[1] == NULL)
@@ -55,7 +65,7 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 			return(-1);
 		}
 		if(ft_isnum_exit(cmd_node->cmd[1]) == 0 &&  cmd_node->cmd[2] != NULL)
-		{	
+		{
 			clean_up();
 			return(-2);
 		}
