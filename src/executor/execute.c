@@ -31,6 +31,7 @@ void	execution(t_cmd_list *cmd_list, t_env_list *env_list)
 void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 {
 	pid_t pid;
+	pid_t last_pid;
 	t_cmd_node *cmd_node;
 	int pipe_fd[2];
 	int prev_pipe_fd[2];
@@ -42,6 +43,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	pipe_fd[0] = -1;
 	pipe_fd[1] = -1;
 	pid = 0;
+	last_pid = -1;
 	cmd_node = cmd_list->head;
 
 	g_sigint_status = 3;
@@ -65,16 +67,23 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			clean_up();
 			exit(exit_status);
 		}
+		if(cmd_node->next == NULL)
+		{
+			last_pid = pid;
+		}
 		set_pipes_parent(pipe_fd, prev_pipe_fd);
 		cmd_node = cmd_node->next;
 	}
 	int status;
+	int last_status;
 	while ((waited = waitpid(-1, &status, 0)) > 0)
-		;
+	{
+		if(waited == last_pid)
+			last_status = status;
+	}
 	g_sigint_status = 0;
-	WIFEXITED(status);
-	if (WIFSIGNALED(status))
-		*exit_code() = 127 + WTERMSIG(status);
+	if (WIFSIGNALED(last_status))
+		*exit_code() = 128 + WTERMSIG(last_status);
 	else
-		*exit_code() = WEXITSTATUS(status);
+		*exit_code() = WEXITSTATUS(last_status);
 }
