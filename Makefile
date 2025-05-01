@@ -25,7 +25,7 @@ vpath %.c $(SRC_DIRS) $(GC_DIRS) $(SHELL_DIRS)
 PARSING_FILES := envs.c lists_and_nodes_parser.c token_to_cmd.c ttc_utils.c
 PARSING := $(addprefix parser/parser/, $(PARSING_FILES))
 
-LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c expansion.c expansion_utils.c segments.c
+LEXER_FILES := check_actions.c lexer_utils.c lexer.c lists_and_nodes.c expansion.c expansion_utils.c segments.c lexer_utils2.c
 LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 
 EXECUTOR_FILES := execute.c debug_utils.c
