@@ -5,6 +5,15 @@ int execute(t_env_list *env_list, t_cmd_list *cmd_list)
 	int check;
 
 	check = 0;
+	if(!cmd_list->head)
+		
+	if(cmd_list->head->cmd[0] && cmd_list->head->cmd[1] && cmd_list->head->cmd_type == BUILTIN)
+	{	
+		if (!ft_strncmp(cmd_list->head->cmd[0], "exit", ft_strlen(cmd_list->head->cmd[0])) && cmd_list->head->cmd[1] == NULL)
+		{
+			return(0);
+		}
+	}
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	{
 		check = single_builtin_execution(cmd_list->head, env_list);
