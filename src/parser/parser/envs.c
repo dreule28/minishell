@@ -58,11 +58,14 @@ t_env_list	*get_envs(char **env)
 	while (env[i])
 	{
 		type = find_equal_sign(env, i, &value);
-		if (type)
+		if(ft_strcmp(type, "OLDPWD") == 0)
+			i++;
+		else if (type)
 			add_env_node(env_list, type, value);
 		i++;
 	}
 	add_shell_level(env_list);
+	add_env_node(env_list, gc_strdup("OLDPWD"), gc_strdup(""));
 	return (env_list);
 }
 

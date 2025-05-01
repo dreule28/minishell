@@ -72,8 +72,9 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	while ((waited = waitpid(-1, &status, 0)) > 0)
 		;
 	g_sigint_status = 0;
+	WIFEXITED(status);
 	if (WIFSIGNALED(status))
-		*exit_code() = 128 + WTERMSIG(status);
+		*exit_code() = 127 + WTERMSIG(status);
 	else
 		*exit_code() = WEXITSTATUS(status);
 }

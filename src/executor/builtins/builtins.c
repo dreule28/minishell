@@ -180,6 +180,11 @@ int	ft_isnum(char *str)
 	return (0);
 }
 
+int	check_arguments(t_cmd_node *cmd_node)
+{
+	
+}
+
 void	builtin_exit(t_cmd_node *cmd_node)
 {
 	int	exit_val;
@@ -189,6 +194,11 @@ void	builtin_exit(t_cmd_node *cmd_node)
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
 			ft_putstr_fd("exit\n", 2);
+			if(chech_arguments(cmd_node) == -1)
+			{
+				*exit_code() = 1;
+				return ;
+			}
 			if (ft_isnum(cmd_node->cmd[1]) == -1)
 			{
 				*exit_code() = 255;
