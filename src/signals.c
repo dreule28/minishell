@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_sigint_status = 0;
+volatile sig_atomic_t	g_sigint_status = 0;
 
 void	handle_sig_int(int signal_nb)
 {
@@ -22,7 +22,7 @@ void	remove_ctrlc_echo(void)
 	struct termios	setting;
 
 	tcgetattr(1, &setting);
-	setting.c_lflag &= ~ ECHOCTL;
+	setting.c_lflag &= ~ECHOCTL;
 	tcsetattr(1, TCSAFLUSH, &setting);
 }
 
@@ -51,9 +51,9 @@ void	start_heredoc_signals(void)
 	sig_quit.sa_flags = 0;
 	sig_stop.sa_flags = 0;
 	if (sigaction(SIGINT, &sig_int, NULL) == -1
-	|| sigaction(SIGQUIT, &sig_quit, NULL) == -1
-	|| sigaction(SIGTSTP, &sig_stop, NULL) == -1)
-	ft_putstr_fd("SIG_ERROR: Error while handling signals here\n", 2);
+		|| sigaction(SIGQUIT, &sig_quit, NULL) == -1
+		|| sigaction(SIGTSTP, &sig_stop, NULL) == -1)
+		ft_putstr_fd("SIG_ERROR: Error while handling signals here\n", 2);
 	remove_ctrlc_echo();
 }
 
@@ -72,8 +72,8 @@ void	start_signals(void)
 	sig_int.sa_flags = SA_RESTART;
 	sig_quit.sa_flags = SA_RESTART;
 	sig_stop.sa_flags = SA_RESTART;
-	if (sigaction(SIGINT, &sig_int, NULL) == -1||
-		sigaction(SIGQUIT, &sig_quit, NULL) == -1
+	if (sigaction(SIGINT, &sig_int, NULL) == -1
+		|| sigaction(SIGQUIT, &sig_quit, NULL) == -1
 		|| sigaction(SIGTSTP, &sig_stop, NULL) == -1)
 		ft_putstr_fd("SIG_ERROR: Error while handling signals\n", 2);
 	remove_ctrlc_echo();
