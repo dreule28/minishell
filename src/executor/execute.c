@@ -2,10 +2,16 @@
 
 int execute(t_env_list *env_list, t_cmd_list *cmd_list)
 {
+	int check;
+
+	check = 0;
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	{
-		if (single_builtin_execution(cmd_list->head, env_list) == -1)
+		check = single_builtin_execution(cmd_list->head, env_list);
+		if (check == -1)
 			return (0);
+		else if(check == -2)
+			return (1);
 	}
 	else
 		execution(cmd_list, env_list);
@@ -61,7 +67,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 			pipe_creation(pipe_fd);
 		pid =  fork();
 		if(pid < 0)
-			return (ft_putstr_fd("\033Error  forking", 2));
+			return (ft_putstr_fd("Error  forking", 2));
 		else if(pid == 0)
 		{
 			if(set_pipes_child(cmd_node, pipe_fd, prev_pipe_fd) == -1)
