@@ -43,7 +43,7 @@ REDIRECTING := $(addprefix executor/redirecting/, $(REDIRECTING_FILES))
 GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c
 GC := $(addprefix gc/, $(GC_FILES))
 
-SRC_FILES := main.c debug.c signals.c
+SRC_FILES := main.c signals.c
 SRC := $(addprefix src/, $(SRC_FILES) $(PARSING) $(LEXER) $(EXECUTOR) $(BUILTINS) $(PROCESS) $(REDIRECTING)) $(GC)
 
 ################################################################################

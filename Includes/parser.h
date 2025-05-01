@@ -90,8 +90,8 @@ void			segment_tokens(t_token_list *tokens, t_env_list *env_list);
 //expansions.c -- END
 
 //expansion_utils.c -- BEGIN
-void			handle_single_quotes(t_token *token, int *i, int *start);
-void			handle_double_quotes(t_token *token, int *i, int *start);
+bool			handle_single_quotes(t_token *token, int *i, int *start);
+bool			handle_double_quotes(t_token *token, int *i, int *start);
 char			*get_env_value(t_env_list *env_list, char *variable_name);
 void			rebuild_token_value(t_token *token);
 //expansion_utils.c -- END
@@ -99,9 +99,15 @@ void			rebuild_token_value(t_token *token);
 //lexer_utils.c -- BEGIN
 bool			is_redir(char *str);
 int				get_redir_type(char *input, int i);
-bool			is_special_char(const char *str);
-int				get_bultin_type(const char *str);
+bool			is_special_char(char *str);
+char			*turn_lower(char *cmd);
+int				get_bultin_type(char *str);
 //lexer_utils.c -- END
+
+//lexer_utils2.c -- BEING
+bool			is_empty_quotes(char *input, int i);
+bool			handle_segments(t_token *token, int *i, int *start);
+//lexer_utils2.c -- END
 
 //lexer.c -- BEGIN
 void			token_found(t_token_list *list, char *input, int *i, int start);
