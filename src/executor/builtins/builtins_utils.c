@@ -1,5 +1,26 @@
 #include "minishell.h"
 
+int ft_isnum_exit(char *str)
+{
+	int	count;
+	int	has_digit;
+
+	count = 0;
+	has_digit = 0;
+	while (str[count] == '+' || str[count] == '-')
+		count++;
+	while (str[count] != '\0')
+	{
+		if (!(str[count] >= '0' && str[count] <= '9'))
+			return (-1);
+		has_digit = 1;
+		count++;
+	}
+	if (!has_digit)
+		return (-1);
+	return (0);
+}
+
 int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 {
 	int saved_stdin, saved_stdout;
@@ -28,6 +49,17 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 	else if (ft_strncmp(cmd_node->cmd[0], "exit", ft_strlen(cmd_node->cmd[0])) == 0)
 	{
 		builtin_exit(cmd_node);
+		if(cmd_node->cmd[1] == NULL)
+		{
+			clean_up();
+			return(-1);
+		}
+		if(ft_isnum_exit(cmd_node->cmd[1]) == 0 &&  cmd_node->cmd[2] != NULL)
+		{	
+			clean_up();
+			return(-2);
+		}
+		clean_up();
 		return (-1);
 	}
 	else

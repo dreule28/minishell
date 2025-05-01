@@ -180,10 +180,6 @@ int	ft_isnum(char *str)
 	return (0);
 }
 
-int	check_arguments(t_cmd_node *cmd_node)
-{
-	
-}
 
 void	builtin_exit(t_cmd_node *cmd_node)
 {
@@ -194,11 +190,6 @@ void	builtin_exit(t_cmd_node *cmd_node)
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
 			ft_putstr_fd("exit\n", 2);
-			if(chech_arguments(cmd_node) == -1)
-			{
-				*exit_code() = 1;
-				return ;
-			}
 			if (ft_isnum(cmd_node->cmd[1]) == -1)
 			{
 				*exit_code() = 255;
@@ -209,15 +200,17 @@ void	builtin_exit(t_cmd_node *cmd_node)
 				*exit_code() = 255;
 				return ;
 			}
+			if(cmd_node->cmd[2])
+			{
+				ft_putstr_fd("exit: too many arguments\n", 2);
+				*exit_code() = 1;
+				return ;
+			}
 			exit_val = ft_atoi(cmd_node->cmd[1]);
-			clean_up();
 			*exit_code() = exit_val % 256;
 			return ;
 		}
 		else if (cmd_node->cmd[0])
-		{
-			clean_up();
 			return ;
-		}
 	}
 }

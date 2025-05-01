@@ -15,6 +15,7 @@ typedef struct s_cmd_list	t_cmd_list;
 // Functions -- BEGIN
 
 int	check_type_name(char *str);
+int	ft_isnum(char *str);
 
 
 // execute.c
