@@ -52,15 +52,15 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 		if(cmd_node->cmd[1] == NULL)
 		{
 			clean_up();
-			return(-1);
+			return(*exit_code());
 		}
 		if(ft_isnum_exit(cmd_node->cmd[1]) == 0 &&  cmd_node->cmd[2] != NULL)
 		{	
 			clean_up();
-			return(-2);
+			return(*exit_code());
 		}
 		clean_up();
-		return (-1);
+		return (*exit_code());
 	}
 	else
 		ft_putstr_fd("Command not found\n", 2);

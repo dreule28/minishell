@@ -8,9 +8,9 @@ int execute(t_env_list *env_list, t_cmd_list *cmd_list)
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	{
 		check = single_builtin_execution(cmd_list->head, env_list);
-		if (check == -1)
+		if (check != 0)
 			return (0);
-		else if(check == -2)
+		else
 			return (1);
 	}
 	else
