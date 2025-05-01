@@ -37,7 +37,13 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	int prev_pipe_fd[2];
 	int waited;
 	int exit_status;
+	struct sigaction	old_int;
+	struct sigaction	ignore;
 
+	sigemptyset(&ignore.sa_mask);
+	ignore.sa_handler = SIG_IGN;
+	ignore.sa_flags = 0;
+	sigaction(SIGINT, &ignore, &old_int);
 	prev_pipe_fd[0] = -1;
 	prev_pipe_fd[1] = -1;
 	pipe_fd[0] = -1;
@@ -81,6 +87,7 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 		if(waited == last_pid)
 			last_status = status;
 	}
+	sigaction(SIGINT, &old_int, NULL);
 	g_sigint_status = 0;
 	if (WIFSIGNALED(last_status))
 		*exit_code() = 128 + WTERMSIG(last_status);
