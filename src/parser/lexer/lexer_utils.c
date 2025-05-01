@@ -33,21 +33,35 @@ bool	is_special_char(const char *c)
 	return (*c == '|' || *c == '>' || *c == '<');
 }
 
-int	get_bultin_type(const char *str)
+int	get_bultin_type(const char *cmd)
 {
-	if (!ft_strncmp(str, "echo", 4))
+	int		i;
+	char	*lower_str;
+
+	if (!cmd)
+		return (TK_WORD);
+	lower_str = gc_strdup(cmd);
+	if (!lower_str)
+		return (TK_WORD);
+	i = 0;
+	while (lower_str[i])
+	{
+		lower_str[i] = ft_tolower(lower_str[i]);
+		i++;
+	}
+	if (!ft_strncmp(lower_str, "echo", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "cd", 2))
+	if (!ft_strncmp(lower_str, "cd", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "pwd", 3))
+	if (!ft_strncmp(lower_str, "pwd", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "export", 6))
+	if (!ft_strncmp(lower_str, "export", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "unset", 5))
+	if (!ft_strncmp(lower_str, "unset", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "env", 3))
+	if (!ft_strncmp(lower_str, "env", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(str, "exit", 4))
+	if (!ft_strncmp(lower_str, "exit", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
 	return (TK_WORD);
 }
