@@ -58,7 +58,7 @@ t_env_list	*get_envs(char **env)
 	while (env[i])
 	{
 		type = find_equal_sign(env, i, &value);
-		if(ft_strcmp(type, "OLDPWD") == 0)
+		if (ft_strcmp(type, "OLDPWD") == 0)
 			i++;
 		else if (type)
 			add_env_node(env_list, type, value);
@@ -71,7 +71,7 @@ t_env_list	*get_envs(char **env)
 
 void	add_shell_level(t_env_list *env_list)
 {
-	int temp;
+	int			temp;
 	t_env_node	*env_node;
 
 	env_node = env_list->head;

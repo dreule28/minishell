@@ -22,13 +22,13 @@ void	process_cmd_node(t_cmd_list *cmd_list, t_token *token, int cmd_type)
 	{
 		cmd = ft_malloc(sizeof(char *) * 2, 1);
 		if (!cmd)
-			return;
+			return ;
 		cmd[0] = gc_strdup(token->value);
 		if (!cmd[0])
-			return;
+			return ;
 		cmd[1] = NULL;
 		if (!add_cmd_node(cmd_list, cmd, cmd_type))
-			return;
+			return ;
 	}
 	else
 		append_arg(cmd_list, token);
@@ -66,13 +66,11 @@ void	process_token(t_cmd_list *cmd_list, t_token **curr)
 		return ;
 	}
 	else if (token->token == TK_PIPE)
-	{
 		handle_pipe_node(cmd_list, token, curr);
-	}
 	else if (is_redirection(token->token) && !cmd_list->syntax_error)
 	{
 		handle_redirection(cmd_list, token);
-		if (token->next )
+		if (token->next)
 			*curr = token->next->next;
 		else
 			*curr = token->next;

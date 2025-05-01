@@ -31,7 +31,8 @@ int	handle_redirection(t_cmd_list *cmd_list, t_token *token)
 		if (!cmd_node)
 			return (0);
 	}
-	file_node = add_file_node(cmd_node->files, token->next->value, token->token);
+	file_node = add_file_node(cmd_node->files, token->next->value,
+			token->token);
 	if (!file_node)
 		return (0);
 	return (1);
@@ -58,7 +59,7 @@ void	append_arg(t_cmd_list *cmd_list, t_token *token)
 	if (!new_cmd[i])
 	{
 		cmd_list->tail->cmd = old_cmd;
-		return;
+		return ;
 	}
 	new_cmd[i + 1] = NULL;
 	cmd_list->tail->cmd = new_cmd;
