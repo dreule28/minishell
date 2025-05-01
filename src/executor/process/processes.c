@@ -79,7 +79,9 @@ char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 		command_index++;
 		free(full_cmd_path);
 	}
-	ft_putstr_fd("Error: Command not found\n", 2);
+	ft_putstr_fd("brother: ",2);
+	ft_putstr_fd(cmd_node->cmd[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
 	return (NULL);
 }
 
