@@ -35,7 +35,6 @@ int	set_pipes_child(t_cmd_node *cmd_node, int *pipe_fd, int *prev_pipe_fd)
 		if (prev_pipe_fd[1] != -1)
 			close(prev_pipe_fd[1]);
 		return (0);
-
 }
 
 void	set_pipes_parent(int *pipe_fd, int *prev_pipe_fd)

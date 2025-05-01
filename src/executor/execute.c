@@ -60,9 +60,14 @@ void execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 
 	g_sigint_status = 3;
 	while(cmd_node)
-	{
+	{	
 		if(create_here_doc_files(cmd_node, env_list) == -1)
 			return ;
+		cmd_node = cmd_node->next;
+	}
+	cmd_node = cmd_list->head;
+	while(cmd_node)
+	{
 		if(cmd_node->next)
 			pipe_creation(pipe_fd);
 		pid =  fork();

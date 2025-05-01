@@ -56,7 +56,7 @@ int	redir_here_doc(t_file_node *file_node, t_env_list *env_list, int i)
 	}
 	if (dup2(file_redirecting, STDIN_FILENO) == -1)
 	{
-		ft_putstr_fd("\033Error using dup2(here_doc)stdin\n", 2);
+		ft_putstr_fd("Error using dup2(here_doc)stdin\n", 2);
 		return (-1);
 	}
 	close(file_redirecting);
