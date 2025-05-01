@@ -28,27 +28,33 @@ int	get_redir_type(char *input, int i)
 	return (0);
 }
 
-bool	is_special_char(const char *c)
+bool	is_special_char(char *c)
 {
 	return (*c == '|' || *c == '>' || *c == '<');
 }
 
-int	get_bultin_type(const char *cmd)
+char	*turn_lower(char *cmd)
 {
 	int		i;
 	char	*lower_str;
 
-	if (!cmd)
-		return (TK_WORD);
-	lower_str = gc_strdup(cmd);
-	if (!lower_str)
-		return (TK_WORD);
 	i = 0;
+	lower_str = gc_strdup(cmd);
 	while (lower_str[i])
 	{
 		lower_str[i] = ft_tolower(lower_str[i]);
 		i++;
 	}
+	return (lower_str);
+}
+
+int	get_bultin_type(char *cmd)
+{
+	char	*lower_str;
+
+	if (!cmd)
+		return (TK_WORD);
+	lower_str = turn_lower(cmd);
 	if (!ft_strncmp(lower_str, "echo", ft_strlen(lower_str)))
 		return (TK_BUILTIN);
 	if (!ft_strncmp(lower_str, "cd", ft_strlen(lower_str)))

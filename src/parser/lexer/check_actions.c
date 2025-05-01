@@ -97,7 +97,7 @@ int	check_redirs(t_token_list *list, char *input, int *i)
 			(*i)++;
 		if (start == *i)
 		{
-			ft_putstr_fd("Syntax error: Missing filename!\n",2);
+			ft_putstr_fd("Syntax error: Missing filename!\n", 2);
 			list->syntax_error = 1;
 			return (0);
 		}

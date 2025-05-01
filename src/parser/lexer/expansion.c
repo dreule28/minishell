@@ -11,7 +11,8 @@ void	handle_exit_code(t_segment *segment, char *before, int *i)
 	*i = ft_strlen(before);
 }
 
-void	handle_rest(t_env_list *env_list, char *before, t_segment *segment, int *i)
+void	handle_rest(t_env_list *env_list, char *before, t_segment *segment
+			, int *i)
 {
 	char	*variable_name;
 	char	*env_value;
@@ -38,9 +39,7 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 	int		i;
 	char	*before;
 
-	if (!segment || !segment->value || !env_list)
-		return ;
-	if (segment->type == SEG_SINGLE)
+	if (!segment || !segment->value || segment->type == SEG_SINGLE || !env_list)
 		return ;
 	i = 0;
 	while (segment->value[i])
@@ -55,9 +54,9 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 				handle_rest(env_list, before, segment, &i);
 		}
 		else if ((segment->type != SEG_DOUBLE && segment->type != SEG_SINGLE)
-			&&(segment->value[i] == '~' && !segment->value[i + 1]
-			&& !segment->value[i - 1]))
-				segment->value = gc_strjoin(before, "$HOME");
+			&& (segment->value[i] == '~' && !segment->value[i + 1]
+				&& !segment->value[i - 1]))
+			segment->value = gc_strjoin(before, "$HOME");
 		else
 			i++;
 	}

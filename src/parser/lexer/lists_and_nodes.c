@@ -53,7 +53,7 @@ t_segment	*create_segment(char *value, t_seg_type type)
 	return (segment);
 }
 
-t_segment_list	*init_segment_list()
+t_segment_list	*init_segment_list(void)
 {
 	t_segment_list	*list;
 

@@ -1,37 +1,47 @@
 #include "minishell.h"
 
-void	handle_single_quotes(t_token *token, int *i, int *start)
+bool	handle_single_quotes(t_token *token, int *i, int *start)
 {
-	if ((*i) > (*start))
-		add_segment_to_token(token, gc_substr(token->value,
-				(*start), (*i) - (*start)), SEG_NO_QUOTE);
-	(*start) = (*i) + 1;
-	(*i)++;
-	while (token->value[(*i)] && token->value[(*i)] != '\'')
+	if (token->value[*i] == '\'')
+	{
+		if ((*i) > (*start))
+			add_segment_to_token(token, gc_substr(token->value,
+					(*start), (*i) - (*start)), SEG_NO_QUOTE);
+		(*start) = (*i) + 1;
 		(*i)++;
-	if ((*i) > (*start))
-		add_segment_to_token(token, gc_substr(token->value,
-				(*start), (*i) - (*start)), SEG_SINGLE);
-	if (token->value[(*i)] == '\'')
-		(*i)++;
-	(*start) = (*i);
+		while (token->value[(*i)] && token->value[(*i)] != '\'')
+			(*i)++;
+		if ((*i) > (*start))
+			add_segment_to_token(token, gc_substr(token->value,
+					(*start), (*i) - (*start)), SEG_SINGLE);
+		if (token->value[(*i)] == '\'')
+			(*i)++;
+		(*start) = (*i);
+		return (true);
+	}
+	return (false);
 }
 
-void	handle_double_quotes(t_token *token, int *i, int *start)
+bool	handle_double_quotes(t_token *token, int *i, int *start)
 {
-	if ((*i) > (*start))
-		add_segment_to_token(token, gc_substr(token->value,
-				(*start), (*i) - (*start)), SEG_NO_QUOTE);
-	(*start) = (*i) + 1;
-	(*i)++;
-	while (token->value[(*i)] && token->value[(*i)] != '"')
+	if (token->value[*i] == '"')
+	{
+		if ((*i) > (*start))
+			add_segment_to_token(token, gc_substr(token->value,
+					(*start), (*i) - (*start)), SEG_NO_QUOTE);
+		(*start) = (*i) + 1;
 		(*i)++;
-	if ((*i) > (*start))
-		add_segment_to_token(token, gc_substr(token->value,
-				(*start), (*i) - (*start)), SEG_DOUBLE);
-	if (token->value[(*i)] == '"')
-		(*i)++;
-	(*start) = (*i);
+		while (token->value[(*i)] && token->value[(*i)] != '"')
+			(*i)++;
+		if ((*i) > (*start))
+			add_segment_to_token(token, gc_substr(token->value,
+					(*start), (*i) - (*start)), SEG_DOUBLE);
+		if (token->value[(*i)] == '"')
+			(*i)++;
+		(*start) = (*i);
+		return (true);
+	}
+	return (false);
 }
 
 char	*get_env_value(t_env_list *env_list, char *variable_name)

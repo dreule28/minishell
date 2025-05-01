@@ -33,7 +33,7 @@ int	handle_quotes(t_token_list *list, char *input, int *i)
 int	is_word_boundary(char *input, int *i)
 {
 	return (input[*i] == ' ' || input[*i] == '\t'
-				|| is_special_char(&input[*i]));
+		|| is_special_char(&input[*i]));
 }
 
 int	handle_word_or_arg(t_token_list *list, char *input, int *i)
@@ -70,11 +70,8 @@ t_token_list	*lexer(char *input)
 	{
 		while (input[i] == ' ' || input[i] == '\t')
 			i++;
-		if ((input[i] == '"' && input[i + 1] == '"' && (input[i+2] == ' ' || input[i+2] == '\t' || !input[i+2]))
-				|| (input[i] == '\'' && input[i + 1] == '\'' && (input[i+2] == ' ' || input[i+2] == '\t' || !input[i+2])))
-			{
-				check_same_quotes(list, input, &i);
-			}
+		if (is_empty_quotes(input, i))
+			check_same_quotes(list, input, &i);
 		else if (is_redir(&input[i]))
 			check_redirs(list, input, &i);
 		else if (input[i] == '|')
