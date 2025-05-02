@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 12:55:18 by dreule            #+#    #+#             */
+/*   Updated: 2025/05/02 12:55:19 by dreule           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -80,11 +92,26 @@ typedef enum REDIR_TYPE
 extern volatile sig_atomic_t	g_sigint_status;
 
 //Functions -- BEGIN
-int		*exit_code(void);
-void	remove_ctrlc_echo(void);
-void	handle_sig_int(int signal_nb);
-void	start_heredoc_signals(void);
-void	start_signals(void);
+
+//exit_code.c -- BEGIN
+int			*exit_code(void);
+//exit_code.c -- END
+
+//main.c -- BEGIN
+t_env_list	*setup_env_list(void);
+t_env_list	*initialize_shell(char **env);
+char		*get_prompt(void);
+int			process_command(char *prompt, t_env_list *env_list);
+//main.c -- END
+
+//signals.c -- BEGIN
+void		handle_sig_int(int signal_nb);
+void		remove_ctrlc_echo(void);
+void		handle_ctrlc_heredoc(int signal_nb);
+void		start_heredoc_signals(void);
+void		start_signals(void);
+//signals.c -- END
+
 //Functions -- END
 
 #endif

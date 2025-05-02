@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 11:28:20 by dreule            #+#    #+#             */
+/*   Updated: 2025/05/02 11:28:21 by dreule           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 bool	is_redir(char *str)
@@ -55,19 +67,19 @@ int	get_bultin_type(char *cmd)
 	if (!cmd)
 		return (TK_WORD);
 	lower_str = turn_lower(cmd);
-	if (!ft_strncmp(lower_str, "echo", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "echo"))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(lower_str, "cd", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "cd"))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(lower_str, "pwd", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "pwd"))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(lower_str, "export", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "export"))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(lower_str, "unset", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "unset"))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(lower_str, "env", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "env"))
 		return (TK_BUILTIN);
-	if (!ft_strncmp(lower_str, "exit", ft_strlen(lower_str)))
+	if (!ft_strcmp(lower_str, "exit"))
 		return (TK_BUILTIN);
 	return (TK_WORD);
 }

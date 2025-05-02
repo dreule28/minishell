@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 11:28:33 by dreule            #+#    #+#             */
+/*   Updated: 2025/05/02 11:47:18 by dreule           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSER_H
 # define PARSER_H
 
@@ -69,7 +81,6 @@ typedef struct s_token_list
 //Structs -- END
 
 //Functions -- BEGIN
-void			print_cmd_list(t_cmd_list *cmd_list);
 
 //Lexer-FOLDER -- BEGIN
 //check_actions.c -- BEGIN
