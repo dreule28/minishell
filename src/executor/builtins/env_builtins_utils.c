@@ -1,14 +1,21 @@
 #include "minishell.h"
 
-int	check_type_name(char *str)
+int	check_first_char(char *str)
 {
-	int	count;
-	
 	if (!(ft_isalpha(str[0]) || str[0] == '_'))
 	{
 		ft_putstr_fd("not a valid identifier\n", 2);
 		return (-1);
 	}
+	return (0);
+}
+
+int	check_type_name(char *str)
+{
+	int	count;
+
+	if (check_first_char(str) == -1)
+		return (-1);
 	count = 1;
 	while (str[count] != '\0' && str[count] != '=')
 	{
@@ -32,38 +39,43 @@ int	check_type_name(char *str)
 	return (0);
 }
 
-void	export_variable(t_cmd_node *cmd_node, t_env_list *env_list)
+void	check_export_behavior(t_cmd_node *cmd_node, t_env_list *env_list,
+		int count)
 {
-	int		count;
-	int		not_valid;
 	char	*type;
 	char	*value;
+
+	if (add_or_attach(cmd_node->cmd[count]) == 0)
+	{
+		if (check_duplicates(cmd_node->cmd[count], env_list) == 0)
+		{
+			type = get_type(cmd_node->cmd[count]);
+			value = get_value(cmd_node->cmd[count]);
+			add_env_node(env_list, type, value);
+		}
+	}
+	else
+	{
+		if (export_attach(cmd_node->cmd[count], env_list) == 0)
+		{
+			type = get_type(cmd_node->cmd[count]);
+			value = get_value(cmd_node->cmd[count]);
+			add_env_node(env_list, type, value);
+		}
+	}
+}
+
+void	export_variable(t_cmd_node *cmd_node, t_env_list *env_list)
+{
+	int	count;
+	int	not_valid;
 
 	count = 1;
 	not_valid = 0;
 	while (cmd_node->cmd[count] != NULL)
 	{
 		if (check_type_name(cmd_node->cmd[count]) == 0)
-		{
-			if (add_or_attach(cmd_node->cmd[count]) == 0)
-			{
-				if (check_duplicates(cmd_node->cmd[count], env_list) == 0)
-				{
-					type = get_type(cmd_node->cmd[count]);
-					value = get_value(cmd_node->cmd[count]);
-					add_env_node(env_list, type, value);
-				}
-			}
-			else
-			{
-				if (export_attach(cmd_node->cmd[count], env_list) == 0)
-				{
-					type = get_type(cmd_node->cmd[count]);
-					value = get_value(cmd_node->cmd[count]);
-					add_env_node(env_list, type, value);
-				}
-			}
-		}
+			check_export_behavior(cmd_node, env_list, count);
 		else
 			not_valid = 1;
 		count++;

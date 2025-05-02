@@ -28,119 +28,34 @@ void	builtin_echo(t_cmd_node *cmd_node)
 	*exit_code() = 0;
 }
 
-int	count_argument(char **argument)
-{
-	int	count;
-
-	count = 0;
-	while (argument[count] != NULL)
-		count++;
-	return (count);
-}
-
-char	*get_home(t_env_list *env_list)
-{
-	t_env_node	*env_node;
-
-	env_node = env_list->head;
-	while (env_node)
-	{
-		if (ft_strcmp("HOME", env_node->type) == 0)
-			return (gc_strdup(env_node->value));
-		env_node = env_node->next;
-	}
-	return (NULL);
-}
-
-char	*get_old_pwd(t_env_list *env_list)
-{
-	t_env_node	*env_node;
-
-	env_node = env_list->head;
-	while (env_node)
-	{
-		if (ft_strcmp("OLDPWD", env_node->type) == 0)
-			return (gc_strdup(env_node->value));
-		env_node = env_node->next;
-	}
-	return (NULL);
-}
-
-void	update_old_pwd(char *old_pwd, t_env_list *env_list)
-{
-	t_env_node	*env_node;
-
-	env_node = env_list->head;
-	while (env_node)
-	{
-		if (ft_strcmp("OLDPWD", env_node->type) == 0)
-		{
-			env_node->value = gc_strdup(old_pwd);
-			return ;
-		}
-		env_node = env_node->next;
-	}
-}
-
-void	update_new_pwd(char *new_pwd, t_env_list *env_list)
-{
-	t_env_node	*env_node;
-
-	env_node = env_list->head;
-	while (env_node)
-	{
-		if (ft_strcmp("PWD", env_node->type) == 0)
-		{
-			env_node->value = new_pwd;
-			return ;
-		}
-		env_node = env_node->next;
-	}
-}
-
 void	builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list)
 {
-	char	*directory_name;
+	char	*old_dir;
+	char	*home_dir;
+	char	*dir_name;
 	char	*old_pwd;
-	char	*new_pwd;
 
+	old_dir = gc_strdup("");
+	home_dir = gc_strdup("");
+	dir_name = gc_strdup("");
 	old_pwd = getcwd(NULL, 0);
 	gc_add(old_pwd);
 	if (cmd_node->cmd[1] == NULL || ft_strcmp(cmd_node->cmd[1], "~") == 0)
-		directory_name = get_home(env_list);
+		home_dir = get_home(env_list);
 	else if (ft_strcmp(cmd_node->cmd[1], "-") == 0)
-		directory_name = get_old_pwd(env_list);
+		old_dir = get_old_pwd(env_list);
 	else
-		directory_name = cmd_node->cmd[1];
-	if (directory_name == NULL)
-	{
-		*exit_code() = 1;
-		ft_putstr_fd("HOME or OLDPWD not set\n", 2);
+		dir_name = cmd_node->cmd[1];
+	if (check_dir_names(old_dir, home_dir, dir_name) == -1)
 		return ;
-	}
-	if (chdir(directory_name) != 0)
-	{
-		*exit_code() = 1;
-		ft_putstr_fd("No such a file or directory\n", 2);
-		return ;
-	}
-	new_pwd = getcwd(NULL, 0);
-	gc_add(new_pwd);
-	update_old_pwd(old_pwd, env_list);
-	update_new_pwd(new_pwd, env_list);
-	if (cmd_node->cmd[1] && ft_strcmp(cmd_node->cmd[1], "-") == 0)
-	{
-		ft_putstr_fd(new_pwd, 1);
-		ft_putstr_fd("\n", 1);
-	}
+	update_pwds(cmd_node, env_list, old_pwd);
 	*exit_code() = 0;
 }
 
-void	builtin_pwd(t_cmd_node *cmd_node)
+void	builtin_pwd(void)
 {
 	char	*pwd;
 
-	(void)cmd_node;
 	pwd = getcwd(NULL, 0);
 	if (pwd != NULL)
 	{
@@ -153,34 +68,6 @@ void	builtin_pwd(t_cmd_node *cmd_node)
 	*exit_code() = 0;
 }
 
-int	ft_isnum(char *str)
-{
-	int	count;
-	int	has_digit;
-
-	count = 0;
-	has_digit = 0;
-	while (str[count] == '+' || str[count] == '-')
-		count++;
-	while (str[count] != '\0')
-	{
-		if (!(str[count] >= '0' && str[count] <= '9'))
-		{
-			ft_putstr_fd("numeric argument required\n", 2);
-			return (-1);
-		}
-		has_digit = 1;
-		count++;
-	}
-	if (!has_digit)
-	{
-		ft_putstr_fd("numeric argument required\n", 2);
-		return (-1);
-	}
-	return (0);
-}
-
-
 void	builtin_exit(t_cmd_node *cmd_node)
 {
 	int	exit_val;
@@ -190,22 +77,8 @@ void	builtin_exit(t_cmd_node *cmd_node)
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
 			ft_putstr_fd("exit\n", 2);
-			if (ft_isnum(cmd_node->cmd[1]) == -1)
-			{
-				*exit_code() = 255;
+			if (check_exit_arguments(cmd_node) == -1)
 				return ;
-			}
-			if (cmd_node->cmd[1][0] == '-')
-			{
-				*exit_code() = 255;
-				return ;
-			}
-			if(cmd_node->cmd[2])
-			{
-				ft_putstr_fd("exit: too many arguments\n", 2);
-				*exit_code() = 1;
-				return ;
-			}
 			exit_val = ft_atoi(cmd_node->cmd[1]);
 			*exit_code() = exit_val % 256;
 			return ;

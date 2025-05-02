@@ -1,13 +1,37 @@
 #include "minishell.h"
 #include <sys/stat.h>
 
-int	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
+int	search_absolut_path(t_cmd_node *cmd_node, t_env_list *env_list)
 {
-	char		*env_path_position;
-	char		**env_path_list;
 	int			exit_status;
 	struct stat	st;
-			char *single_cmd[2];
+	char		*single_cmd[2];
+
+	exit_status = 0;
+	if (access(cmd_node->cmd[0], F_OK | X_OK) == 0)
+	{
+		if (stat(cmd_node->cmd[0], &st) == 0 && S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd("Error: is a directory\n", 2);
+			return (126);
+		}
+		single_cmd[0] = cmd_node->cmd[0];
+		single_cmd[1] = NULL;
+		exit_status = execute_command(cmd_node, single_cmd, env_list);
+	}
+	else
+	{
+		ft_putstr_fd("Error: Command not found\n", 2);
+		return (127);
+	}
+	return (exit_status);
+}
+
+int	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
+{
+	char	*env_path_position;
+	char	**env_path_list;
+	int		exit_status;
 
 	if (cmd_node->files->size > 0)
 		if (file_redirecting(cmd_node, env_list) == -1)
@@ -16,24 +40,7 @@ int	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 		|| cmd_node->cmd[0][0] == '\0')
 		return (0);
 	if (ft_strchr(cmd_node->cmd[0], '/'))
-	{
-		if (access(cmd_node->cmd[0], F_OK | X_OK) == 0)
-		{
-			if (stat(cmd_node->cmd[0], &st) == 0 && S_ISDIR(st.st_mode))
-			{
-				ft_putstr_fd("Error: is a directory\n", 2);
-				return (126);
-			}
-			single_cmd[0] = cmd_node->cmd[0];
-			single_cmd[1] = NULL;
-			exit_status = execute_command(cmd_node, single_cmd, env_list);
-		}
-		else
-		{
-			ft_putstr_fd("Error: Command not found\n", 2);
-			return (127);
-		}
-	}
+		return (search_absolut_path(cmd_node, env_list));
 	else
 	{
 		env_path_position = env_search_path_var(env_list);
@@ -47,12 +54,23 @@ int	child_proccess(t_cmd_node *cmd_node, t_env_list *env_list)
 	return (exit_status);
 }
 
+char	*access_full_path(t_cmd_node *cmd_node)
+{
+	struct stat	st;
+
+	if (stat(cmd_node->cmd[0], &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("Error: is a directory\n", 2);
+		return (NULL);
+	}
+	return (cmd_node->cmd[0]);
+}
+
 char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 {
-	char		*temp_path;
-	char		*full_cmd_path;
-	int			command_index;
-	struct stat	st;
+	char	*temp_path;
+	char	*full_cmd_path;
+	int		command_index;
 
 	command_index = 0;
 	while (env_path_list[command_index] != NULL)
@@ -68,20 +86,11 @@ char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 			return (full_cmd_path);
 		}
 		else if (access(cmd_node->cmd[0], F_OK | X_OK) == 0)
-		{
-			if (stat(cmd_node->cmd[0], &st) == 0 && S_ISDIR(st.st_mode))
-			{
-				ft_putstr_fd("Error: is a directory\n", 2);
-				return (NULL);
-			}
-			return (cmd_node->cmd[0]);
-		}
+			return (access_full_path(cmd_node));
 		command_index++;
 		free(full_cmd_path);
 	}
-	ft_putstr_fd("brother: ",2);
-	ft_putstr_fd(cmd_node->cmd[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
+	print_error_message(cmd_node->cmd[0], "command not found");
 	return (NULL);
 }
 

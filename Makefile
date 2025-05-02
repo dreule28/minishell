@@ -31,10 +31,10 @@ LEXER := $(addprefix parser/lexer/, $(LEXER_FILES))
 EXECUTOR_FILES := execute.c debug_utils.c
 EXECUTOR := $(addprefix executor/, $(EXECUTOR_FILES))
 
-BUILTINS_FILES := builtins.c env_builtins.c builtins_utils.c  env_builtins_utils.c export_utils.c
+BUILTINS_FILES := builtins.c env_builtins.c builtins_utils.c  env_builtins_utils.c export_utils.c single_builtin_execution.c cd_utils.c more_cd_utils.c unset_utils.c
 BUILTINS := $(addprefix executor/builtins/, $(BUILTINS_FILES))
 
-PROCESS_FILES := env_functions.c pipe_utils.c process_utils.c processes.c
+PROCESS_FILES := env_functions.c pipe_utils.c process_utils.c processes.c env_utils.c
 PROCESS := $(addprefix executor/process/, $(PROCESS_FILES))
 
 REDIRECTING_FILES := io_redir_loops.c io_redir_utils.c io_redir.c here_doc_utils.c

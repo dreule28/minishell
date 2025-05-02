@@ -14,12 +14,40 @@ typedef struct s_cmd_list	t_cmd_list;
 
 // Functions -- BEGIN
 
-int	check_type_name(char *str);
-int	ft_isnum(char *str);
+// builtins/single_builtin_execution
+int							check_type_name(char *str);
+int							ft_isnum(char *str);
+int							ft_isnum_exit(char *str);
+int							search_return_code(t_cmd_node *cmd_node);
+bool						search_builtin(t_cmd_node *cmd_node,
+								t_env_list *env_list, char *str);
+void						reset_redir(int saved_stdin, int saved_stdout);
 
+int							check_exit_arguments(t_cmd_node *cmd_node);
+void						print_error_message(char *cmd, char *message);
+
+// builtins/cd_utils.c
+int							count_argument(char **argument);
+char						*get_home(t_env_list *env_list);
+char						*get_old_pwd(t_env_list *env_list);
+void						update_old_pwd(char *old_pwd, t_env_list *env_list);
+void						update_new_pwd(char *new_pwd, t_env_list *env_list);
+
+int							check_dir_names(char *old_dir, char *home_dir,
+								char *dir_name);
+void						update_pwds(t_cmd_node *cmd_node,
+								t_env_list *env_list, char *old_pwd);
+int							check_first_char(char *str);
+void						check_export_behavior(t_cmd_node *cmd_node,
+								t_env_list *env_list, int count);
+
+int							unset_loop(t_cmd_node *cmd_node,
+								t_env_node **env_node, t_env_list *env_list,
+								int count);
+int							is_valid_identifier(char *str);
 
 // execute.c
-int						execute(t_env_list *env_list, t_cmd_list *cmd_list);
+int							execute(t_env_list *env_list, t_cmd_list *cmd_list);
 void						execution(t_cmd_list *cmd_list,
 								t_env_list *env_list);
 void						execution_loop(t_cmd_list *cmd_list,
@@ -40,7 +68,7 @@ void						write_here_doc_file_expand(char *line, int write_fd,
 // redirecting/io_redir.c
 int							redir_infile(t_file_node *file_node);
 int							redir_here_doc(t_file_node *file_node,
-								t_env_list *env_list, int count_here_doc);
+								t_env_list *env_list, int i);
 char						*create_here_doc(t_file_node *file_node,
 								t_env_list *env_list, int count_here_doc);
 int							redir_outfile(t_file_node *file_node);
@@ -51,7 +79,7 @@ int							redir_loop_infiles(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 int							redir_loop_outfiles(t_cmd_node *cmd_node);
 int							create_here_doc_files(t_cmd_node *cmd_node,
-								t_env_list *env_list);
+								t_env_list *env_list, int count_here_doc);
 
 // redirecion/here_doc_utils.c
 int							count_single_quotes(char *line);
@@ -83,23 +111,24 @@ int							set_pipes_child(t_cmd_node *cmd_node, int *pipe_fd,
 void						set_pipes_parent(int *pipe_fd, int *prev_pipe_fd);
 
 // process/processes.c
-int						child_proccess(t_cmd_node *cmd_node,
+int							child_proccess(t_cmd_node *cmd_node,
 								t_env_list *env_list);
-char						*create_command_path(t_cmd_node *cmd_node, char **env_path_list);
-int						execute_command(t_cmd_node *cmd_node,
+char						*create_command_path(t_cmd_node *cmd_node,
+								char **env_path_list);
+int							execute_command(t_cmd_node *cmd_node,
 								char **env_path_list, t_env_list *env_list);
 
 // builtins/utils.c
-int						single_builtin_execution(t_cmd_node *cmd_node,
+int							single_builtin_execution(t_cmd_node *cmd_node,
 								t_env_list *env_list);
-void	sort_env_array(char **converted_env_list);
-bool	is_all_flag(char *flag, char c);
-
+void						sort_env_array(char **converted_env_list);
+bool						is_all_flag(char *flag, char c);
 
 // builtins/builtins.c
 void						builtin_echo(t_cmd_node *cmd_node);
-void						builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list);
-void						builtin_pwd(t_cmd_node *cmd_node);
+void						builtin_cd(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						builtin_pwd(void);
 void						builtin_exit(t_cmd_node *cmd_node);
 
 // builtins/env_builtins.c
@@ -122,9 +151,8 @@ int							check_duplicates(char *str, t_env_list *env_list);
 int							add_or_attach(char *str);
 int							export_attach(char *str, t_env_list *env_list);
 
-
-char	*convert_file_name(char *file_name, int i);
-void	add_shell_level(t_env_list *env_list);
+char						*convert_file_name(char *file_name, int i);
+void						add_shell_level(t_env_list *env_list);
 
 // Functions -- END
 
@@ -134,10 +162,6 @@ typedef enum FILE_CHECK // got the redirecting types for the files
 	OUTFILE_USED,
 	INFILE_NOT_USED,
 	INFILE_USED
-}							FILE_CHECK;
+}							t_FILE_CHECK;
 
-typedef enum ERRORS // got the redirecting types for the files
-{
-	ERROR = -1
-}							ERRORS;
 #endif

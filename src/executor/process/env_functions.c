@@ -1,33 +1,23 @@
 #include "minishell.h"
 
-char	*env_search_path_var(t_env_list *env_list)
+int	env_converter_loop(t_env_node **env_node, char **converted_env_list,
+		int *count)
 {
-	t_env_node	*node;
-	
-	node = env_list->head;
-	while (node->next != NULL)
-	{
-		if (ft_strncmp(node->type, "PATH", 4) == 0)
-		return (node->value);
-		node = node->next;
-	}
-	ft_putstr_fd("PATH variable not found\n", 2);
-	return (NULL);
-}
+	char	*tmp;
+	char	*env_str;
 
-int	env_lenght(t_env_list *env_list)
-{
-	int			count;
-	t_env_node	*node;
-
-	count = 0;
-	node = env_list->head;
-	while (node)
+	tmp = ft_strjoin((*env_node)->type, "=");
+	env_str = gc_strjoin(tmp, (*env_node)->value);
+	free(tmp);
+	if (!env_str)
 	{
-		count++;
-		node = node->next;
+		ft_putstr_fd("Error: memory allocation failed\n", 2);
+		return (-1);
 	}
-	return (count);
+	converted_env_list[(*count)++] = env_str;
+	*env_node = (*env_node)->next;
+	(*count)++;
+	return (0);
 }
 
 char	**env_converter(t_env_list *env_list)
@@ -35,8 +25,6 @@ char	**env_converter(t_env_list *env_list)
 	int			count;
 	t_env_node	*env_node;
 	char		**converted_env_list;
-	char *tmp;
-	char *env_str;
 
 	count = 0;
 	env_node = env_list->head;
@@ -47,25 +35,39 @@ char	**env_converter(t_env_list *env_list)
 	env_node = env_list->head;
 	count = 0;
 	while (env_node)
-	{
-		tmp = ft_strjoin(env_node->type, "=");
-		env_str = gc_strjoin(tmp, env_node->value);
-		free(tmp);
-		if (!env_str)
-			return (ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
-		converted_env_list[count++] = env_str;
-		env_node = env_node->next;
-	}
+		if (env_converter_loop(&env_node, converted_env_list, &count) == -1)
+			return (NULL);
 	converted_env_list[count] = NULL;
 	return (converted_env_list);
 }
+
+bool	env_converter_export_loop(t_env_node *env_node,
+		char **converted_env_list, int *count)
+{
+	char	*tmp;
+	char	*env_str;
+
+	tmp = ft_strjoin(env_node->type, "=");
+	env_str = ft_strjoin(tmp, "\"");
+	free(tmp);
+	tmp = ft_strjoin(env_str, env_node->value);
+	free(env_str);
+	env_str = gc_strjoin(tmp, "\"");
+	free(tmp);
+	if (!env_str)
+	{
+		ft_putstr_fd("Error: memory allocation failed\n", 2);
+		return (true);
+	}
+	converted_env_list[(*count)++] = env_str;
+	return (false);
+}
+
 char	**env_converter_export(t_env_list *env_list)
 {
 	int			count;
 	t_env_node	*env_node;
 	char		**converted_env_list;
-	char *tmp;
-	char *env_str;
 
 	count = 0;
 	env_node = env_list->head;
@@ -77,16 +79,8 @@ char	**env_converter_export(t_env_list *env_list)
 	count = 0;
 	while (env_node)
 	{
-		tmp = ft_strjoin(env_node->type, "=");
-		env_str = ft_strjoin(tmp, "\"");
-		free(tmp);
-		tmp = ft_strjoin(env_str, env_node->value);
-		free(env_str);
-		env_str = gc_strjoin(tmp, "\"");
-		free(tmp);
-		if (!env_str)
-			return (ft_putstr_fd("Error: memory allocation failed\n", 2), NULL);
-		converted_env_list[count++] = env_str;
+		if (env_converter_export_loop(env_node, converted_env_list, &count))
+			return (NULL);
 		env_node = env_node->next;
 	}
 	converted_env_list[count] = NULL;

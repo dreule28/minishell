@@ -1,12 +1,10 @@
 #include "minishell.h"
 
-int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list)
+int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list,int count_here_doc)
 {
 	char	*file_name;
-	static int		count_here_doc;
 	t_file_node *file_node;
 
-	count_here_doc = 1;
 	file_node = cmd_node->files->head;
 	while (file_node != NULL)
 	{
@@ -19,7 +17,7 @@ int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list)
 		}
 		file_node = file_node->next;
 	}
-	return(0);
+	return(count_here_doc);
 }
 
 int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
@@ -27,7 +25,7 @@ int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 	t_file_node	*file_node;
 	int			infile_status;
 	int			return_value;
-	int			count_here_doc;
+	static int	count_here_doc;
 
 	return_value = 0;
 	count_here_doc = 1;
@@ -42,7 +40,7 @@ int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 			return_value = redir_here_doc(file_node, env_list, count_here_doc);
 			count_here_doc++;
 		}
-			if (file_node->redir_type == TK_INFILE)
+		if (file_node->redir_type == TK_INFILE)
 			return_value = redir_infile(file_node);
 		if (return_value == -1)
 			return (-1);

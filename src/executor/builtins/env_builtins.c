@@ -33,32 +33,13 @@ void	builtin_export(t_cmd_node *cmd_node, t_env_list *env_list)
 		export_variable(cmd_node, env_list);
 }
 
-int	is_valid_identifier(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || !str[0])
-		return (-1);
-	if (!(ft_isalpha(str[0]) || str[0] == '_'))
-		return (-1);
-	i = 1;
-	while (str[i])
-	{
-		if (!(ft_isalnum(str[i]) || str[i] == '_'))
-			return (-1);
-		i++;
-	}
-	return (0);
-}
-
 void	builtin_unset(t_cmd_node *cmd_node, t_env_list *env_list)
 {
-	t_env_node	*env_node;
-	t_env_node	*prev_env_node;
 	int			count;
 	int			invalid_found;
+	t_env_node	*env_node;
 
+	env_node = env_list->head;
 	invalid_found = 0;
 	count = 1;
 	while (cmd_node->cmd[count] != NULL)
@@ -70,21 +51,9 @@ void	builtin_unset(t_cmd_node *cmd_node, t_env_list *env_list)
 			count++;
 			continue ;
 		}
-		env_node = env_list->head;
-		prev_env_node = NULL;
 		while (env_node != NULL)
-		{
-			if (ft_strcmp(cmd_node->cmd[count], env_node->type) == 0)
-			{
-				if (prev_env_node == NULL)
-					env_list->head = env_node->next;
-				else
-					prev_env_node->next = env_node->next;
+			if (unset_loop(cmd_node, &env_node, env_list, count) == -1)
 				break ;
-			}
-			prev_env_node = env_node;
-			env_node = env_node->next;
-		}
 		count++;
 	}
 	*exit_code() = invalid_found;

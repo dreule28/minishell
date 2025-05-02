@@ -27,3 +27,11 @@ int	error_check_null(char *str)
 		return (-1);
 	return (0);
 }
+
+void	print_error_message(char *cmd, char *message)
+{
+	ft_putstr_fd("brother: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(" : ", 2);
+	ft_putstr_fd(message, 2);
+}
