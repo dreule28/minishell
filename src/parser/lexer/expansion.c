@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:28:23 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/02 11:28:24 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/02 14:11:27 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ void	expand_segment(t_segment *segment, t_env_list *env_list)
 				handle_rest(env_list, before, segment, &i);
 		}
 		else if ((segment->type != SEG_DOUBLE && segment->type != SEG_SINGLE)
-			&& (segment->value[i] == '~' && !segment->value[i + 1]
-				&& !segment->value[i - 1]))
+			&& (segment->value[i] == '~' && !segment->value[i + 1] && !i))
 			segment->value = gc_strjoin(before, "$HOME");
 		else
 			i++;
