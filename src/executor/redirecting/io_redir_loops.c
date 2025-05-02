@@ -1,23 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   io_redir_loops.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 17:51:46 by gzovkic           #+#    #+#             */
+/*   Updated: 2025/05/02 17:51:47 by gzovkic          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list,int count_here_doc)
+int	create_here_doc_files(t_cmd_node *cmd_node, t_env_list *env_list,
+		int count_here_doc)
 {
-	char	*file_name;
-	t_file_node *file_node;
+	char		*file_name;
+	t_file_node	*file_node;
 
 	file_node = cmd_node->files->head;
 	while (file_node != NULL)
 	{
-		if(file_node->redir_type == TK_HEREDOC)
+		if (file_node->redir_type == TK_HEREDOC)
 		{
-			file_name = create_here_doc(file_node, env_list,count_here_doc);
+			file_name = create_here_doc(file_node, env_list, count_here_doc);
 			count_here_doc++;
 			if (file_name == NULL)
 				return (-1);
 		}
 		file_node = file_node->next;
 	}
-	return(count_here_doc);
+	return (count_here_doc);
 }
 
 int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
@@ -36,10 +49,7 @@ int	redir_loop_infiles(t_cmd_node *cmd_node, t_env_list *env_list)
 	while (file_node != NULL)
 	{
 		if (file_node->redir_type == TK_HEREDOC)
-		{
 			return_value = redir_here_doc(file_node, env_list, count_here_doc);
-			count_here_doc++;
-		}
 		if (file_node->redir_type == TK_INFILE)
 			return_value = redir_infile(file_node);
 		if (return_value == -1)

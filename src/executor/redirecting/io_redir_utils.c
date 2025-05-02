@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   io_redir_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 17:51:44 by gzovkic           #+#    #+#             */
+/*   Updated: 2025/05/02 17:51:45 by gzovkic          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	file_redirecting(t_cmd_node *cmd_node, t_env_list *env_list)
@@ -12,14 +24,15 @@ int	file_redirecting(t_cmd_node *cmd_node, t_env_list *env_list)
 void	delete_tmp_files(const char *folder_name)
 {
 	DIR				*dir;
-	char			*file_name;
-	char			*tmp_str;
 	struct dirent	*file;
+	char			*tmp_str;
+	char			*file_name;
 
 	dir = opendir(folder_name);
 	if (!dir)
 		return ;
-	while ((file = readdir(dir)) != NULL)
+	file = readdir(dir);
+	while (file != NULL)
 	{
 		if (ft_strncmp(file->d_name, ".here_doc", 9) == 0)
 		{
@@ -29,6 +42,7 @@ void	delete_tmp_files(const char *folder_name)
 			unlink(file_name);
 			free(file_name);
 		}
+		file = readdir(dir);
 	}
 	closedir(dir);
 }

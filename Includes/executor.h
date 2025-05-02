@@ -25,6 +25,20 @@ void						reset_redir(int saved_stdin, int saved_stdout);
 
 int							check_exit_arguments(t_cmd_node *cmd_node);
 void						print_error_message(char *cmd, char *message);
+int							execute(t_env_list *env_list, t_cmd_list *cmd_list);
+void						execution(t_cmd_list *cmd_list,
+								t_env_list *env_list);
+
+bool						here_doc_creation(t_cmd_node *cmd_node,
+								t_env_list *env_list);
+void						wait_for_child(pid_t last_pid,
+								struct sigaction old_int);
+bool						set_up_pipe(t_cmd_node *cmd_node, int *pipe_fd,
+								pid_t *pid);
+								char	*convert_file_name(char *file_name, int i);
+								int	is_interactive_shell(void);
+								bool	here_doc_loop(t_file_node *file_node, t_env_list *env_list, int write_fd);
+
 
 // builtins/cd_utils.c
 int							count_argument(char **argument);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   single_builtin_execution.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/02 17:52:22 by gzovkic           #+#    #+#             */
+/*   Updated: 2025/05/02 17:52:23 by gzovkic          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
