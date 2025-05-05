@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:30 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:31 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/05 18:57:40 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,30 @@ void	execute_cmd_or_builtin(t_cmd_node *cmd_node, t_env_list *env_list)
 	exit(exit_status);
 }
 
+void	close_prev_pipe(int *prev_pipe_fd)
+{
+	if (prev_pipe_fd[0] != -1)
+		close(prev_pipe_fd[0]);
+	if (prev_pipe_fd[1] != -1)
+		close(prev_pipe_fd[1]);
+}
+
 bool	execute_cmd_loop(t_cmd_node *cmd_node, t_env_list *env_list,
 		pid_t *last_pid)
 {
-	pid_t	pid;
-	int		pipe_fd[2];
-	int		prev_pipe_fd[2];
+	pid_t		pid;
+	int			pipe_fd[2];
+	static int	prev_pipe_fd[2] = {-1, -1};
 
 	pid = 0;
 	pipe_fd[0] = -1;
 	pipe_fd[1] = -1;
-	prev_pipe_fd[0] = -1;
-	prev_pipe_fd[1] = -1;
 	if (set_up_pipe(cmd_node, pipe_fd, &pid))
+	{
+		close_prev_pipe(prev_pipe_fd);
+		set_invalid_pipe(prev_pipe_fd);
 		return (true);
+	}
 	if (pid == 0)
 	{
 		if (set_pipes_child(cmd_node, pipe_fd, prev_pipe_fd) == -1)
@@ -63,9 +73,6 @@ void	execution_loop(t_cmd_list *cmd_list, t_env_list *env_list)
 	ignore.sa_flags = 0;
 	sigaction(SIGINT, &ignore, &old_int);
 	g_sigint_status = 3;
-	cmd_node = cmd_list->head;
-	if (here_doc_creation(cmd_node, env_list))
-		return ;
 	cmd_node = cmd_list->head;
 	while (cmd_node)
 	{

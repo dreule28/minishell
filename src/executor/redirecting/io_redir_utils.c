@@ -6,15 +6,15 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:44 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:45 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:31:47 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	file_redirecting(t_cmd_node *cmd_node, t_env_list *env_list)
+int	file_redirecting(t_cmd_node *cmd_node)
 {
-	if (redir_loop_infiles(cmd_node, env_list) == -1)
+	if (redir_loop_infiles(cmd_node) == -1)
 		return (-1);
 	if (redir_loop_outfiles(cmd_node) == -1)
 		return (-1);

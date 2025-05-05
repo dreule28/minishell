@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envs.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:28:01 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/02 11:28:02 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/04 11:15:32 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,4 @@ void	add_shell_level(t_env_list *env_list)
 		}
 		env_node = env_node->next;
 	}
-	add_env_node(env_list, gc_strdup("SHLVL"), gc_strdup("1"));
 }

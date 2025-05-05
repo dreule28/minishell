@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:51 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:53 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/02 18:06:32 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	env_converter_loop(t_env_node **env_node, char **converted_env_list,
 		ft_putstr_fd("Error: memory allocation failed\n", 2);
 		return (-1);
 	}
-	converted_env_list[(*count)++] = env_str;
+	converted_env_list[(*count)] = env_str;
 	*env_node = (*env_node)->next;
 	(*count)++;
 	return (0);

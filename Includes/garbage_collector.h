@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   garbage_collector.h                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 11:43:05 by gzovkic           #+#    #+#             */
+/*   Updated: 2025/05/04 11:43:06 by gzovkic          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GARBAGE_COLLECTOR_H
 # define GARBAGE_COLLECTOR_H
 
@@ -32,14 +44,15 @@ void					clean_up(void);
 t_gc_list				*get_gc(void);
 
 // Functions in gc_libft_functions.c
-char	*gc_substr(char const *s, unsigned int start, size_t len);
-char	*gc_strdup(const char *s1);
-char	**gc_split(char const *s, char c);
-int		gc_count_words(char const *s, char c);
-int		gc_fill_words(char **str, const char *s, char c);
-char	*gc_split_substr(char const *start, char const *end);
-void	gc_free_words(char **str, int i);
-char	*gc_itoa(int n);
-char	*gc_strjoin(char const *s1, char const *s2);
+char					*gc_substr(char const *s, unsigned int start,
+							size_t len);
+char					*gc_strdup(const char *s1);
+char					**gc_split(char const *s, char c);
+int						gc_count_words(char const *s, char c);
+int						gc_fill_words(char **str, const char *s, char c);
+char					*gc_split_substr(char const *start, char const *end);
+void					gc_free_words(char **str, int i);
+char					*gc_itoa(int n);
+char					*gc_strjoin(char const *s1, char const *s2);
 
 #endif

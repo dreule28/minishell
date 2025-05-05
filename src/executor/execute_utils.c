@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:35 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:36 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/05 19:02:12 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,27 @@ int	execute(t_env_list *env_list, t_cmd_list *cmd_list)
 	int	check;
 
 	check = 0;
-	if (!cmd_list->head)
+	if (here_doc_creation(cmd_list->head, env_list) || !cmd_list->head)
 		return (0);
-	if (cmd_list->head->cmd[0] && cmd_list->head->cmd[1]
-		&& cmd_list->head->cmd_type == BUILTIN)
+	if (cmd_list->head->cmd && cmd_list->head->cmd[0] != NULL)
 	{
-		if (!ft_strncmp(cmd_list->head->cmd[0], "exit",
-				ft_strlen(cmd_list->head->cmd[0]))
-			&& cmd_list->head->cmd[1] == NULL)
-			return (0);
+		if (cmd_list->head->cmd[0] && cmd_list->head->cmd[1]
+			&& cmd_list->head->cmd_type == BUILTIN)
+		{
+			if (!ft_strncmp(cmd_list->head->cmd[0], "exit",
+					ft_strlen(cmd_list->head->cmd[0]))
+				&& cmd_list->head->cmd[1] == NULL)
+				return (0);
+		}
 	}
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
 	{
 		check = single_builtin_execution(cmd_list->head, env_list);
 		if (check != 0)
 			return (0);
-		return (1);
 	}
-	execution(cmd_list, env_list);
+	else
+		execution(cmd_list, env_list);
 	return (1);
 }
 
@@ -64,8 +67,7 @@ bool	here_doc_creation(t_cmd_node *cmd_node, t_env_list *env_list)
 				count_here_doc);
 		if (here_doc_nbr == -1)
 			return (true);
-		else
-			count_here_doc = here_doc_nbr;
+		count_here_doc = here_doc_nbr;
 		cmd_node = cmd_node->next;
 	}
 	return (false);

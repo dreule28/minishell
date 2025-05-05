@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:22 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:23 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:33:23 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,19 @@ int	single_builtin_execution(t_cmd_node *cmd_node, t_env_list *env_list)
 	int		saved_stdin;
 	int		saved_stdout;
 
-	saved_stdin = 0;
-	saved_stdout = 0;
-	if (file_redirecting(cmd_node, env_list) == -1)
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (file_redirecting(cmd_node) == -1)
 	{
 		reset_redir(saved_stdin, saved_stdout);
 		return (1);
 	}
 	lower_str = turn_lower(cmd_node->cmd[0]);
 	if (search_builtin(cmd_node, env_list, lower_str))
+	{
+		reset_redir(saved_stdin, saved_stdout);
 		return (*exit_code());
+	}
 	reset_redir(saved_stdin, saved_stdout);
 	return (0);
 }
@@ -96,8 +99,8 @@ bool	search_builtin(t_cmd_node *cmd_node, t_env_list *env_list, char *str)
 
 void	reset_redir(int saved_stdin, int saved_stdout)
 {
-	save_stdin_stdout(&saved_stdin, &saved_stdout);
-	reset_redirection(saved_stdin, saved_stdout);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
 	close(saved_stdin);
 	close(saved_stdout);
 }

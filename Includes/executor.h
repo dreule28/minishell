@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/04 11:43:09 by gzovkic           #+#    #+#             */
+/*   Updated: 2025/05/05 17:36:05 by gzovkic          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
@@ -35,10 +47,10 @@ void						wait_for_child(pid_t last_pid,
 								struct sigaction old_int);
 bool						set_up_pipe(t_cmd_node *cmd_node, int *pipe_fd,
 								pid_t *pid);
-								char	*convert_file_name(char *file_name, int i);
-								int	is_interactive_shell(void);
-								bool	here_doc_loop(t_file_node *file_node, t_env_list *env_list, int write_fd);
-
+char						*convert_file_name(char *file_name, int i);
+int							is_interactive_shell(void);
+bool						here_doc_loop(t_file_node *file_node,
+								t_env_list *env_list, int write_fd);
 
 // builtins/cd_utils.c
 int							count_argument(char **argument);
@@ -72,8 +84,7 @@ int							is_fd_open(int fd);
 void						check_fds(void);
 
 // redirecting/io_redir_utils.c
-int							file_redirecting(t_cmd_node *cmd_node,
-								t_env_list *env_list);
+int							file_redirecting(t_cmd_node *cmd_node);
 void						delete_tmp_files(const char *folder_name);
 void						set_interaktive_line(void);
 void						write_here_doc_file_expand(char *line, int write_fd,
@@ -81,16 +92,14 @@ void						write_here_doc_file_expand(char *line, int write_fd,
 
 // redirecting/io_redir.c
 int							redir_infile(t_file_node *file_node);
-int							redir_here_doc(t_file_node *file_node,
-								t_env_list *env_list, int i);
+int							redir_here_doc(t_file_node *file_node);
 char						*create_here_doc(t_file_node *file_node,
 								t_env_list *env_list, int count_here_doc);
 int							redir_outfile(t_file_node *file_node);
 int							redir_append(t_file_node *file_node);
 
 // redirecting/io_redir_loops.c
-int							redir_loop_infiles(t_cmd_node *cmd_node,
-								t_env_list *env_list);
+int							redir_loop_infiles(t_cmd_node *cmd_node);
 int							redir_loop_outfiles(t_cmd_node *cmd_node);
 int							create_here_doc_files(t_cmd_node *cmd_node,
 								t_env_list *env_list, int count_here_doc);

@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:53:51 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/02 13:00:38 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/02 18:17:57 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// int	*exit_code(void)
+// {
+// 	static int	exit_code;
+
+// 	return (&exit_code);
+// }
 
 t_env_list	*setup_env_list(void)
 {
@@ -18,15 +25,8 @@ t_env_list	*setup_env_list(void)
 	char		*pwd;
 
 	pwd = getcwd(NULL, 0);
-	if (!pwd)
-	{
-		ft_putstr_fd("minishell: getcwd error\n", 2);
-		return (NULL);
-	}
 	gc_add(pwd);
 	env_list = init_env_list();
-	if (!env_list)
-		return (NULL);
 	add_env_node(env_list, "SHLVL", "2");
 	add_env_node(env_list, "PWD", pwd);
 	add_env_node(env_list, "OLDPWD", gc_strdup(""));
@@ -92,7 +92,7 @@ int	process_command(char *prompt, t_env_list *env_list)
 	cmd_list = token_to_cmd(tk_list);
 	if (!cmd_list)
 		return (1);
-	if (!execute(env_list, cmd_list))
+	if (execute(env_list, cmd_list) == 0)
 	{
 		delete_tmp_files("tmp");
 		return (0);

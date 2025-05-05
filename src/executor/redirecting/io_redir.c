@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:41 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:42 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/05 17:47:49 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,17 @@ int	redir_infile(t_file_node *file_node)
 	return (INFILE_USED);
 }
 
-int	redir_here_doc(t_file_node *file_node, t_env_list *env_list, int i)
+int	redir_here_doc(t_file_node *file_node)
 {
-	int		file_redirecting;
-	char	*file_name;
-	char	*converted_file_name;
+	int	file_redirecting;
 
-	(void)env_list;
 	file_redirecting = 0;
-	converted_file_name = convert_file_name(file_node->filename, i);
-	(i)++;
-	file_name = gc_strjoin("tmp/.here_doc_", converted_file_name);
 	if (g_sigint_status == 2)
 		return (-1);
-	file_redirecting = open(file_name, O_RDONLY);
+	file_redirecting = open(file_node->filename, O_RDONLY);
 	if (file_redirecting == -1)
 	{
-		ft_putstr_fd("Operation not permitted\n", 2);
+		ft_putstr_fd("Operation redir_here_doc not permitted\n", 2);
 		return (-1);
 	}
 	if (dup2(file_redirecting, STDIN_FILENO) == -1)
@@ -74,11 +68,12 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list, int i)
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
 		return (ft_putstr_fd("Operation not permitted\n", 2), NULL);
-	while (1)
+	if (here_doc_loop(file_node, env_list, write_fd))
 	{
-		if (here_doc_loop(file_node, env_list, write_fd))
-			return (NULL);
+		close(write_fd);
+		return (NULL);
 	}
+	file_node->filename = str;
 	close(write_fd);
 	if (is_interactive_shell())
 		start_signals();

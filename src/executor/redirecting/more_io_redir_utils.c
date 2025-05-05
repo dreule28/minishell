@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:39 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:40 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/05 19:05:26 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,26 +40,27 @@ bool	here_doc_loop(t_file_node *file_node, t_env_list *env_list,
 {
 	char	*line;
 
-	if (is_interactive_shell())
-		line = readline("> ");
-	else
-		line = get_next_line(STDIN_FILENO);
-	if (!line || g_sigint_status == 2)
+	while (42)
 	{
+		if (is_interactive_shell())
+			line = readline("> ");
+		else
+			line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
 		if (g_sigint_status == 2)
 		{
 			start_signals();
 			close(write_fd);
-			return (NULL);
+			return (true);
 		}
-		return (true);
-	}
-	if (ft_strcmp(line, file_node->filename) == 0)
-	{
+		if (ft_strcmp(line, file_node->filename) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write_here_doc(line, write_fd, env_list, file_node);
 		free(line);
-		return (true);
 	}
-	write_here_doc(line, write_fd, env_list, file_node);
-	free(line);
 	return (false);
 }

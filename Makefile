@@ -40,7 +40,7 @@ PROCESS := $(addprefix executor/process/, $(PROCESS_FILES))
 REDIRECTING_FILES := io_redir_loops.c io_redir_utils.c io_redir.c here_doc_utils.c more_io_redir_utils.c
 REDIRECTING := $(addprefix executor/redirecting/, $(REDIRECTING_FILES))
 
-GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c
+GC_FILES := ft_malloc.c gc_utils.c gc_libft_functions.c gc_itoa.c more_gc_utils.c
 GC := $(addprefix gc/, $(GC_FILES))
 
 SRC_FILES := main.c signals.c exit_code.c
@@ -83,6 +83,9 @@ $(LIBFT):
 	@echo "$(COLOR_GREEN)Compiling libft..$(COLOR_RESET)"
 	@$(MAKE) -C $(LIBFT_DIR)
 
+coffin: all
+	@printf '\033]1337;File=inline=1;width=200%%;height=100%%:%s\a\n' "$$(curl -s https://content.imageresizer.com/images/memes/Spongebob-Coffin-meme-qvhip.jpg | base64 || echo "No image found")"
+
 %.o: %.c
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
@@ -108,4 +111,4 @@ help:
 	@echo "  fclean   - Remove all generated files"
 	@echo "  re       - Rebuild minishell"
 
-.PHONY: all clean fclean re help
+.PHONY: all clean fclean re help coffin
