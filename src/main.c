@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:53:51 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/06 10:08:12 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/06 17:03:00 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ int	process_command(char *prompt, t_env_list *env_list)
 		return (1);
 	if (execute(env_list, cmd_list) == 0)
 	{
-		delete_tmp_files("tmp");
+		delete_tmp_files("/tmp");
 		return (0);
 	}
-	delete_tmp_files("tmp");
+	delete_tmp_files("/tmp");
 	return (1);
 }
 

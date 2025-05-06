@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:41 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/05 17:47:49 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 17:03:10 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*create_here_doc(t_file_node *file_node, t_env_list *env_list, int i)
 		start_heredoc_signals();
 	}
 	converted_file_name = convert_file_name(file_node->filename, i);
-	str = gc_strjoin("tmp/.here_doc_", converted_file_name);
+	str = gc_strjoin("/tmp/.here_doc_", converted_file_name);
 	write_fd = open(str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (write_fd == -1)
 		return (ft_putstr_fd("Operation not permitted\n", 2), NULL);
