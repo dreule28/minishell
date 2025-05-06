@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:28:01 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/06 14:48:39 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/06 14:54:03 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ t_env_list	*get_envs(char **env)
 		i++;
 	}
 	add_shell_level(env_list);
-	// add_env_node(env_list, gc_strdup("OLDPWD"), gc_strdup(""));
 	return (env_list);
 }
 
