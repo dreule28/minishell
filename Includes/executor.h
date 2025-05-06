@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 11:43:09 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/05 17:36:05 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:40:07 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void						builtin_echo(t_cmd_node *cmd_node);
 void						builtin_cd(t_cmd_node *cmd_node,
 								t_env_list *env_list);
 void						builtin_pwd(void);
-void						builtin_exit(t_cmd_node *cmd_node);
+int							builtin_exit(t_cmd_node *cmd_node);
 
 // builtins/env_builtins.c
 void						builtin_env(t_cmd_node *cmd_node,
