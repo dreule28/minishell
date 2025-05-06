@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:07 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/06 10:41:21 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/06 16:10:56 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,20 @@ void	builtin_cd(t_cmd_node *cmd_node, t_env_list *env_list)
 	old_pwd = getcwd(NULL, 0);
 	gc_add(old_pwd);
 	if (cmd_node->cmd[1] == NULL || ft_strcmp(cmd_node->cmd[1], "~") == 0)
+	{
 		home_dir = get_home(env_list);
+		dir_name = home_dir;
+	}
 	else if (ft_strcmp(cmd_node->cmd[1], "-") == 0)
+	{
 		old_dir = get_old_pwd(env_list);
+		dir_name = old_dir;
+	}
 	else
 		dir_name = cmd_node->cmd[1];
 	if (check_dir_names(old_dir, home_dir, dir_name) == -1)
 		return ;
 	update_pwds(cmd_node, env_list, old_pwd);
-	*exit_code() = 0;
 }
 
 void	builtin_pwd(void)

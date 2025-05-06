@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:22 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/06 10:39:44 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/06 16:11:02 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ bool	search_builtin(t_cmd_node *cmd_node, t_env_list *env_list, char *str)
 	else if (!ft_strcmp(str, "export"))
 		builtin_export(cmd_node, env_list);
 	else if (!ft_strcmp(str, "cd"))
+	{
 		builtin_cd(cmd_node, env_list);
+		*exit_code() = 0;
+	}
 	else if (!ft_strcmp(str, "unset"))
 		builtin_unset(cmd_node, env_list);
 	else if (!ft_strcmp(str, "env"))
@@ -88,8 +91,8 @@ bool	search_builtin(t_cmd_node *cmd_node, t_env_list *env_list, char *str)
 		builtin_echo(cmd_node);
 	else if (!ft_strcmp(str, "exit"))
 	{
-		if(builtin_exit(cmd_node) == 0)
-			return(false);
+		if (builtin_exit(cmd_node) == 0)
+			return (false);
 		clean_up();
 		return (true);
 	}
