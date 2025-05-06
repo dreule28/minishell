@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:35 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/06 11:22:12 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/06 16:41:56 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	execute(t_env_list *env_list, t_cmd_list *cmd_list)
 			&& cmd_list->head->cmd_type == BUILTIN)
 		{
 			if (!ft_strncmp(cmd_list->head->cmd[0], "exit",
-				ft_strlen(cmd_list->head->cmd[0]))
+					ft_strlen(cmd_list->head->cmd[0]))
 				&& cmd_list->head->cmd[1] == NULL)
-					return (*exit_code() = 0, 0);
+				return (*exit_code() = 0, 0);
 		}
 	}
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
