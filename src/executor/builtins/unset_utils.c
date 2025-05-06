@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:24 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/06 09:39:30 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:06:37 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	unset_loop(t_cmd_node *cmd_node, t_env_node **env_node,
 		}
 		prev_env_node = curr_env_node;
 		curr_env_node = curr_env_node->next;
+		*env_node = curr_env_node;
 	}
 	return (0);
 }
