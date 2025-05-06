@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:35 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/05 19:02:12 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:22:12 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	execute(t_env_list *env_list, t_cmd_list *cmd_list)
 		return (0);
 	if (cmd_list->head->cmd && cmd_list->head->cmd[0] != NULL)
 	{
-		if (cmd_list->head->cmd[0] && cmd_list->head->cmd[1]
+		if (cmd_list->head->cmd[0] && cmd_list->head->cmd[1] == NULL
 			&& cmd_list->head->cmd_type == BUILTIN)
 		{
 			if (!ft_strncmp(cmd_list->head->cmd[0], "exit",
-					ft_strlen(cmd_list->head->cmd[0]))
+				ft_strlen(cmd_list->head->cmd[0]))
 				&& cmd_list->head->cmd[1] == NULL)
-				return (0);
+					return (*exit_code() = 0, 0);
 		}
 	}
 	if (cmd_list->size == 1 && cmd_list->head->cmd_type == BUILTIN)
@@ -96,6 +96,8 @@ void	wait_for_child(pid_t last_pid, struct sigaction old_int)
 		*exit_code() = 128 + WTERMSIG(last_status);
 	else
 		*exit_code() = WEXITSTATUS(last_status);
+	if (*exit_code() == 2)
+		*exit_code() = 1;
 }
 
 bool	set_up_pipe(t_cmd_node *cmd_node, int *pipe_fd, pid_t *pid)
@@ -107,6 +109,11 @@ bool	set_up_pipe(t_cmd_node *cmd_node, int *pipe_fd, pid_t *pid)
 	{
 		ft_putstr_fd("Error  forking\n", 2);
 		return (true);
+	}
+	if (*pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
 	}
 	return (false);
 }
