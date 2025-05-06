@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:13 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:14 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 09:33:52 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ void	builtin_unset(t_cmd_node *cmd_node, t_env_list *env_list)
 	int			invalid_found;
 	t_env_node	*env_node;
 
-	env_node = env_list->head;
 	invalid_found = 0;
 	count = 1;
 	while (cmd_node->cmd[count] != NULL)
 	{
+		env_node = env_list->head;
 		if (is_valid_identifier(cmd_node->cmd[count]) == -1)
 		{
 			invalid_found = 1;

@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:01 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/05 17:35:30 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 09:29:51 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*create_command_path(t_cmd_node *cmd_node, char **env_path_list)
 		command_index++;
 		free(full_cmd_path);
 	}
-	print_error_message(cmd_node->cmd[0], "command not found");
+	print_error_message(cmd_node->cmd[0], "command not found\n");
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:24 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:25 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 09:39:30 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,22 @@ int	unset_loop(t_cmd_node *cmd_node, t_env_node **env_node,
 		t_env_list *env_list, int count)
 {
 	t_env_node	*prev_env_node;
+	t_env_node	*curr_env_node;
 
 	prev_env_node = NULL;
-	if (ft_strcmp(cmd_node->cmd[count], (*env_node)->type) == 0)
+	curr_env_node = *env_node;
+	while (curr_env_node)
 	{
-		if (prev_env_node == NULL)
-			env_list->head = (*env_node)->next;
-		else
-			prev_env_node->next = (*env_node)->next;
-		return (-1);
+		if (ft_strcmp(cmd_node->cmd[count], curr_env_node->type) == 0)
+		{
+			if (prev_env_node == NULL)
+				env_list->head = curr_env_node->next;
+			else
+				prev_env_node->next = curr_env_node->next;
+			return (-1);
+		}
+		prev_env_node = curr_env_node;
+		curr_env_node = curr_env_node->next;
 	}
-	prev_env_node = *env_node;
-	*env_node = (*env_node)->next;
-	return (-1);
+	return (0);
 }
