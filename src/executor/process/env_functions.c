@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:51:51 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 18:06:32 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 14:49:27 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	env_converter_loop(t_env_node **env_node, char **converted_env_list,
 	char	*tmp;
 	char	*env_str;
 
+	if (!(*env_node)->type || (*env_node)->type[0] == '\0')
+		return (0);
 	tmp = ft_strjoin((*env_node)->type, "=");
 	env_str = gc_strjoin(tmp, (*env_node)->value);
 	free(tmp);
