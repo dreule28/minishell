@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:04 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:05 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:40:06 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	check_exit_arguments(t_cmd_node *cmd_node)
 	{
 		ft_putstr_fd("exit: too many arguments\n", 2);
 		*exit_code() = 1;
-		return (-1);
+		return (1);
 	}
 	return (0);
 }

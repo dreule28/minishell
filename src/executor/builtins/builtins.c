@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:07 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:08 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:41:21 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,28 @@ void	builtin_pwd(void)
 	*exit_code() = 0;
 }
 
-void	builtin_exit(t_cmd_node *cmd_node)
+int	builtin_exit(t_cmd_node *cmd_node)
 {
 	int	exit_val;
+	int	check;
 
+	check = 0;
 	if (cmd_node->cmd[0] || (cmd_node->cmd[0] && cmd_node->cmd[1]))
 	{
 		if (cmd_node->cmd[0] && cmd_node->cmd[1])
 		{
 			ft_putstr_fd("exit\n", 2);
-			if (check_exit_arguments(cmd_node) == -1)
-				return ;
+			check = check_exit_arguments(cmd_node);
+			if (check == -1)
+				return (1);
+			else if (check == 1)
+				return (0);
 			exit_val = ft_atoi(cmd_node->cmd[1]);
 			*exit_code() = exit_val % 256;
-			return ;
+			return (1);
 		}
 		else if (cmd_node->cmd[0])
-			return ;
+			return (1);
 	}
+	return (0);
 }

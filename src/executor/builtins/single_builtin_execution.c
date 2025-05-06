@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_builtin_execution.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:22 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/05 17:33:23 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:39:44 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ bool	search_builtin(t_cmd_node *cmd_node, t_env_list *env_list, char *str)
 		builtin_echo(cmd_node);
 	else if (!ft_strcmp(str, "exit"))
 	{
-		builtin_exit(cmd_node);
+		if(builtin_exit(cmd_node) == 0)
+			return(false);
 		clean_up();
 		return (true);
 	}

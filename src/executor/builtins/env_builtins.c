@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_builtins.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 17:52:13 by gzovkic           #+#    #+#             */
-/*   Updated: 2025/05/06 09:33:52 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 12:41:43 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	builtin_env(t_cmd_node *cmd_node, t_env_list *env_list)
 	}
 	while (env_node != NULL)
 	{
-		if (env_node->value != NULL && env_node->value[0] != '\0')
+		if (env_node->type && env_node->value != NULL && env_node->value[0] != '\0')
 		{
 			ft_putstr_fd(env_node->type, 1);
 			ft_putstr_fd("=", 1);
