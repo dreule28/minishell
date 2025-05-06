@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
+/*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:53:51 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/06 09:55:49 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 10:08:12 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	main(int argc, char **argv, char **env)
 		if (!prompt)
 		{
 			if (isatty(STDIN_FILENO))
-				ft_putstr_fd("exit", 2);
+				ft_putstr_fd("exit\n", 2);
 			break ;
 		}
 		keep_running = process_command(prompt, env_list);
