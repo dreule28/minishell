@@ -6,7 +6,7 @@
 /*   By: dreule <dreule@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:28:01 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/06 14:54:03 by dreule           ###   ########.fr       */
+/*   Updated: 2025/05/06 16:17:23 by dreule           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	add_env_node(t_env_list *env_list, char *type, char *value)
 	if (!new_node)
 		return ;
 	new_node->next = NULL;
-	new_node->type = type;
-	new_node->value = value;
+	new_node->type = gc_strdup(type);
+	new_node->value = gc_strdup(value);
 	if (!env_list->head)
 		env_list->head = new_node;
 	else
@@ -71,7 +71,10 @@ t_env_list	*get_envs(char **env)
 	{
 		type = find_equal_sign(env, i, &value);
 		if (ft_strcmp(type, "OLDPWD") == 0)
+		{
 			i++;
+			add_env_node(env_list, "OLDPWD", "");
+		}
 		else if (type)
 			add_env_node(env_list, type, value);
 		i++;
