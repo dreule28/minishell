@@ -6,18 +6,11 @@
 /*   By: gzovkic <gzovkic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 11:53:51 by dreule            #+#    #+#             */
-/*   Updated: 2025/05/02 18:17:57 by gzovkic          ###   ########.fr       */
+/*   Updated: 2025/05/06 09:55:49 by gzovkic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	*exit_code(void)
-// {
-// 	static int	exit_code;
-
-// 	return (&exit_code);
-// }
 
 t_env_list	*setup_env_list(void)
 {
