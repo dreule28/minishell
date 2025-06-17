@@ -44,7 +44,7 @@ We built the shell **without system shell functions like `system()`**, using onl
 
 The parser handles:
 - **Lexing**: splitting tokens while respecting quotes
-- **Syntax tree construction**: recognizing pipes, redirections, and grouped operations
+- **Meta-struct construction**: recognizing pipes, redirections, and grouped operations
 - **Quote removal & variable expansion**: compliant with bash-like rules
 - **Error handling**: unclosed quotes, invalid syntax, etc.
 
