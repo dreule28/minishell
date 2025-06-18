@@ -4,7 +4,8 @@ A simplified UNIX shell built from scratch, mimicking key features of `bash`.
 This project was completed as part of the 42 curriculum.
 
 > 🔸 Parsing: [`@dreule`](https://github.com/dreule28)  
-> 🔸 Execution: [`@gzovkic`](https://github.com/gzovkic)
+> 🔸 Execution: [`@gzovkic`](https://github.com/gzovkic)<br>
+> 📚 Documentation: [Link](https://foregoing-loan-6f5.notion.site/Minishell-75e85da6eec74129b14eac810c01c686)
 
 ---
 
